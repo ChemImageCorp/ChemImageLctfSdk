@@ -15,5 +15,12 @@ jobs:
       with:
         version: '3.1.100'
 
+    - name: Setup Nuget.exe
+      uses: NuGet/setup-nuget@v1.0.2
+      with:
+        nuget-version: 'latest'
+
     - name: Build with dotnet
-      run: dotnet build --configuration Release
+      run: |
+        nuget sources Add -Name "GPR" -Source "https://nuget.pkg.github.com/aklein53/index.json" -Username aklein53 -Password ${{ secrets.nugetToken }}
+        dotnet build --configuration Release
