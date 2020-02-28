@@ -22,5 +22,5 @@ jobs:
 
     - name: Build with dotnet
       run: |
-        nuget sources Add -Name "GPR" -Source "https://nuget.pkg.github.com/aklein53/index.json" -Username aklein53 -Password ${{ secrets.GITHUB_TOKEN }}
+        nuget sources Add -Name "GPR" -Source "https://nuget.pkg.github.com/aklein53/index.json" -Username aklein53 -Password ${{ secrets.nugetToken }}
         dotnet build --configuration Release
