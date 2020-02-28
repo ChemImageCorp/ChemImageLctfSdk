@@ -16,4 +16,6 @@ jobs:
         version: '3.1.100'
 
     - name: Build with dotnet
-      run: dotnet build --configuration Release
+      run: |
+        nuget sources Add -Name "GPR" -Source "https://nuget.pkg.github.com/aklein53/index.json" -Username aklein53 -Password ${{ secrets.GITHUB_TOKEN }}
+        dotnet build --configuration Release
