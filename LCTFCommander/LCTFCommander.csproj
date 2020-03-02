@@ -7,7 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ChemImageLCTF" Version="1.0.0" />
+    <None Remove="Resources\logo-transparent.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ChemImageLCTF" Version="1.1.1" />
+    <PackageReference Include="PropertyChanged.Fody" Version="3.2.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\logo-transparent.png" />
   </ItemGroup>
 
 </Project>

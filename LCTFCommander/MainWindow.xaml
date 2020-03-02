@@ -3,10 +3,39 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:vc="clr-namespace:LCTFCommander.Converters"
         xmlns:local="clr-namespace:LCTFCommander"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
-    <Grid>
-
-    </Grid>
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded" Closing="Window_Closing">
+	<Window.Resources>
+		<vc:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
+	</Window.Resources>
+	<DockPanel LastChildFill="False">
+		<Menu DockPanel.Dock="Top">
+			<MenuItem Header="Help">
+				<MenuItem Header="Help" Click="HelpMenu_Click"/>
+			</MenuItem>
+		</Menu>
+		<DockPanel DockPanel.Dock="Top" Background="Transparent" MinHeight="100">
+			<Viewbox DockPanel.Dock="Right" Height="30" Margin="23" VerticalAlignment="Top">
+				<ContentPresenter ContentTemplate="{StaticResource WordmarkLogo}"/>
+			</Viewbox>
+			<DockPanel>
+				<Label Content="Attached LCTFs:" DockPanel.Dock="Top"/>
+				<DataGrid ItemsSource="{Binding AttachedLCTFs}" SelectedItem="{Binding Path=SelectedLCTF, Mode=TwoWay}"
+                      IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
+                      CanUserReorderColumns="True" CanUserResizeColumns="True" 
+                      CanUserResizeRows="False" CanUserSortColumns="False"
+                      Margin="3">
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="Serial Number" Binding="{Binding SerialNumber}" />
+					<DataGridTextColumn Header="Firmware Version" Binding="{Binding FirmwareVersion}" />
+					<DataGridTextColumn Header="Temperature" Binding="{Binding Temperature, StringFormat={}{0:0.00} °C}" />
+					<DataGridTextColumn Header="State" Binding="{Binding CurrentState, Converter={StaticResource EnumToDescriptionConverter}}" />
+					<DataGridTextColumn Header="Lambda" Binding="{Binding CurrentLambda, StringFormat={}{0:0.##} nm}" />
+				</DataGrid.Columns>
+			</DataGrid>
+			</DockPanel>
+		</DockPanel>
+	</DockPanel>
 </Window>

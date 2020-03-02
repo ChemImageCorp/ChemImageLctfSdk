@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:LCTFCommander"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
-    </Application.Resources>
+		<ResourceDictionary Source="LocalResourceDict.xaml" />
+	</Application.Resources>
 </Application>
