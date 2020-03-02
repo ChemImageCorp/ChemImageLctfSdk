@@ -27,15 +27,20 @@
                       CanUserReorderColumns="True" CanUserResizeColumns="True" 
                       CanUserResizeRows="False" CanUserSortColumns="False"
                       Margin="3">
-				<DataGrid.Columns>
-					<DataGridTextColumn Header="Serial Number" Binding="{Binding SerialNumber}" />
-					<DataGridTextColumn Header="Firmware Version" Binding="{Binding FirmwareVersion}" />
-					<DataGridTextColumn Header="Temperature" Binding="{Binding Temperature, StringFormat={}{0:0.00} °C}" />
-					<DataGridTextColumn Header="State" Binding="{Binding CurrentState, Converter={StaticResource EnumToDescriptionConverter}}" />
-					<DataGridTextColumn Header="Lambda" Binding="{Binding CurrentLambda, StringFormat={}{0:0.##} nm}" />
-				</DataGrid.Columns>
-			</DataGrid>
+					<DataGrid.Columns>
+						<DataGridTextColumn Header="Serial Number" Binding="{Binding SerialNumber}" />
+						<DataGridTextColumn Header="Firmware Version" Binding="{Binding FirmwareVersion}" />
+						<DataGridTextColumn Header="Temperature" Binding="{Binding Temperature, StringFormat={}{0:0.00} °C}" />
+						<DataGridTextColumn Header="State" Binding="{Binding CurrentState, Converter={StaticResource EnumToDescriptionConverter}}" />
+						<DataGridTextColumn Header="Lambda" Binding="{Binding CurrentLambda, StringFormat={}{0:0.##} nm}" />
+					</DataGrid.Columns>
+				</DataGrid>
 			</DockPanel>
+		</DockPanel>
+		<DockPanel DockPanel.Dock="Top">
+			<TextBox DockPanel.Dock="Right" Width="100"/>
+			<Label DockPanel.Dock="Left" Content="Wavelength (nm):"/>
+			<Slider VerticalAlignment="Center" Margin="5" Minimum="850" Maximum="1800" TickFrequency="50" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" AutoToolTipPrecision="0"/>
 		</DockPanel>
 	</DockPanel>
 </Window>
