@@ -6,14 +6,14 @@
 		xmlns:vc="clr-namespace:LCTFCommander.Converters"
         xmlns:local="clr-namespace:LCTFCommander"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="MainWindow" Height="450" Width="640	" Loaded="Window_Loaded" Closing="Window_Closing">
 	<Window.Resources>
 		<vc:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
 	</Window.Resources>
 	<DockPanel LastChildFill="False">
 		<Menu DockPanel.Dock="Top">
 			<MenuItem Header="Help">
-				<MenuItem Header="Help" Click="HelpMenu_Click"/>
+				<MenuItem Header="About" Click="HelpMenu_Click"/>
 			</MenuItem>
 		</Menu>
 		<DockPanel DockPanel.Dock="Top" Background="Transparent" MinHeight="100">
@@ -32,15 +32,15 @@
 						<DataGridTextColumn Header="Firmware Version" Binding="{Binding FirmwareVersion}" />
 						<DataGridTextColumn Header="Temperature" Binding="{Binding Temperature, StringFormat={}{0:0.00} °C}" />
 						<DataGridTextColumn Header="State" Binding="{Binding CurrentState, Converter={StaticResource EnumToDescriptionConverter}}" />
-						<DataGridTextColumn Header="Lambda" Binding="{Binding CurrentLambda, StringFormat={}{0:0.##} nm}" />
+						<DataGridTextColumn Header="Lambda" Binding="{Binding CurrentWavelength, StringFormat={}{0:0.##} nm}" />
 					</DataGrid.Columns>
 				</DataGrid>
 			</DockPanel>
 		</DockPanel>
 		<DockPanel DockPanel.Dock="Top">
-			<TextBox DockPanel.Dock="Right" Width="100"/>
+            <TextBox DockPanel.Dock="Right" Width="100" TextWrapping="NoWrap" AcceptsReturn="False" VerticalAlignment="Center" Margin="5" Text="{Binding ElementName=WavelengthSlider, Path=Value, StringFormat=0}"/>
 			<Label DockPanel.Dock="Left" Content="Wavelength (nm):"/>
-			<Slider VerticalAlignment="Center" Margin="5" Minimum="850" Maximum="1800" TickFrequency="50" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" AutoToolTipPrecision="0"/>
+			<Slider Name="WavelengthSlider" VerticalAlignment="Center" Margin="5" Minimum="0" Maximum="1000" Interval="1" TickFrequency="50" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" AutoToolTipPrecision="0" Value="{Binding Path=CurrentWavelength, Mode=TwoWay, Delay=100}" SmallChange="1" LargeChange="10"/>
 		</DockPanel>
 	</DockPanel>
 </Window>

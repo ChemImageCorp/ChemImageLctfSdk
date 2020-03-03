@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,17 +15,33 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ChemImage.LCTF;
+using PropertyChanged;
 
 namespace LCTFCommander
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         public ObservableCollection<LCTFDeviceModel> AttachedLCTFs { get; } = new ObservableCollection<LCTFDeviceModel>();
         public LCTFDeviceModel SelectedLCTF { get; set; }
 
+        [DependsOn(nameof(SelectedLCTF))]
+        public int CurrentWavelength
+        {
+            get
+            {
+                return SelectedLCTF == null ? 0 : SelectedLCTF.CurrentWavelength;
+            }
+            set
+            {
+                if (SelectedLCTF != null)
+                {
+                    SelectedLCTF.CurrentWavelength = value;
+                }
+            }
+        }
         public MainWindow()
         {
             InitializeComponent();
@@ -83,5 +100,9 @@ namespace LCTFCommander
                 lctf.Dispose();
             }
         }
+
+#pragma warning disable CS0067 // Used by generated code
+        public event PropertyChangedEventHandler PropertyChanged;
+#pragma warning restore CS0067
     }
 }

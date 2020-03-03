@@ -17,7 +17,38 @@ namespace LCTFCommander
 		public string SerialNumber { get; set; }
 		public string FirmwareVersion { get; set; }
 		public double Temperature { get; set; } = 0;
-		public int CurrentLambda { get; set; } = 0;
+
+		private bool isSyncing = false;
+		private int currentWavelength = 0;
+		public int CurrentWavelength
+		{
+			get
+			{
+				return currentWavelength;
+			} 
+			set
+			{
+				lock (this)
+				{
+					currentWavelength = value;
+
+					if (!isSyncing)
+					{
+						isSyncing = true;
+
+						Task.Factory.StartNew(() =>
+						{
+							SyncWavelength();
+						});
+					}
+					else
+					{
+
+					}
+				}
+				
+			}
+		}
 
 		public LCTFState CurrentState { get; set; } = LCTFState.None;
 
@@ -29,7 +60,7 @@ namespace LCTFCommander
 			SerialNumber = LCTFDevice.DeviceInfo.SerialNumber;
 			FirmwareVersion = $@"{(float)(LCTFDevice.DeviceInfo.FirmwareVersion) / 100f:0.00}";
 			CurrentState = LCTFDevice.GetState();
-			CurrentLambda = LCTFDevice.GetCurrentWavelength();
+			CurrentWavelength = LCTFDevice.GetCurrentWavelength();
 
 			this.temperatureTimer = new DispatcherTimer();
 			this.temperatureTimer.Interval = new TimeSpan(0, 0, 2);
@@ -44,6 +75,31 @@ namespace LCTFCommander
 			});
 
 			this.temperatureTimer.Start();
+		}
+
+		private async void SyncWavelength()
+		{
+			int lastWavelength = 0;
+
+			while (true)
+			{ 
+				var setWavelengthTask = this.LCTFDevice.SetWavelengthAsync(currentWavelength);
+
+				lastWavelength = await setWavelengthTask;
+
+				lock(this)
+				{
+					if (currentWavelength == lastWavelength)
+					{
+						isSyncing = false;
+						return;
+					}
+					else
+					{
+
+					}
+				}
+			}
 		}
 
 		private bool mDisposed = false;
@@ -87,7 +143,7 @@ namespace LCTFCommander
 
 		private void LCTFDevice_OnTuningDone(int lambda)
 		{
-			CurrentLambda = lambda;
+			//CurrentWavelength = lambda;
 		}
 
 		private void LCTFDevice_OnStateChanged(LCTFState status, int tunedWavelength)
