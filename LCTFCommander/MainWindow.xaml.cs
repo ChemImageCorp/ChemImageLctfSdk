@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -42,6 +43,34 @@ namespace LCTFCommander
                 }
             }
         }
+
+        [DependsOn(nameof(SelectedLCTF))]
+        public int WavelengthMin
+        {
+            get
+            {
+                return SelectedLCTF == null ? 0 : SelectedLCTF.LCTFDevice.WavelengthMin;
+            }
+        }
+
+        [DependsOn(nameof(SelectedLCTF))]
+        public int WavelengthMax
+        {
+            get
+            {
+                return SelectedLCTF == null ? 0 : SelectedLCTF.LCTFDevice.WavelengthMax;
+            }
+        }
+
+        [DependsOn(nameof(SelectedLCTF))]
+        public int WavelengthStep
+        {
+            get
+            {
+                return SelectedLCTF == null ? 0 : SelectedLCTF.LCTFDevice.WavelengthStep;
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -90,7 +119,9 @@ namespace LCTFCommander
 
         private void HelpMenu_Click(object sender, RoutedEventArgs e)
         {
-
+            var assembly = Assembly.GetExecutingAssembly();
+            var aboutWindow = new AboutWindow(this, assembly);
+            aboutWindow.ShowDialog();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

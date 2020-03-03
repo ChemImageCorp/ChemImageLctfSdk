@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:vc="clr-namespace:LCTFCommander.Converters"
+		xmlns:tk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:LCTFCommander"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="640	" Loaded="Window_Loaded" Closing="Window_Closing">
@@ -37,10 +38,20 @@
 				</DataGrid>
 			</DockPanel>
 		</DockPanel>
-		<DockPanel DockPanel.Dock="Top">
-            <TextBox DockPanel.Dock="Right" Width="100" TextWrapping="NoWrap" AcceptsReturn="False" VerticalAlignment="Center" Margin="5" Text="{Binding ElementName=WavelengthSlider, Path=Value, StringFormat=0}"/>
+		<DockPanel DockPanel.Dock="Top" Margin="5">
+			<tk:IntegerUpDown DockPanel.Dock="Right" Width="75" VerticalAlignment="Center"
+				Value="{Binding ElementName=WavelengthSlider, Path=Value}"
+				Increment="{Binding ElementName=WavelengthSlider, Path=Interval}"
+				Minimum="{Binding WavelengthMin}"
+				Maximum="{Binding WavelengthMax}"/>
 			<Label DockPanel.Dock="Left" Content="Wavelength (nm):"/>
-			<Slider Name="WavelengthSlider" VerticalAlignment="Center" Margin="5" Minimum="0" Maximum="1000" Interval="1" TickFrequency="50" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" AutoToolTipPrecision="0" Value="{Binding Path=CurrentWavelength, Mode=TwoWay, Delay=100}" SmallChange="1" LargeChange="10"/>
+			<Slider Name="WavelengthSlider" VerticalAlignment="Center" Margin="5"
+				Minimum="{Binding WavelengthMin}"
+				Maximum="{Binding WavelengthMax}"
+				Interval="{Binding WavelengthStep}"
+				Value="{Binding Path=CurrentWavelength, Mode=TwoWay, Delay=100}"
+				TickFrequency="50" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" AutoToolTipPrecision="0"
+				SmallChange="{Binding WavelengthStep}"/>
 		</DockPanel>
 	</DockPanel>
 </Window>

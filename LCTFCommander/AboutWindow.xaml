@@ -1,0 +1,24 @@
+﻿<Window x:Class="LCTFCommander.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LCTFCommander"
+        mc:Ignorable="d"
+        Title="AboutWindow" Height="270" Width="500" ResizeMode="NoResize">
+    <DockPanel Margin="10">
+		<DockPanel DockPanel.Dock="Top">
+			<Viewbox DockPanel.Dock="right" Height="80" Margin="16" HorizontalAlignment="Left">
+				<ContentPresenter ContentTemplate="{StaticResource FullLogo}"/>
+			</Viewbox>
+			<DockPanel>
+				<Label DockPanel.Dock="Top" HorizontalAlignment="Left" FontSize="22" Content="{Binding ProductName, FallbackValue=LCTF Commander}"/>
+				<Label DockPanel.Dock="Top" HorizontalAlignment="Left" Content="{Binding ProductVersion, FallbackValue=1.0}" ContentStringFormat="v{0}"/>
+				<Label DockPanel.Dock="Top" HorizontalAlignment="Left" Content="{Binding Copyright, FallbackValue=Copyright © 2020}"/>
+				<Label DockPanel.Dock="Top" HorizontalAlignment="Left" Content="{Binding CompanyName, FallbackValue=ChemImage Corporation}"/>
+			</DockPanel>
+		</DockPanel>
+		
+		<TextBox Text="{Binding ProductDescription, FallbackValue=LCTF Commander}" Margin="5" />
+	</DockPanel>
+</Window>

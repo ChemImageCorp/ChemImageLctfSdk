@@ -4,6 +4,13 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net472</TargetFramework>
     <UseWPF>true</UseWPF>
+    <Copyright>Copyright © 2020</Copyright>
+    <Company>ChemImage Corporation</Company>
+    <Authors>ChemImage Corporation</Authors>
+    <Product>LCTF Commander</Product>
+    <Description>Tool for controlling ChemImage LCTFs.</Description>
+    <RepositoryUrl>https://github.com/aklein53/LCTFCommander</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/aklein53/LCTFCommander</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="ChemImageLCTF" Version="1.1.1" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="3.6.0" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.2.6" />
   </ItemGroup>
 
