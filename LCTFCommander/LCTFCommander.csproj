@@ -8,7 +8,7 @@
     <Company>ChemImage Corporation</Company>
     <Authors>ChemImage Corporation</Authors>
     <Product>LCTF Commander</Product>
-    <Description>Tool for controlling ChemImage LCTFs.</Description>
+    <Description>A tool for controlling ChemImage LCTFs.</Description>
     <RepositoryUrl>https://github.com/aklein53/LCTFCommander</RepositoryUrl>
     <PackageProjectUrl>https://github.com/aklein53/LCTFCommander</PackageProjectUrl>
   </PropertyGroup>

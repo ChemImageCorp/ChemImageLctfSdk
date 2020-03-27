@@ -60,7 +60,10 @@ namespace LCTFCommander
 			SerialNumber = LCTFDevice.DeviceInfo.SerialNumber;
 			FirmwareVersion = $@"{(float)(LCTFDevice.DeviceInfo.FirmwareVersion) / 100f:0.00}";
 			CurrentState = LCTFDevice.GetState();
-			CurrentWavelength = LCTFDevice.GetCurrentWavelength();
+
+			// Don't set the property because we don't want it to try to re-sync unnecessarily.
+			currentWavelength = LCTFDevice.GetCurrentWavelength();
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentWavelength)));
 
 			this.temperatureTimer = new DispatcherTimer();
 			this.temperatureTimer.Interval = new TimeSpan(0, 0, 2);
@@ -151,8 +154,6 @@ namespace LCTFCommander
 			CurrentState = status;
 		}
 
-#pragma warning disable CS0067 // Used by generated code
 		public event PropertyChangedEventHandler PropertyChanged;
-#pragma warning restore CS0067
 	}
 }

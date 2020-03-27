@@ -87,7 +87,7 @@ namespace LCTFCommander
 
         private void Controller_OnMcfAttachedOrDetached()
         {
-            if (!LCTFController.Instance.AttachedLCTFs.Select(x => x.InstanceId).Contains(SelectedLCTF.LCTFDevice.InstanceId))
+            if (SelectedLCTF != null && !LCTFController.Instance.AttachedLCTFs.Select(x => x.InstanceId).Contains(SelectedLCTF.LCTFDevice.InstanceId))
             {
                 SelectedLCTF = null;
             }
