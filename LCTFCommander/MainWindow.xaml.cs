@@ -25,8 +25,7 @@ namespace LCTFCommander
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        public ObservableCollection<LCTFDeviceModel> AttachedLCTFs { get; } = new ObservableCollection<LCTFDeviceModel>();
-        public LCTFDeviceModel SelectedLCTF { get; set; }
+        public LCTFDeviceModel SelectedLCTF { get; set; } = null;
 
         [DependsOn(nameof(SelectedLCTF))]
         public int CurrentWavelength
@@ -88,32 +87,17 @@ namespace LCTFCommander
 
         private void Controller_OnMcfAttachedOrDetached()
         {
+            if (!LCTFController.Instance.AttachedLCTFs.Select(x => x.InstanceId).Contains(SelectedLCTF.LCTFDevice.InstanceId))
+            {
+                SelectedLCTF = null;
+            }
+
             foreach (LCTFDevice lctf in LCTFController.Instance.AttachedLCTFs)
             {
-                if (!AttachedLCTFs.Select(x => x.LCTFDevice.InstanceId).Contains(lctf.InstanceId))
+                if (SelectedLCTF == null)
                 {
-                    AttachedLCTFs.Add(new LCTFDeviceModel(lctf));
+                    SelectedLCTF = new LCTFDeviceModel(lctf);
                 }
-            }
-
-            List<LCTFDeviceModel> toRemove = new List<LCTFDeviceModel>();
-
-            foreach (LCTFDeviceModel lctf in AttachedLCTFs)
-            {
-                if (!LCTFController.Instance.AttachedLCTFs.Select(x => x.InstanceId).Contains(lctf.LCTFDevice.InstanceId))
-                {
-                    toRemove.Add(lctf);
-                }
-            }
-
-            foreach (var lctf in toRemove)
-            {
-                AttachedLCTFs.Remove(lctf);
-            }
-
-            if ((SelectedLCTF == null || !AttachedLCTFs.Contains(SelectedLCTF)) && AttachedLCTFs.Any())
-            {
-                SelectedLCTF = AttachedLCTFs.First();
             }
         }
 
@@ -126,10 +110,7 @@ namespace LCTFCommander
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            foreach (var lctf in AttachedLCTFs)
-            {
-                lctf.Dispose();
-            }
+            SelectedLCTF?.Dispose();
         }
 
 #pragma warning disable CS0067 // Used by generated code

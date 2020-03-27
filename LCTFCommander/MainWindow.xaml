@@ -17,34 +17,44 @@
 				<MenuItem Header="About" Click="HelpMenu_Click"/>
 			</MenuItem>
 		</Menu>
-		<DockPanel DockPanel.Dock="Top" Background="Transparent" MinHeight="100">
+		<DockPanel DockPanel.Dock="Top" Background="Transparent">
 			<Viewbox DockPanel.Dock="Right" Height="30" Margin="23" VerticalAlignment="Top">
 				<ContentPresenter ContentTemplate="{StaticResource WordmarkLogo}"/>
 			</Viewbox>
 			<DockPanel>
-				<Label Content="Attached LCTFs:" DockPanel.Dock="Top"/>
-				<DataGrid ItemsSource="{Binding AttachedLCTFs}" SelectedItem="{Binding Path=SelectedLCTF, Mode=TwoWay}"
-                      IsReadOnly="True" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="FullRow"
-                      CanUserReorderColumns="True" CanUserResizeColumns="True" 
-                      CanUserResizeRows="False" CanUserSortColumns="False"
-                      Margin="3">
-					<DataGrid.Columns>
-						<DataGridTextColumn Header="Serial Number" Binding="{Binding SerialNumber}" />
-						<DataGridTextColumn Header="Firmware Version" Binding="{Binding FirmwareVersion}" />
-						<DataGridTextColumn Header="Temperature" Binding="{Binding Temperature, StringFormat={}{0:0.00} °C}" />
-						<DataGridTextColumn Header="State" Binding="{Binding CurrentState, Converter={StaticResource EnumToDescriptionConverter}}" />
-						<DataGridTextColumn Header="Lambda" Binding="{Binding CurrentWavelength, StringFormat={}{0:0.##} nm}" />
-					</DataGrid.Columns>
-				</DataGrid>
+				<Label Content="Connected LCTF:" DockPanel.Dock="Top"/>
+				<Grid Margin="10,0,0,0">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="Auto"/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+					<TextBlock Text="Serial number:" Grid.Column="0" Grid.Row="0"/>
+					<TextBlock Text="Firmware:" Grid.Column="0" Grid.Row="1"/>
+					<TextBlock Text="Temperature:" Grid.Column="0" Grid.Row="2"/>
+					<TextBlock Text="State" Grid.Column="0" Grid.Row="3"/>
+
+					<TextBlock Text="{Binding SelectedLCTF.SerialNumber, FallbackValue=N/A}" Grid.Column="1" Grid.Row="0"/>
+					<TextBlock Text="{Binding SelectedLCTF.FirmwareVersion, FallbackValue=N/A}"  Grid.Column="1" Grid.Row="1"/>
+					<TextBlock Text="{Binding SelectedLCTF.Temperature, StringFormat={}{0:0.00} °C, FallbackValue=N/A}" Grid.Column="1" Grid.Row="2"/>
+					<TextBlock Text="{Binding SelectedLCTF.CurrentState, FallbackValue=N/A}" Grid.Column="1" Grid.Row="3"/>
+				</Grid>
+				
+				
 			</DockPanel>
 		</DockPanel>
 		<DockPanel DockPanel.Dock="Top" Margin="5">
-			<tk:IntegerUpDown DockPanel.Dock="Right" Width="75" VerticalAlignment="Center"
+			<Label DockPanel.Dock="Left" Content="Wavelength (nm):" VerticalAlignment="Center"/>
+			<tk:IntegerUpDown DockPanel.Dock="Left" Width="75" VerticalAlignment="Center"
 				Value="{Binding ElementName=WavelengthSlider, Path=Value}"
 				Increment="{Binding ElementName=WavelengthSlider, Path=Interval}"
 				Minimum="{Binding WavelengthMin}"
 				Maximum="{Binding WavelengthMax}"/>
-			<Label DockPanel.Dock="Left" Content="Wavelength (nm):"/>
 			<Slider Name="WavelengthSlider" VerticalAlignment="Center" Margin="5"
 				Minimum="{Binding WavelengthMin}"
 				Maximum="{Binding WavelengthMax}"
