@@ -7,11 +7,11 @@
 		xmlns:tk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:LCTFCommander"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="640	" Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="LCTF Commander" Height="450" Width="540" Loaded="Window_Loaded" Closing="Window_Closing">
 	<Window.Resources>
 		<vc:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
 	</Window.Resources>
-	<DockPanel LastChildFill="False">
+	<DockPanel LastChildFill="True">
 		<Menu DockPanel.Dock="Top">
 			<MenuItem Header="Help">
 				<MenuItem Header="About" Click="HelpMenu_Click"/>
@@ -37,7 +37,7 @@
 					<TextBlock Text="Serial number:" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right"/>
 					<TextBlock Text="Firmware:" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right"/>
 					<TextBlock Text="Temperature:" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right"/>
-					<TextBlock Text="State" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right"/>
+					<TextBlock Text="State:" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right"/>
 
 					<TextBlock Text="{Binding SelectedLCTF.SerialNumber, FallbackValue=N/A}" Grid.Column="1" Grid.Row="0" Margin="5,0,0,0"/>
 					<TextBlock Text="{Binding SelectedLCTF.FirmwareVersion, FallbackValue=N/A}"  Grid.Column="1" Grid.Row="1" Margin="5,0,0,0"/>
@@ -63,5 +63,65 @@
 				TickFrequency="50" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" AutoToolTipPrecision="0"
 				SmallChange="{Binding WavelengthStep}"/>
 		</DockPanel>
+		<GroupBox Header="Sequencing" DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="5">
+			<DockPanel LastChildFill="True">
+				<Grid DockPanel.Dock="Bottom" HorizontalAlignment="Center">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition SharedSizeGroup="A"/>
+						<ColumnDefinition SharedSizeGroup="A"/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+					<Button Grid.Column="0" Content="Start Sequencing" Margin="5" Padding="3"/>
+					<Button Grid.Column="1" Content="Stop Sequencing" Margin="5" Padding="3" IsEnabled="False"/>
+				</Grid>
+				<DockPanel DockPanel.Dock="Top">
+					<DockPanel DockPanel.Dock="Left" Margin="5">
+						<RadioButton Content="Arbitrary" DockPanel.Dock="Top" Margin="5" GroupName="SequencingMode"/>
+						<DataGrid DockPanel.Dock="Top" MinHeight="150" HorizontalAlignment="Left">
+							<DataGrid.Columns>
+								<DataGridTextColumn Header="Wavelength"/>
+								<DataGridTextColumn Header="Dwell Time (ms)"/>
+							</DataGrid.Columns>
+						</DataGrid>
+					</DockPanel>
+					<Separator DockPanel.Dock="Left" Width="2" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+					<DockPanel DockPanel.Dock="Left" Margin="5">
+						<RadioButton Content="Ordered" DockPanel.Dock="Top" Margin="5" GroupName="SequencingMode"/>
+						<Grid DockPanel.Dock="Top" HorizontalAlignment="Left">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition Width="Auto"/>
+							</Grid.ColumnDefinitions>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" SharedSizeGroup="A"/>
+								<RowDefinition Height="Auto" SharedSizeGroup="A"/>
+								<RowDefinition Height="Auto" SharedSizeGroup="A"/>
+								<RowDefinition Height="Auto" SharedSizeGroup="A"/>
+							</Grid.RowDefinitions>
+							<TextBlock Text="Minimum (nm):" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Margin="2"/>
+							<TextBlock Text="Maximum (nm):" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Margin="2"/>
+							<TextBlock Text="Step Size (nm):" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Margin="2"/>
+							<TextBlock Text="Dwell Time (ms):" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Margin="2"/>
+							<tk:IntegerUpDown Grid.Row="0" Grid.Column="1" Width="75" VerticalAlignment="Center"
+							Increment="{Binding ElementName=WavelengthSlider, Path=Interval}"
+							Minimum="{Binding WavelengthMin}"
+							Maximum="{Binding WavelengthMax}"/>
+							<tk:IntegerUpDown Grid.Row="1" Grid.Column="1" Width="75" VerticalAlignment="Center"
+							Increment="{Binding ElementName=WavelengthSlider, Path=Interval}"
+							Minimum="{Binding WavelengthMin}"
+							Maximum="{Binding WavelengthMax}"/>
+							<tk:IntegerUpDown Grid.Row="2" Grid.Column="1" Width="75" VerticalAlignment="Center"
+							Increment="{Binding ElementName=WavelengthSlider, Path=Interval}"
+							Minimum="{Binding ElementName=WavelengthSlider, Path=Interval}"
+							Maximum="{Binding WavelengthMax}"/>
+							<tk:IntegerUpDown Grid.Row="3" Grid.Column="1" Width="75" VerticalAlignment="Center"
+							Increment="1" Minimum="0"/>
+						</Grid>
+					</DockPanel>
+				</DockPanel>
+			</DockPanel>
+		</GroupBox>
 	</DockPanel>
 </Window>
