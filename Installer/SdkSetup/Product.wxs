@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?define Name = "LCTF SDK" ?>
+<!-- The Description of the product -->
+<?define Description = "SDK for controlling ChemImage LCTFs." ?>
+<!-- The manufacturer, for setup package publisher and folder info -->
+<?define Manufacturer = "ChemImage" ?>
+<!-- The version number of this setup package-->
+<?define Version = "1.0.0" ?>
+<!-- UpgradeCode must be unique and not changed once the first version of the program is installed. -->
+<?define UpgradeCode = "{2EFC9324-BF16-41FF-848F-903503DF5502}" ?>
+<!-- The name of the Cabinet -->
+<?define CabName = "ChemImageLctfSdkSetup.cab" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<!--Variable for Sample Application Directory-->
+	<?define Commander_TargetDir=$(var.LCTFCommander.TargetDir)?>
+
+	<Product Id="*" Name="$(var.Name)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)" Version="$(var.Version)" Language="1033">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Manufacturer="$(var.Manufacturer)" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+
+		<Icon Id="icon.ico" SourceFile="$(var.Commander_TargetDir)LCTFCommander.exe"/>
+		<Property Id="ARPPRODUCTICON" Value="icon.ico" />
+
+		<Feature Id="ProductFeature" Title="$(var.Name)" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+			<ComponentRef Id="ApplicationShortcut" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<!-- Create a folder inside program files with Company Name-->
+				<Directory Id="ROOTDIRECTORY" Name="$(var.Manufacturer)">
+					<!-- Create a folder inside Company Name folder with Product Name-->
+					<Directory Id="INSTALLFOLDER" Name="$(var.Name)">
+					</Directory>
+				</Directory>
+			</Directory>
+			<!--Create application folder in Program Menu-->
+			<Directory Id="ProgramMenuFolder">
+				<Directory Id="ManufacturerProgramsFolder" Name="$(var.Manufacturer)">
+					<Directory Id="ApplicationProgramsFolder" Name="$(var.Name)" />
+				</Directory>
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<DirectoryRef Id="ApplicationProgramsFolder">
+			<!--Create application shortcut in Program Menu-->
+			<Component Id="ApplicationShortcut" Guid="*">
+				<Shortcut Id="ApplicationStartMenuShortcut" Name="LCTF Commander" Description="$(var.Description)" Target="[#LCTFCommander.exe]" WorkingDirectory="INSTALLFOLDER" Icon="icon.ico" />
+				<!--Remove application shortcut from Program Menu on uninstall-->
+				<RemoveFolder Id="ManufacturerProgramsFolder" On="uninstall" />
+				<!--Create application registry entry-->
+				<RegistryValue Root="HKCU" Key="Software\Microsoft\$(var.Manufacturer)\$(var.Name)" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+			</Component>
+		</DirectoryRef>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+			<Component Id="LCTFCommander.exe" Guid="*">
+				<File Id="LCTFCommander.exe" Name="LCTFCommander.exe" Source="$(var.Commander_TargetDir)LCTFCommander.exe" />
+				<RemoveFile Id="ALLFILES" Name="*.*" On="uninstall" />
+			</Component>
+			<Component Id="ChemImageLCTF.dll" Guid="*">
+				<File Id="ChemImageLCTF.dll" Name="ChemImageLCTF.dll" Source="$(var.Commander_TargetDir)ChemImageLCTF.dll" />
+			</Component>
+			<Component Id="LibUsbDotNet.LibUsbDotNet.dll" Guid="*">
+				<File Id="LibUsbDotNet.LibUsbDotNet.dll" Name="LibUsbDotNet.LibUsbDotNet.dll" Source="$(var.Commander_TargetDir)LibUsbDotNet.LibUsbDotNet.dll" />
+			</Component>
+			<Component Id="Xceed.Wpf.Toolkit.dll" Guid="*">
+				<File Id="Xceed.Wpf.Toolkit.dll" Name="Xceed.Wpf.Toolkit.dll" Source="$(var.Commander_TargetDir)Xceed.Wpf.Toolkit.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>

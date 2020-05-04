@@ -11,6 +11,7 @@
     <Description>A tool for controlling ChemImage LCTFs.</Description>
     <RepositoryUrl>https://github.com/aklein53/LCTFCommander</RepositoryUrl>
     <PackageProjectUrl>https://github.com/aklein53/LCTFCommander</PackageProjectUrl>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
