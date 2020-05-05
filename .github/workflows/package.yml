@@ -20,8 +20,8 @@ jobs:
       with:
         nuget-version: 'latest'
 
-    - name: Build with dotnet
+    - name: Build wix projects
       run: |
         nuget sources Add -Name "GPR" -Source "https://nuget.pkg.github.com/ChemImageFT/index.json" -Username aklein53 -Password ${{ secrets.nugetToken }}
-        msbuild Installer/SdkSetup.wixproj
-        msbuild Installer/SdkBootstrapper.wixproj
+        msbuild Installer/SdkSetup/SdkSetup.wixproj
+        msbuild Installer/SdkBootstrapper/SdkBootstrapper.wixproj
