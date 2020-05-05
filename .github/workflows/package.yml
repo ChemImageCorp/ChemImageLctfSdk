@@ -29,8 +29,8 @@ jobs:
         dotnet build "Installer/LCTF SDK Installer.sln" --configuration Release
         msbuild Installer/SdkSetup/SdkSetup.wixproj -property:configuration=Release
         msbuild Installer/SdkBootstrapper/SdkBootstrapper.wixproj -property:configuration=Release
-    - name: Upload math result for job 1
+    - name: Upload installer
       uses: actions/upload-artifact@v1
       with:
         name: installer
-        path: "Installer/SdkBootstrapper/SdkBootstrapper/bin/Release/LCTF SDK Installer.exe"
+        path: "Installer/SdkBootstrapper/bin/Release/LCTF SDK Installer.exe"
