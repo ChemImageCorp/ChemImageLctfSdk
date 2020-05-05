@@ -13,6 +13,7 @@
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<!--Variable for Sample Application Directory-->
+
 	<?define Commander_TargetDir=$(var.LCTFCommander.TargetDir)?>
 
 	<Product Id="*" Name="$(var.Name)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)" Version="$(var.Version)" Language="1033">
@@ -25,6 +26,7 @@
 		<Property Id="ARPPRODUCTICON" Value="icon.ico" />
 
 		<Feature Id="ProductFeature" Title="$(var.Name)" Level="1">
+			<ComponentGroupRef Id="SrcDirComponentGroup" />
 			<ComponentGroupRef Id="ProductComponents" />
 			<ComponentRef Id="ApplicationShortcut" />
 		</Feature>
@@ -37,6 +39,9 @@
 				<Directory Id="ROOTDIRECTORY" Name="$(var.Manufacturer)">
 					<!-- Create a folder inside Company Name folder with Product Name-->
 					<Directory Id="INSTALLFOLDER" Name="$(var.Name)">
+						<Directory Id="SRC_DIR_REF" Name="Example Code">
+							<!-- anything else you might put here...-->
+						</Directory>
 					</Directory>
 				</Directory>
 			</Directory>

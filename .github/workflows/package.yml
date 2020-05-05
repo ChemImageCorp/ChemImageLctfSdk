@@ -20,17 +20,20 @@ jobs:
       with:
         nuget-version: 'latest'
 
-    - name: Add msbuild to PATH
+    - name: Setup msbuild
       uses: microsoft/setup-msbuild@v1.0.0
 
-    - name: Build wix projects
+    - name: Add nuget source
       run: |
         nuget sources Add -Name "GPR" -Source "https://nuget.pkg.github.com/ChemImageFT/index.json" -Username aklein53 -Password ${{ secrets.nugetToken }}
-        dotnet build "Installer/LCTF SDK Installer.sln" --configuration Release
+        
+    - name: Build wix projects
+      run: |
         msbuild Installer/SdkSetup/SdkSetup.wixproj -property:configuration=Release
         msbuild Installer/SdkBootstrapper/SdkBootstrapper.wixproj -property:configuration=Release
+
     - name: Upload installer
       uses: actions/upload-artifact@v1
       with:
-        name: installer
+        name: "LCTF SDK Installer.exe"
         path: "Installer/SdkBootstrapper/bin/Release/LCTF SDK Installer.exe"
