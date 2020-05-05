@@ -32,7 +32,7 @@
     </WixExtension>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\LCTFCommander\LCTFCommander.csproj">
+    <ProjectReference Include="..\..\src\LCTFCommander\LCTFCommander.csproj">
       <Name>LCTFCommander</Name>
       <Project>{785c1394-8dda-4ff1-ab06-89f0328b8b3f}</Project>
       <Private>True</Private>

@@ -47,15 +47,14 @@
 				</Directory>
 			</Directory>
 		</Directory>
-	</Fragment>
 
-	<Fragment>
 		<DirectoryRef Id="ApplicationProgramsFolder">
 			<!--Create application shortcut in Program Menu-->
 			<Component Id="ApplicationShortcut" Guid="*">
 				<Shortcut Id="ApplicationStartMenuShortcut" Name="LCTF Commander" Description="$(var.Description)" Target="[#LCTFCommander.exe]" WorkingDirectory="INSTALLFOLDER" Icon="icon.ico" />
 				<!--Remove application shortcut from Program Menu on uninstall-->
-				<RemoveFolder Id="ManufacturerProgramsFolder" On="uninstall" />
+				<RemoveFolder Id="ManufacturerProgramsFolder" Directory="ManufacturerProgramsFolder" On="uninstall" />
+				<RemoveFolder Id="ApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
 				<!--Create application registry entry-->
 				<RegistryValue Root="HKCU" Key="Software\Microsoft\$(var.Manufacturer)\$(var.Name)" Name="installed" Type="integer" Value="1" KeyPath="yes" />
 			</Component>
