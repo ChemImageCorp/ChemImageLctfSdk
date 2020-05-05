@@ -47,7 +47,7 @@
   </Target>
   <PropertyGroup>
     <PreBuildEvent>git clean -f -d -X ../../../../src
-heat dir ../../../../src -gg -dr SRC_DIR_REF -srd -cg SrcDirComponentGroup -var var.SrcDir -o ../../srcHarvest.wxs
+"%25wix%25bin/heat.exe" dir ../../../../src -gg -dr SRC_DIR_REF -srd -cg SrcDirComponentGroup -var var.SrcDir -o ../../srcHarvest.wxs
 dotnet build "../../../LCTF SDK Installer.sln" --configuration $(ConfigurationName)</PreBuildEvent>
   </PropertyGroup>
   <!--
