@@ -20,6 +20,9 @@ jobs:
       with:
         nuget-version: 'latest'
 
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.0
+
     - name: Build wix projects
       run: |
         nuget sources Add -Name "GPR" -Source "https://nuget.pkg.github.com/ChemImageFT/index.json" -Username aklein53 -Password ${{ secrets.nugetToken }}
