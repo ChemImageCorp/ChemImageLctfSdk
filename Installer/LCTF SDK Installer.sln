@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LCTFCommander", "LCTFCommander\LCTFCommander.csproj", "{785C1394-8DDA-4FF1-AB06-89F0328B8B3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LCTFCommander", "..\src\LCTFCommander\LCTFCommander.csproj", "{785C1394-8DDA-4FF1-AB06-89F0328B8B3F}"
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SdkSetup", "Installer\SdkSetup\SdkSetup.wixproj", "{809F6CAE-B959-4AFD-8D63-CD6607F7E72A}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SdkSetup", "SdkSetup\SdkSetup.wixproj", "{809F6CAE-B959-4AFD-8D63-CD6607F7E72A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installer", "Installer", "{9F209A2C-F86C-460C-97E9-F9345E62ACA6}"
-EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SdkBootstrapper", "Installer\SdkBootstrapper\SdkBootstrapper.wixproj", "{9C098A43-BDA8-4F15-80CB-F57409DE0C19}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SdkBootstrapper", "SdkBootstrapper\SdkBootstrapper.wixproj", "{9C098A43-BDA8-4F15-80CB-F57409DE0C19}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,10 +50,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{809F6CAE-B959-4AFD-8D63-CD6607F7E72A} = {9F209A2C-F86C-460C-97E9-F9345E62ACA6}
-		{9C098A43-BDA8-4F15-80CB-F57409DE0C19} = {9F209A2C-F86C-460C-97E9-F9345E62ACA6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0E5C6007-6A26-4494-9053-AEBEE84F955F}
