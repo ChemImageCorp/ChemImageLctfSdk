@@ -1,0 +1,39 @@
+name: Package
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        version: '3.1.100'
+
+    - name: Setup Nuget.exe
+      uses: NuGet/setup-nuget@v1.0.2
+      with:
+        nuget-version: 'latest'
+
+    - name: Setup msbuild
+      uses: microsoft/setup-msbuild@v1.0.0
+
+    - name: Add nuget source
+      run: |
+        nuget sources Add -Name "GPR" -Source "https://nuget.pkg.github.com/ChemImageFT/index.json" -Username ChemImageFT -Password ${{ secrets.nugetToken }}
+        
+    - name: Build wix projects
+      run: |
+        msbuild Installer/SdkSetup/SdkSetup.wixproj -property:configuration=Release
+        msbuild Installer/SdkBootstrapper/SdkBootstrapper.wixproj -property:configuration=Release
+
+    - name: Upload installer
+      uses: actions/upload-artifact@v1
+      with:
+        name: "LCTF SDK Installer.exe"
+        path: "Installer/SdkBootstrapper/bin/Release/LCTF SDK Installer.exe"

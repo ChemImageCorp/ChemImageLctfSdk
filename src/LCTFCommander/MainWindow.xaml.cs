@@ -79,20 +79,20 @@ namespace LCTFCommander
         {
             DataContext = this;
 
-            LCTFController.Instance.OnMcfAttached += Controller_OnMcfAttachedOrDetached;
-            LCTFController.Instance.OnMcfDetached += Controller_OnMcfAttachedOrDetached;
+            LCTFController.OnMcfAttached += Controller_OnMcfAttachedOrDetached;
+            LCTFController.OnMcfDetached += Controller_OnMcfAttachedOrDetached;
 
             this.Controller_OnMcfAttachedOrDetached();
         }
 
         private void Controller_OnMcfAttachedOrDetached()
         {
-            if (SelectedLCTF != null && !LCTFController.Instance.AttachedLCTFs.Select(x => x.InstanceId).Contains(SelectedLCTF.LCTFDevice.InstanceId))
+            if (SelectedLCTF != null && !LCTFController.AttachedLCTFs.Select(x => x.InstanceId).Contains(SelectedLCTF.LCTFDevice.InstanceId))
             {
                 SelectedLCTF = null;
             }
 
-            foreach (LCTFDevice lctf in LCTFController.Instance.AttachedLCTFs)
+            foreach (LCTFDevice lctf in LCTFController.AttachedLCTFs)
             {
                 if (SelectedLCTF == null)
                 {
