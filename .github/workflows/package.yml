@@ -25,7 +25,7 @@ jobs:
 
     - name: Add nuget source
       run: |
-        nuget sources Add -Name "GPR" -Source "https://nuget.pkg.github.com/ChemImageFT/index.json" -Username aklein53 -Password ${{ secrets.nugetToken }}
+        nuget sources Add -Name "GPR" -Source "https://nuget.pkg.github.com/ChemImageFT/index.json" -Username ChemImageFT -Password ${{ secrets.nugetToken }}
         
     - name: Build wix projects
       run: |

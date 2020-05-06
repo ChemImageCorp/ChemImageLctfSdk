@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{534DEEE9-8275-4F1D-8DDB-742C209BCF48}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>HyperspectralImageCpture</RootNamespace>
-    <AssemblyName>HyperspectralImageCpture</AssemblyName>
+    <RootNamespace>HyperspectralImageCapture</RootNamespace>
+    <AssemblyName>HyperspectralImageCapture</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -21,7 +21,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>3</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>

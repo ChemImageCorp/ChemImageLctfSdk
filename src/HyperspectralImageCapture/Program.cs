@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ChemImage.LCTF;
 
-namespace HyperspectralImageCpture
+namespace HyperspectralImageCapture
 {
 	class Program
 	{
