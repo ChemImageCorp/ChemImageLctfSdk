@@ -4,8 +4,6 @@
 <?define Description = "SDK for controlling ChemImage LCTFs." ?>
 <!-- The manufacturer, for setup package publisher and folder info -->
 <?define Manufacturer = "ChemImage" ?>
-<!-- The version number of this setup package-->
-<?define Version = "1.0.0" ?>
 <!-- UpgradeCode must be unique and not changed once the first version of the program is installed. -->
 <?define UpgradeCode = "{DD12BA84-F77F-409C-BC4D-7952285216E5}" ?>
 <!-- The name of the Cabinet -->
@@ -14,7 +12,11 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension" xmlns:bal="http://schemas.microsoft.com/wix/BalExtension">
 	<?define Commander_ProjectDir=$(var.LCTFCommander.ProjectDir)?>
 	<?define SdkSetup_TargetDir=$(var.SdkSetup.TargetDir)?>
-	<Bundle Name="$(var.Name)" Version="$(var.Version)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)" IconSourceFile="$(var.Commander_ProjectDir)icon.ico" >
+	<Bundle Name="$(var.Name)" 
+	        Version="!(bind.packageVersion.SetupPackage)"
+	        Manufacturer="!(bind.packageManufacturer.SetupPackage)"
+	        UpgradeCode="$(var.UpgradeCode)"
+	        IconSourceFile="$(var.Commander_ProjectDir)icon.ico" >
 		<BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense">
 			<bal:WixStandardBootstrapperApplication
             LicenseFile="MITLicense.rtf"
@@ -25,7 +27,7 @@
 		<Chain>
 			<PackageGroupRef Id="NetFx462Web"/>
 			<!-- TODO: Define the list of chained packages. -->
-			<MsiPackage SourceFile="$(var.SdkSetup_TargetDir)SdkSetup.msi" />
+			<MsiPackage Id="SetupPackage" SourceFile="$(var.SdkSetup_TargetDir)SdkSetup.msi" />
 		</Chain>
 	</Bundle>
 </Wix>
