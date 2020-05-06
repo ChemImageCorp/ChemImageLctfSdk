@@ -16,6 +16,7 @@
 				<Label DockPanel.Dock="Top" HorizontalAlignment="Left" Content="{Binding ProductVersion, FallbackValue=1.0}" ContentStringFormat="v{0}"/>
 				<Label DockPanel.Dock="Top" HorizontalAlignment="Left" Content="{Binding Copyright, FallbackValue=Copyright © 2020}"/>
 				<Label DockPanel.Dock="Top" HorizontalAlignment="Left" Content="{Binding CompanyName, FallbackValue=ChemImage Corporation}"/>
+				<TextBlock DockPanel.Dock="Top" Padding="5" HorizontalAlignment="Left" Text="This software uses a library from LibUsbDotNet licensed under the LGPL-3" TextWrapping="Wrap"/>
 			</DockPanel>
 		</DockPanel>
 		

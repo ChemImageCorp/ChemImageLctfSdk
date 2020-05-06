@@ -82,6 +82,15 @@
 			<Component Id="Xceed.Wpf.Toolkit.dll" Guid="*">
 				<File Id="Xceed.Wpf.Toolkit.dll" Name="Xceed.Wpf.Toolkit.dll" Source="$(var.Commander_TargetDir)Xceed.Wpf.Toolkit.dll" />
 			</Component>
+			<Component Id="LibUsbDotNet_GPL_3.txt" Guid="*">
+				<File Id="LibUsbDotNet_GPL_3.txt" Name="LibUsbDotNet-GPL-3.txt" Source="LibUsbDotNet-GPL-3.txt" />
+			</Component>
+			<Component Id="LibUsbDotNet_LGPL_3.txt" Guid="*">
+				<File Id="LibUsbDotNet_LGPL_3.txt" Name="LibUsbDotNet-LGPL-3.txt" Source="LibUsbDotNet-LGPL-3.txt" />
+			</Component>
+			<Component Id="Readme.txt" Guid="*">
+				<File Id="Readme.txt" Name="Readme.txt" Source="Readme.txt" />
+			</Component>
 		</ComponentGroup>
 	</Fragment>
 </Wix>

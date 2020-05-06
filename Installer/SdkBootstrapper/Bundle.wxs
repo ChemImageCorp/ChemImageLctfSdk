@@ -11,11 +11,16 @@
 <!-- The name of the Cabinet -->
 <?define CabName = "ChemImageLctfSdkSetup.cab" ?>
 
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension" xmlns:bal="http://schemas.microsoft.com/wix/BalExtension">
 	<?define Commander_ProjectDir=$(var.LCTFCommander.ProjectDir)?>
 	<?define SdkSetup_TargetDir=$(var.SdkSetup.TargetDir)?>
 	<Bundle Name="$(var.Name)" Version="$(var.Version)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)" IconSourceFile="$(var.Commander_ProjectDir)icon.ico" >
-		<BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense" />
+		<BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense">
+			<bal:WixStandardBootstrapperApplication
+            LicenseFile="MITLicense.rtf"
+            LogoFile="install-logo.png"
+            />
+		</BootstrapperApplicationRef>
 
 		<Chain>
 			<PackageGroupRef Id="NetFx462Web"/>
