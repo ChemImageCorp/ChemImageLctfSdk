@@ -10,6 +10,7 @@
         Title="LCTF Commander" Height="450" Width="540" Loaded="Window_Loaded" Closing="Window_Closing">
 	<Window.Resources>
 		<vc:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
+		<vc:BooleanAndConverter x:Key="BooleanAndConverter" />
 	</Window.Resources>
 	<DockPanel LastChildFill="True">
 		<Menu DockPanel.Dock="Top">
@@ -48,20 +49,37 @@
 				
 			</DockPanel>
 		</DockPanel>
-		<DockPanel DockPanel.Dock="Top" Margin="5">
+		<DockPanel DockPanel.Dock="Top" LastChildFill="False" Margin="5">
 			<Label DockPanel.Dock="Left" Content="Wavelength (nm):" VerticalAlignment="Center"/>
 			<tk:IntegerUpDown DockPanel.Dock="Left" Width="75" VerticalAlignment="Center"
 				Value="{Binding ElementName=WavelengthSlider, Path=Value}"
 				Increment="{Binding ElementName=WavelengthSlider, Path=Interval}"
 				Minimum="{Binding WavelengthMin}"
-				Maximum="{Binding WavelengthMax}"/>
+				Maximum="{Binding WavelengthMax}"
+				UpdateValueOnEnterKey="True">
+				<tk:IntegerUpDown.IsEnabled>
+					<MultiBinding Converter="{StaticResource BooleanAndConverter}">
+						<Binding Path="CanOperate"/>
+						<Binding Path="IsNotSequencing"/>
+					</MultiBinding>
+				</tk:IntegerUpDown.IsEnabled>
+			</tk:IntegerUpDown>
+			
+		</DockPanel>
+		<DockPanel DockPanel.Dock="Top">
 			<Slider Name="WavelengthSlider" VerticalAlignment="Center" Margin="5"
 				Minimum="{Binding WavelengthMin}"
 				Maximum="{Binding WavelengthMax}"
-				Interval="{Binding WavelengthStep}"
 				Value="{Binding Path=CurrentWavelength, Mode=TwoWay, Delay=100}"
 				TickFrequency="50" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" AutoToolTipPrecision="0"
-				SmallChange="{Binding WavelengthStep}"/>
+				SmallChange="{Binding WavelengthStep}">
+				<Slider.IsEnabled>
+					<MultiBinding Converter="{StaticResource BooleanAndConverter}">
+						<Binding Path="CanOperate"/>
+						<Binding Path="IsNotSequencing"/>
+					</MultiBinding>
+				</Slider.IsEnabled>
+			</Slider>
 		</DockPanel>
 		<GroupBox Header="Sequencing" DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="5">
 			<DockPanel LastChildFill="True">
@@ -73,22 +91,45 @@
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto"/>
 					</Grid.RowDefinitions>
-					<Button Grid.Column="0" Content="Start Sequencing" Margin="5" Padding="3"/>
-					<Button Grid.Column="1" Content="Stop Sequencing" Margin="5" Padding="3" IsEnabled="False"/>
+					<!--Tab Index override because dockpanel requires the controls to be placed out of order-->
+					<Button Grid.Column="0" Content="Start Sequencing" Margin="5" Padding="3" Click="SequenceBtn_Click" TabIndex="1000">
+						<Button.IsEnabled>
+							<MultiBinding Converter="{StaticResource BooleanAndConverter}">
+								<Binding Path="CanOperate"/>
+								<Binding Path="IsNotSequencing"/>
+							</MultiBinding>
+						</Button.IsEnabled>
+					</Button>
+					<!--Tab Index override because dockpanel requires the controls to be placed out of order-->
+					<Button Grid.Column="1" Content="Stop Sequencing" Margin="5" Padding="3" TabIndex="1001">
+						<Button.IsEnabled>
+							<MultiBinding Converter="{StaticResource BooleanAndConverter}">
+								<Binding Path="CanOperate"/>
+								<Binding Path="IsSequencing"/>
+							</MultiBinding>
+						</Button.IsEnabled>
+					</Button>
 				</Grid>
 				<DockPanel DockPanel.Dock="Top">
+					<DockPanel.IsEnabled>
+						<MultiBinding Converter="{StaticResource BooleanAndConverter}">
+							<Binding Path="CanOperate"/>
+							<Binding Path="IsNotSequencing"/>
+						</MultiBinding>
+					</DockPanel.IsEnabled>
 					<DockPanel DockPanel.Dock="Left" Margin="5">
-						<RadioButton Content="Arbitrary" DockPanel.Dock="Top" Margin="5" GroupName="SequencingMode"/>
-						<DataGrid DockPanel.Dock="Top" MinHeight="150" HorizontalAlignment="Left">
+						<RadioButton Content="Arbitrary" DockPanel.Dock="Top" Margin="5" GroupName="SequencingMode" IsChecked="{Binding SequenceArbitrary}">
+						</RadioButton>
+						<DataGrid DockPanel.Dock="Top" MinHeight="150" HorizontalAlignment="Left" CanUserDeleteRows="True" CanUserAddRows="True" ItemsSource="{Binding ArbitrarySequenceItems}" AutoGenerateColumns="False">
 							<DataGrid.Columns>
-								<DataGridTextColumn Header="Wavelength"/>
-								<DataGridTextColumn Header="Dwell Time (ms)"/>
+								<DataGridTextColumn Header="Wavelength" Binding="{Binding Wavelength}"/>
+								<DataGridTextColumn Header="Dwell Time (ms)" Binding="{Binding DwellTime}"/>
 							</DataGrid.Columns>
 						</DataGrid>
 					</DockPanel>
 					<Separator DockPanel.Dock="Left" Width="2" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
 					<DockPanel DockPanel.Dock="Left" Margin="5">
-						<RadioButton Content="Ordered" DockPanel.Dock="Top" Margin="5" GroupName="SequencingMode"/>
+						<RadioButton Content="Ordered" DockPanel.Dock="Top" Margin="5" GroupName="SequencingMode" IsChecked="{Binding SequenceOrdered}"/>
 						<Grid DockPanel.Dock="Top" HorizontalAlignment="Left">
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="Auto"/>
@@ -100,24 +141,28 @@
 								<RowDefinition Height="Auto" SharedSizeGroup="A"/>
 								<RowDefinition Height="Auto" SharedSizeGroup="A"/>
 							</Grid.RowDefinitions>
-							<TextBlock Text="Minimum (nm):" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Margin="2"/>
-							<TextBlock Text="Maximum (nm):" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Margin="2"/>
+							<TextBlock Text="Start (nm):" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Margin="2"/>
+							<TextBlock Text="Stop (nm):" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Margin="2"/>
 							<TextBlock Text="Step Size (nm):" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Margin="2"/>
 							<TextBlock Text="Dwell Time (ms):" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Margin="2"/>
 							<tk:IntegerUpDown Grid.Row="0" Grid.Column="1" Width="75" VerticalAlignment="Center"
-							Increment="{Binding ElementName=WavelengthSlider, Path=Interval}"
+							Increment="{Binding ElementName=WavelengthSlider, Path=SmallChange}"
 							Minimum="{Binding WavelengthMin}"
-							Maximum="{Binding WavelengthMax}"/>
+							Maximum="{Binding WavelengthMax}"
+							Value="{Binding OrderedSequenceStart}"/>
 							<tk:IntegerUpDown Grid.Row="1" Grid.Column="1" Width="75" VerticalAlignment="Center"
-							Increment="{Binding ElementName=WavelengthSlider, Path=Interval}"
+							Increment="{Binding ElementName=WavelengthSlider, Path=SmallChange}"
 							Minimum="{Binding WavelengthMin}"
-							Maximum="{Binding WavelengthMax}"/>
+							Maximum="{Binding WavelengthMax}"
+							Value="{Binding OrderedSequenceStop, UpdateSourceTrigger=LostFocus}" />
 							<tk:IntegerUpDown Grid.Row="2" Grid.Column="1" Width="75" VerticalAlignment="Center"
-							Increment="{Binding ElementName=WavelengthSlider, Path=Interval}"
-							Minimum="{Binding ElementName=WavelengthSlider, Path=Interval}"
-							Maximum="{Binding WavelengthMax}"/>
+							Increment="{Binding ElementName=WavelengthSlider, Path=SmallChange}"
+							Minimum="{Binding ElementName=WavelengthSlider, Path=SmallChange}"
+							Maximum="{Binding WavelengthMax}"
+							Value="{Binding OrderedSequenceStep}"/>
 							<tk:IntegerUpDown Grid.Row="3" Grid.Column="1" Width="75" VerticalAlignment="Center"
-							Increment="1" Minimum="0"/>
+							Increment="1" Minimum="0" Value="{Binding OrderedSequenceDwell}"
+							ClipValueToMinMax="True"/>
 						</Grid>
 					</DockPanel>
 				</DockPanel>

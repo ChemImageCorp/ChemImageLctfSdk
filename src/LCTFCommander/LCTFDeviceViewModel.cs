@@ -146,7 +146,8 @@ namespace LCTFCommander
 
 		private void LCTFDevice_OnTuningDone(int lambda)
 		{
-			//CurrentWavelength = lambda;
+			currentWavelength = lambda;
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentWavelength)));
 		}
 
 		private void LCTFDevice_OnStateChanged(LCTFState status, int tunedWavelength)
