@@ -88,8 +88,8 @@
 			<Component Id="LibUsbDotNet_LGPL_3.txt" Guid="*">
 				<File Id="LibUsbDotNet_LGPL_3.txt" Name="LibUsbDotNet-LGPL-3.txt" Source="LibUsbDotNet-LGPL-3.txt" />
 			</Component>
-			<Component Id="Xceed-WPFToolkit-MS-PL.txt" Guid="*">
-				<File Id="Xceed-WPFToolkit-MS-PL.txt" Name="Xceed-WPFToolkit-MS-PL.txt" Source="Xceed-WPFToolkit-MS-PL.txt" />
+			<Component Id="Xceed_WPFToolkit_MS_PL.txt" Guid="*">
+				<File Id="Xceed_WPFToolkit_MS_PL.txt" Name="Xceed_WPFToolkit_MS_PL.txt" Source="Xceed-WPFToolkit-MS-PL.txt" />
 			</Component>
 			<Component Id="Readme.txt" Guid="*">
 				<File Id="Readme.txt" Name="Readme.txt" Source="Readme.txt" />
