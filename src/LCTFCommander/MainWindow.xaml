@@ -101,7 +101,7 @@
 						</Button.IsEnabled>
 					</Button>
 					<!--Tab Index override because dockpanel requires the controls to be placed out of order-->
-					<Button Grid.Column="1" Content="Stop Sequencing" Margin="5" Padding="3" TabIndex="1001">
+					<Button Grid.Column="1" Content="Stop Sequencing" Margin="5" Padding="3" TabIndex="1001" Click="SequenceBtn_Click">
 						<Button.IsEnabled>
 							<MultiBinding Converter="{StaticResource BooleanAndConverter}">
 								<Binding Path="CanOperate"/>
@@ -120,7 +120,7 @@
 					<DockPanel DockPanel.Dock="Left" Margin="5">
 						<RadioButton Content="Arbitrary" DockPanel.Dock="Top" Margin="5" GroupName="SequencingMode" IsChecked="{Binding SequenceArbitrary}">
 						</RadioButton>
-						<DataGrid DockPanel.Dock="Top" MinHeight="150" HorizontalAlignment="Left" CanUserDeleteRows="True" CanUserAddRows="True" ItemsSource="{Binding ArbitrarySequenceItems}" AutoGenerateColumns="False">
+						<DataGrid DockPanel.Dock="Top" HorizontalAlignment="Left" CanUserDeleteRows="True" CanUserAddRows="True" ItemsSource="{Binding ArbitrarySequenceItems}" AutoGenerateColumns="False">
 							<DataGrid.Columns>
 								<DataGridTextColumn Header="Wavelength" Binding="{Binding Wavelength}"/>
 								<DataGridTextColumn Header="Dwell Time (ms)" Binding="{Binding DwellTime}"/>
