@@ -26,7 +26,29 @@ namespace LCTFCommander
 	/// </summary>
 	public partial class MainWindow : Window, INotifyPropertyChanged
 	{
-		public LCTFDeviceModel SelectedLCTF { get; set; } = null;
+		private LCTFDeviceModel selectedLCTF = null;
+		public LCTFDeviceModel SelectedLCTF
+		{
+			get => selectedLCTF;
+			set
+			{
+				if(selectedLCTF != null)
+					selectedLCTF.PropertyChanged -= SelectedLCTF_PropertyChanged;
+
+				selectedLCTF = value;
+
+				if (selectedLCTF != null)
+					selectedLCTF.PropertyChanged += SelectedLCTF_PropertyChanged;
+			}
+		}
+
+		private void SelectedLCTF_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == nameof(LCTFDeviceModel.CurrentState))
+			{
+				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CanOperate)));
+			}
+		}
 
 		[DependsOn(nameof(SelectedLCTF))]
 		public int CurrentWavelength
@@ -89,7 +111,7 @@ namespace LCTFCommander
 		public bool IsNotSequencing => !IsSequencing;
 
 		private CancellationTokenSource sequenceTokenSource;
-
+		
 		public ObservableCollection<ArbitrarySequenceItem> ArbitrarySequenceItems { get; } = new ObservableCollection<ArbitrarySequenceItem>();
 
 		public int OrderedSequenceStart { get; set; } = 0;
@@ -104,7 +126,6 @@ namespace LCTFCommander
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			ArbitrarySequenceItems.Add(new ArbitrarySequenceItem() { Wavelength = 800, DwellTime = 50 });
 			DataContext = this;
 
 			LCTFController.OnMcfAttached += Controller_OnMcfAttachedOrDetached;
@@ -117,6 +138,7 @@ namespace LCTFCommander
 		{
 			if (SelectedLCTF != null && !LCTFController.AttachedLCTFs.Select(x => x.InstanceId).Contains(SelectedLCTF.LCTFDevice.InstanceId))
 			{
+				SelectedLCTF.Dispose();
 				SelectedLCTF = null;
 			}
 

@@ -101,14 +101,7 @@
 						</Button.IsEnabled>
 					</Button>
 					<!--Tab Index override because dockpanel requires the controls to be placed out of order-->
-					<Button Grid.Column="1" Content="Stop Sequencing" Margin="5" Padding="3" TabIndex="1001" Click="SequenceBtn_Click">
-						<Button.IsEnabled>
-							<MultiBinding Converter="{StaticResource BooleanAndConverter}">
-								<Binding Path="CanOperate"/>
-								<Binding Path="IsSequencing"/>
-							</MultiBinding>
-						</Button.IsEnabled>
-					</Button>
+					<Button Grid.Column="1" Content="Stop Sequencing" Margin="5" Padding="3" TabIndex="1001" Click="SequenceBtn_Click" IsEnabled="{Binding IsSequencing}"/>
 				</Grid>
 				<DockPanel DockPanel.Dock="Top">
 					<DockPanel.IsEnabled>
