@@ -14,6 +14,7 @@ jobs:
           args: >-
             --from=docx
             --output=manual.pdf
+            --pdf-engine=xelatex
             "src/LCTFCommander/LCTFCommanderUserManual.docx"
 
       - name: Upload PDF
