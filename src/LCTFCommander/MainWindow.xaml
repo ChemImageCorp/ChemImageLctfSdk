@@ -7,7 +7,7 @@
 		xmlns:tk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:LCTFCommander"
         mc:Ignorable="d"
-        Title="LCTF Commander" Height="450" Width="540" Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="LCTF Commander" Height="450" Width="450" Loaded="Window_Loaded" Closing="Window_Closing">
 	<Window.Resources>
 		<vc:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
 		<vc:BooleanAndConverter x:Key="BooleanAndConverter" />
@@ -23,65 +23,71 @@
 				<ContentPresenter ContentTemplate="{StaticResource WordmarkLogo}"/>
 			</Viewbox>
 			<DockPanel>
-				<Label Content="Connected LCTF:" DockPanel.Dock="Top"/>
-				<Grid Margin="10,0,0,0">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto"/>
-						<ColumnDefinition Width="Auto"/>
-					</Grid.ColumnDefinitions>
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="Auto"/>
-					</Grid.RowDefinitions>
-					<TextBlock Text="Serial number:" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right"/>
-					<TextBlock Text="Firmware:" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right"/>
-					<TextBlock Text="Temperature:" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right"/>
-					<TextBlock Text="State:" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right"/>
+				<GroupBox Header="Information" DockPanel.Dock="Top" Margin="5">
+					<Grid Margin="10,0,0,0">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto"/>
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+						</Grid.RowDefinitions>
+						<TextBlock Text="Serial number:" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right"/>
+						<TextBlock Text="Firmware:" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right"/>
+						<TextBlock Text="Temperature:" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right"/>
+						<TextBlock Text="State:" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right"/>
 
-					<TextBlock Text="{Binding SelectedLCTF.SerialNumber, FallbackValue=N/A}" Grid.Column="1" Grid.Row="0" Margin="5,0,0,0"/>
-					<TextBlock Text="{Binding SelectedLCTF.FirmwareVersion, FallbackValue=N/A}"  Grid.Column="1" Grid.Row="1" Margin="5,0,0,0"/>
-					<TextBlock Text="{Binding SelectedLCTF.Temperature, StringFormat={}{0:0.00} °C, FallbackValue=N/A}" Grid.Column="1" Grid.Row="2" Margin="5,0,0,0"/>
-					<TextBlock Text="{Binding SelectedLCTF.CurrentState, FallbackValue=N/A}" Grid.Column="1" Grid.Row="3" Margin="5,0,0,0"/>
-				</Grid>
+						<TextBlock Text="{Binding SelectedLCTF.SerialNumber, FallbackValue=N/A}" Grid.Column="1" Grid.Row="0" Margin="5,0,0,0"/>
+						<TextBlock Text="{Binding SelectedLCTF.FirmwareVersion, FallbackValue=N/A}"  Grid.Column="1" Grid.Row="1" Margin="5,0,0,0"/>
+						<TextBlock Text="{Binding SelectedLCTF.Temperature, StringFormat={}{0:0.00} °C, FallbackValue=N/A}" Grid.Column="1" Grid.Row="2" Margin="5,0,0,0"/>
+						<TextBlock Text="{Binding SelectedLCTF.CurrentState, FallbackValue=N/A}" Grid.Column="1" Grid.Row="3" Margin="5,0,0,0"/>
+					</Grid>
+				</GroupBox>
+
 				
-				
+
+
 			</DockPanel>
 		</DockPanel>
-		<DockPanel DockPanel.Dock="Top" LastChildFill="False" Margin="5">
-			<Label DockPanel.Dock="Left" Content="Wavelength (nm):" VerticalAlignment="Center"/>
-			<tk:IntegerUpDown DockPanel.Dock="Left" Width="75" VerticalAlignment="Center"
+		<GroupBox Header="Wavelength (nm):" DockPanel.Dock="Top" VerticalAlignment="Center" Margin="5">
+			<DockPanel DockPanel.Dock="Top" LastChildFill="True" Margin="5">
+
+				<tk:IntegerUpDown DockPanel.Dock="Left" Width="75" VerticalAlignment="Center"
 				Value="{Binding ElementName=WavelengthSlider, Path=Value}"
 				Increment="{Binding ElementName=WavelengthSlider, Path=Interval}"
 				Minimum="{Binding WavelengthMin}"
 				Maximum="{Binding WavelengthMax}"
 				UpdateValueOnEnterKey="True">
-				<tk:IntegerUpDown.IsEnabled>
-					<MultiBinding Converter="{StaticResource BooleanAndConverter}">
-						<Binding Path="CanOperate"/>
-						<Binding Path="IsNotSequencing"/>
-					</MultiBinding>
-				</tk:IntegerUpDown.IsEnabled>
-			</tk:IntegerUpDown>
-			
-		</DockPanel>
-		<DockPanel DockPanel.Dock="Top">
-			<Slider Name="WavelengthSlider" VerticalAlignment="Center" Margin="5"
+					<tk:IntegerUpDown.IsEnabled>
+						<MultiBinding Converter="{StaticResource BooleanAndConverter}">
+							<Binding Path="CanOperate"/>
+							<Binding Path="IsNotSequencing"/>
+						</MultiBinding>
+					</tk:IntegerUpDown.IsEnabled>
+				</tk:IntegerUpDown>
+				<Slider Name="WavelengthSlider" VerticalAlignment="Center" Margin="5"
 				Minimum="{Binding WavelengthMin}"
 				Maximum="{Binding WavelengthMax}"
 				Value="{Binding Path=CurrentWavelength, Mode=TwoWay, Delay=100}"
 				TickFrequency="50" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" AutoToolTipPrecision="0"
 				SmallChange="{Binding WavelengthStep}">
-				<Slider.IsEnabled>
-					<MultiBinding Converter="{StaticResource BooleanAndConverter}">
-						<Binding Path="CanOperate"/>
-						<Binding Path="IsNotSequencing"/>
-					</MultiBinding>
-				</Slider.IsEnabled>
-			</Slider>
+					<Slider.IsEnabled>
+						<MultiBinding Converter="{StaticResource BooleanAndConverter}">
+							<Binding Path="CanOperate"/>
+							<Binding Path="IsNotSequencing"/>
+						</MultiBinding>
+					</Slider.IsEnabled>
+				</Slider>
+			</DockPanel>
+		</GroupBox>
+		
+		<DockPanel DockPanel.Dock="Top">
+			
 		</DockPanel>
-		<GroupBox Header="Sequencing" DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="5">
+		<GroupBox Header="Sequencing" DockPanel.Dock="Top" Margin="5">
 			<DockPanel LastChildFill="True">
 				<Grid DockPanel.Dock="Bottom" HorizontalAlignment="Center">
 					<Grid.ColumnDefinitions>
@@ -119,18 +125,7 @@
 							<Binding Path="IsNotSequencing"/>
 						</MultiBinding>
 					</DockPanel.IsEnabled>
-					<DockPanel DockPanel.Dock="Left" Margin="5">
-						<RadioButton Content="Arbitrary" DockPanel.Dock="Top" Margin="5" GroupName="SequencingMode" IsChecked="{Binding SequenceArbitrary}">
-						</RadioButton>
-						<DataGrid DockPanel.Dock="Top" HorizontalAlignment="Left" CanUserDeleteRows="True" CanUserAddRows="True" ItemsSource="{Binding ArbitrarySequenceItems}" AutoGenerateColumns="False">
-							<DataGrid.Columns>
-								<DataGridTextColumn Header="Wavelength" Binding="{Binding Wavelength}"/>
-								<DataGridTextColumn Header="Dwell Time (ms)" Binding="{Binding DwellTime}"/>
-							</DataGrid.Columns>
-						</DataGrid>
-					</DockPanel>
-					<Separator DockPanel.Dock="Left" Width="2" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
-					<DockPanel DockPanel.Dock="Left" Margin="5">
+					<DockPanel DockPanel.Dock="Right" Margin="5">
 						<RadioButton Content="Ordered" DockPanel.Dock="Top" Margin="5" GroupName="SequencingMode" IsChecked="{Binding SequenceOrdered}"/>
 						<Grid DockPanel.Dock="Top" HorizontalAlignment="Left">
 							<Grid.ColumnDefinitions>
@@ -164,6 +159,17 @@
 							Increment="1" Minimum="0" Value="{Binding OrderedSequenceDwell}"
 							ClipValueToMinMax="True"/>
 						</Grid>
+					</DockPanel>
+					<Separator DockPanel.Dock="Right" Width="2" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+					<DockPanel Margin="5">
+						<RadioButton Content="Arbitrary" DockPanel.Dock="Top" Margin="5" GroupName="SequencingMode" IsChecked="{Binding SequenceArbitrary}">
+						</RadioButton>
+						<DataGrid DockPanel.Dock="Top" CanUserDeleteRows="True" CanUserAddRows="True" ItemsSource="{Binding ArbitrarySequenceItems}" AutoGenerateColumns="False">
+							<DataGrid.Columns>
+								<DataGridTextColumn Header="Wavelength" Binding="{Binding Wavelength}"/>
+								<DataGridTextColumn Header="Dwell Time (ms)" Binding="{Binding DwellTime}"/>
+							</DataGrid.Columns>
+						</DataGrid>
 					</DockPanel>
 				</DockPanel>
 			</DockPanel>

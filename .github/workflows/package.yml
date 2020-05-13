@@ -3,6 +3,19 @@ name: Package
 on: [push]
 
 jobs:
+  makemanual:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Create PDF
+        uses: docker://pandoc/latex
+        with:
+          args: "src/LCTFCommander/LCTFCommanderUserManual.docx --from=docx --output manual.pdf"
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v1
+        with:
+          name: "manual.pdf"
+          path: "manual.pdf"
   build:
 
     runs-on: windows-latest
