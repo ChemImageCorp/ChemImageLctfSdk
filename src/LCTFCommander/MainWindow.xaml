@@ -87,6 +87,7 @@
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition SharedSizeGroup="A"/>
 						<ColumnDefinition SharedSizeGroup="A"/>
+						<ColumnDefinition/>
 					</Grid.ColumnDefinitions>
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto"/>
@@ -102,6 +103,14 @@
 					</Button>
 					<!--Tab Index override because dockpanel requires the controls to be placed out of order-->
 					<Button Grid.Column="1" Content="Stop Sequencing" Margin="5" Padding="3" TabIndex="1001" Click="SequenceBtn_Click" IsEnabled="{Binding IsSequencing}"/>
+					<CheckBox Grid.Column="2" IsChecked="{Binding SequenceContinuous}" Margin="5" Padding="3" Content="Continuous" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center">
+						<CheckBox.IsEnabled>
+							<MultiBinding Converter="{StaticResource BooleanAndConverter}">
+								<Binding Path="CanOperate"/>
+								<Binding Path="IsNotSequencing"/>
+							</MultiBinding>
+						</CheckBox.IsEnabled>
+					</CheckBox>
 				</Grid>
 				<DockPanel DockPanel.Dock="Top">
 					<DockPanel.IsEnabled>
@@ -150,8 +159,6 @@
 							Value="{Binding OrderedSequenceStop, UpdateSourceTrigger=LostFocus}" />
 							<tk:IntegerUpDown Grid.Row="2" Grid.Column="1" Width="75" VerticalAlignment="Center"
 							Increment="{Binding ElementName=WavelengthSlider, Path=SmallChange}"
-							Minimum="{Binding ElementName=WavelengthSlider, Path=SmallChange}"
-							Maximum="{Binding WavelengthMax}"
 							Value="{Binding OrderedSequenceStep}"/>
 							<tk:IntegerUpDown Grid.Row="3" Grid.Column="1" Width="75" VerticalAlignment="Center"
 							Increment="1" Minimum="0" Value="{Binding OrderedSequenceDwell}"

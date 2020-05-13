@@ -105,6 +105,8 @@ namespace LCTFCommander
 		public bool SequenceOrdered { get; set; } = true;
 		public bool SequenceArbitrary { get; set; } = false;
 
+		public bool SequenceContinuous { get; set; } = false;
+
 		public bool IsSequencing { get; set; } = false;
 
 		[DependsOn(nameof(IsSequencing))]
@@ -187,25 +189,29 @@ namespace LCTFCommander
 			{
 				var sequenceItems = ArbitrarySequenceItems.ToList();
 
-				sequenceTask = Task.Factory.StartNew(new Action(async () =>
+				sequenceTask = Task.Run(async () =>
 				{
-					foreach (var item in sequenceItems)
+					do
 					{
-						cancellationToken.ThrowIfCancellationRequested();
-
-						if (item.Wavelength < SelectedLCTF.LCTFDevice.WavelengthMin || item.Wavelength > SelectedLCTF.LCTFDevice.WavelengthMax)
+						foreach (var item in sequenceItems)
 						{
-							MessageBox.Show("Wavelength is outside the min and max of the LCTF.");
-							IsSequencing = false;
-							return;
+							cancellationToken.ThrowIfCancellationRequested();
+
+							if (item.Wavelength < SelectedLCTF.LCTFDevice.WavelengthMin || item.Wavelength > SelectedLCTF.LCTFDevice.WavelengthMax)
+							{
+								MessageBox.Show($"Wavelength {item.Wavelength} is outside the min and max of the LCTF.");
+								IsSequencing = false;
+								return;
+							}
+
+							await SelectedLCTF.LCTFDevice.SetWavelengthAsync(item.Wavelength);
+							PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentWavelength)));
+
+							await Task.Delay(item.DwellTime, cancellationToken);
 						}
-
-						await SelectedLCTF.LCTFDevice.SetWavelengthAsync(item.Wavelength);
-						PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentWavelength)));
-
-						await Task.Delay(item.DwellTime, cancellationToken);
 					}
-				}), cancellationToken);
+					while (SequenceContinuous && !cancellationToken.IsCancellationRequested);
+				}, cancellationToken);
 			}
 			else if (SequenceOrdered)
 			{
@@ -230,15 +236,19 @@ namespace LCTFCommander
 
 				sequenceTask = Task.Run(async () =>
 				{
-					for (var wlCurrent = wlStart; wlStep > 0 ? wlCurrent <= wlStop : wlCurrent >= wlStop; wlCurrent += wlStep)
+					do
 					{
-						cancellationToken.ThrowIfCancellationRequested();
+						for (var wlCurrent = wlStart; wlStep > 0 ? wlCurrent <= wlStop : wlCurrent >= wlStop; wlCurrent += wlStep)
+						{
+							cancellationToken.ThrowIfCancellationRequested();
 
-						await SelectedLCTF.LCTFDevice.SetWavelengthAsync(wlCurrent);
-						PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentWavelength)));
+							await SelectedLCTF.LCTFDevice.SetWavelengthAsync(wlCurrent);
+							PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentWavelength)));
 
-						await Task.Delay(wlDwell, cancellationToken);
-					}
+							await Task.Delay(wlDwell, cancellationToken);
+						}
+					} 
+					while (SequenceContinuous && !cancellationToken.IsCancellationRequested);
 				}, cancellationToken);
 			}
 
