@@ -9,10 +9,10 @@ jobs:
       - name: Create PDF
         uses: docker://pandoc/latex:2.9
         with:
-          args: |
-            "src/LCTFCommander/LCTFCommanderUserManual.docx"
+          args: >-
             --from=docx
             --output=manual.pdf
+            "src/LCTFCommander/LCTFCommanderUserManual.docx"
 
       - name: Upload PDF
         uses: actions/upload-artifact@v1
