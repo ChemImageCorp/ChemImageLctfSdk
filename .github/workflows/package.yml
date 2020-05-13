@@ -7,9 +7,12 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - name: Create PDF
-        uses: docker://pandoc/latex
+        uses: docker://pandoc/latex:2.9
         with:
-          args: "src/LCTFCommander/LCTFCommanderUserManual.docx --from=docx --output manual.pdf"
+          args: |
+            "src/LCTFCommander/LCTFCommanderUserManual.docx"
+            --from=docx
+            --output manual.pdf
 
       - name: Upload PDF
         uses: actions/upload-artifact@v1
