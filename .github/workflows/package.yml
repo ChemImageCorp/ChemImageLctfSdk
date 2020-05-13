@@ -12,7 +12,7 @@ jobs:
           args: |
             "src/LCTFCommander/LCTFCommanderUserManual.docx"
             --from=docx
-            --output manual.pdf
+            --output=manual.pdf
 
       - name: Upload PDF
         uses: actions/upload-artifact@v1
