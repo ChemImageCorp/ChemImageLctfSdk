@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <None Remove="LCTFCommanderUserManual.docx" />
+    <None Remove="LCTFCommanderUserManual.pdf" />
     <None Remove="Resources\logo-transparent.png" />
     <None Remove="~%24TFCommanderUserManual.docx" />
   </ItemGroup>

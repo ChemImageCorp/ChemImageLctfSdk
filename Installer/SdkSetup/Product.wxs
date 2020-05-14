@@ -57,7 +57,8 @@
 	<Fragment>
 		<!--Create application shortcut in Program Menu-->
 		<Component Id="ApplicationShortcut" Guid="*" Directory="ApplicationProgramsFolder">
-			<Shortcut Id="ApplicationStartMenuShortcut" Name="LCTF Commander" Description="$(var.Description)" Target="[#LCTFCommander.exe]" WorkingDirectory="INSTALLFOLDER" Icon="icon.ico" />
+			<Shortcut Id="userManualStartMenuShortcut" Name="LCTF Commander" Description="$(var.Description)" Target="[#LCTFCommander.exe]" WorkingDirectory="INSTALLFOLDER" Icon="icon.ico" />
+			<Shortcut Id="ApplicationStartMenuShortcut" Name="LCTF Commander User Manual" Description="$(var.Description)" Target="[#UserManual.pdf]" WorkingDirectory="INSTALLFOLDER"/>
 			<!--Remove application shortcut from Program Menu on uninstall-->
 			<RemoveFolder Id="ManufacturerProgramsFolder" Directory="ManufacturerProgramsFolder" On="uninstall" />
 			<RemoveFolder Id="ApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
@@ -91,6 +92,9 @@
 			</Component>
 			<Component Id="Xceed_WPFToolkit_MS_PL.txt" Guid="*">
 				<File Id="Xceed_WPFToolkit_MS_PL.txt" Name="Xceed_WPFToolkit_MS_PL.txt" Source="Xceed-WPFToolkit-MS-PL.txt" />
+			</Component>
+			<Component Id="UserManual.pdf" Guid="*">
+				<File Id="UserManual.pdf" Name="LCTFCommanderUserManual.pdf" Source="LCTFCommanderUserManual.pdf" />
 			</Component>
 			<Component Id="Readme.txt" Guid="*">
 				<File Id="Readme.txt" Name="Readme.txt" Source="Readme.txt" />
