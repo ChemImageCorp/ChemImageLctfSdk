@@ -17,6 +17,9 @@ namespace LCTFCommander
 		public string SerialNumber { get; set; }
 		public string FirmwareVersion { get; set; }
 		public double Temperature { get; set; } = 0;
+		public double MinWavelength { get; set; } = 0;
+		public double MaxWavelength { get; set; } = 0;
+		public double StepWavelength { get; set; } = 0;
 
 		private bool isSyncing = false;
 		private int currentWavelength = 0;
@@ -60,7 +63,9 @@ namespace LCTFCommander
 			SerialNumber = LCTFDevice.DeviceInfo.SerialNumber;
 			FirmwareVersion = $@"{(float)(LCTFDevice.DeviceInfo.FirmwareVersion) / 100f:0.00}";
 			CurrentState = LCTFDevice.GetState();
-
+			MinWavelength = LCTFDevice.WavelengthMin;
+			MaxWavelength = LCTFDevice.WavelengthMax;
+			StepWavelength = LCTFDevice.WavelengthStep;
 			// Don't set the property because we don't want it to try to re-sync unnecessarily.
 			currentWavelength = LCTFDevice.GetCurrentWavelength();
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentWavelength)));

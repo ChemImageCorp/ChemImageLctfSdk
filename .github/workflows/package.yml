@@ -3,27 +3,8 @@ name: Package
 on: [push]
 
 jobs:
-  makemanual:
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Create PDF
-        uses: docker://pandoc/latex:2.9
-        with:
-          args: >-
-            --from=docx
-            --output=manual.pdf
-            --pdf-engine=xelatex
-            "src/LCTFCommander/LCTFCommanderUserManual.docx"
-
-      - name: Upload PDF
-        uses: actions/upload-artifact@v1
-        with:
-          name: "manual.pdf"
-          path: "manual.pdf"
+  
   build:
-
     runs-on: windows-latest
 
     steps:
