@@ -24,7 +24,7 @@
 				<ContentPresenter ContentTemplate="{StaticResource WordmarkLogo}"/>
 			</Viewbox>
 			<DockPanel>
-				<GroupBox Header="Information" DockPanel.Dock="Top" Margin="5">
+				<GroupBox Header="Information:" DockPanel.Dock="Top" Margin="5">
 					<Grid Margin="10,0,0,0">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="Auto"/>
@@ -67,11 +67,10 @@
 			<DockPanel DockPanel.Dock="Top" LastChildFill="True" Margin="5">
 
 				<tk:IntegerUpDown DockPanel.Dock="Left" Width="75" VerticalAlignment="Center"
-				Value="{Binding ElementName=WavelengthSlider, Path=Value}"
-				Increment="{Binding ElementName=WavelengthSlider, Path=Interval}"
+				Value="{Binding Path=CurrentWavelength}"
+				Increment="{Binding Path=WavelengthStep}"
 				Minimum="{Binding WavelengthMin}"
-				Maximum="{Binding WavelengthMax}"
-				UpdateValueOnEnterKey="True">
+				Maximum="{Binding WavelengthMax}">
 					<tk:IntegerUpDown.IsEnabled>
 						<MultiBinding Converter="{StaticResource BooleanAndConverter}">
 							<Binding Path="CanOperate"/>
@@ -98,7 +97,7 @@
 		<DockPanel DockPanel.Dock="Top">
 			
 		</DockPanel>
-		<GroupBox Header="Sequencing" DockPanel.Dock="Top" Margin="5">
+		<GroupBox Header="Sequencing:" DockPanel.Dock="Top" Margin="5">
 			<DockPanel LastChildFill="True">
 				<Grid DockPanel.Dock="Bottom" HorizontalAlignment="Center">
 					<Grid.ColumnDefinitions>
@@ -120,7 +119,7 @@
 					</Button>
 					<!--Tab Index override because dockpanel requires the controls to be placed out of order-->
 					<Button Grid.Column="1" Content="Stop Sequencing" Margin="5" Padding="3" TabIndex="1001" Click="SequenceBtn_Click" IsEnabled="{Binding IsSequencing}"/>
-					<CheckBox Grid.Column="2" IsChecked="{Binding SequenceContinuous}" Margin="5" Padding="3" Content="Continuous" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center">
+					<CheckBox Grid.Column="2" IsChecked="{Binding SequenceContinuous}" Margin="5" Padding="3" Content="Continuous" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" TabIndex="1002">
 						<CheckBox.IsEnabled>
 							<MultiBinding Converter="{StaticResource BooleanAndConverter}">
 								<Binding Path="CanOperate"/>
@@ -136,7 +135,7 @@
 							<Binding Path="IsNotSequencing"/>
 						</MultiBinding>
 					</DockPanel.IsEnabled>
-					<DockPanel DockPanel.Dock="Right" Margin="5">
+					<DockPanel DockPanel.Dock="Left" Margin="5">
 						<RadioButton Content="Ordered" DockPanel.Dock="Top" Margin="5" GroupName="SequencingMode" IsChecked="{Binding SequenceOrdered}"/>
 						<Grid DockPanel.Dock="Top" HorizontalAlignment="Left">
 							<Grid.ColumnDefinitions>
@@ -167,18 +166,18 @@
 							Increment="{Binding ElementName=WavelengthSlider, Path=SmallChange}"
 							Value="{Binding OrderedSequenceStep}"/>
 							<tk:IntegerUpDown Grid.Row="3" Grid.Column="1" Width="75" VerticalAlignment="Center"
-							Increment="1" Minimum="0" Value="{Binding OrderedSequenceDwell}"
+							Increment="1" Minimum="0" Maximum="10000" Value="{Binding OrderedSequenceDwell}"
 							ClipValueToMinMax="True"/>
 						</Grid>
 					</DockPanel>
-					<Separator DockPanel.Dock="Right" Width="2" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+					<Separator DockPanel.Dock="Left" Width="2" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
 					<DockPanel Margin="5">
 						<RadioButton Content="Arbitrary" DockPanel.Dock="Top" Margin="5" GroupName="SequencingMode" IsChecked="{Binding SequenceArbitrary}">
 						</RadioButton>
-						<DataGrid DockPanel.Dock="Top" CanUserDeleteRows="True" CanUserAddRows="True" ItemsSource="{Binding ArbitrarySequenceItems}" AutoGenerateColumns="False">
+						<DataGrid Name="ArbitraryDataGrid" DockPanel.Dock="Top" CanUserDeleteRows="True" CanUserAddRows="True" ItemsSource="{Binding ArbitrarySequenceItems}" AutoGenerateColumns="False">
 							<DataGrid.Columns>
-								<DataGridTextColumn Header="Wavelength" Binding="{Binding Wavelength}"/>
-								<DataGridTextColumn Header="Dwell Time (ms)" Binding="{Binding DwellTime}"/>
+								<DataGridTextColumn Header="Wavelength" Binding="{Binding Wavelength, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}"/>
+								<DataGridTextColumn Header="Dwell Time (ms)" Binding="{Binding DwellTime, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}" Width="*"/>
 							</DataGrid.Columns>
 						</DataGrid>
 					</DockPanel>

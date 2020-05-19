@@ -39,6 +39,9 @@ namespace LCTFCommander
 
 				if (selectedLCTF != null)
 					selectedLCTF.PropertyChanged += SelectedLCTF_PropertyChanged;
+
+				ArbitrarySequenceItem.MinWavelength = Convert.ToInt32(SelectedLCTF?.MinWavelength ?? 0);
+				ArbitrarySequenceItem.MaxWavelength = Convert.ToInt32(SelectedLCTF?.MaxWavelength ?? 0);
 			}
 		}
 
@@ -98,7 +101,7 @@ namespace LCTFCommander
 		{
 			get
 			{
-				return SelectedLCTF == null ? false : SelectedLCTF.CurrentState == LCTFState.Ready;
+				return SelectedLCTF == null ? false : SelectedLCTF.CurrentState == LCTFState.Ready || SelectedLCTF.CurrentState == LCTFState.Tuning;
 			}
 		}
 
@@ -207,7 +210,7 @@ namespace LCTFCommander
 							await SelectedLCTF.LCTFDevice.SetWavelengthAsync(item.Wavelength);
 							PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentWavelength)));
 
-							await Task.Delay(item.DwellTime, cancellationToken);
+							await Task.Delay(Convert.ToInt32(item.DwellTime), cancellationToken);
 						}
 					}
 					while (SequenceContinuous && !cancellationToken.IsCancellationRequested);
