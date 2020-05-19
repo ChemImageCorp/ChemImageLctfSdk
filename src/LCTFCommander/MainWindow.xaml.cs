@@ -50,6 +50,7 @@ namespace LCTFCommander
 			if (e.PropertyName == nameof(LCTFDeviceModel.CurrentState))
 			{
 				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CanOperate)));
+				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsCalibrating)));
 			}
 		}
 
@@ -87,6 +88,12 @@ namespace LCTFCommander
 			}
 		}
 
+		[DependsOn(nameof(WavelengthMax), nameof(WavelengthMin))]
+		public int WavelengthRange
+		{
+			get => Math.Abs(WavelengthMax - WavelengthMin);
+		}
+
 		[DependsOn(nameof(SelectedLCTF))]
 		public int WavelengthStep
 		{
@@ -102,6 +109,15 @@ namespace LCTFCommander
 			get
 			{
 				return SelectedLCTF == null ? false : SelectedLCTF.CurrentState == LCTFState.Ready || SelectedLCTF.CurrentState == LCTFState.Tuning;
+			}
+		}
+
+		[DependsOn(nameof(SelectedLCTF))]
+		public bool IsCalibrating
+		{
+			get
+			{
+				return SelectedLCTF == null ? false : SelectedLCTF.CurrentState == LCTFState.Calibrating;
 			}
 		}
 

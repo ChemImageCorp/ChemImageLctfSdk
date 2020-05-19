@@ -11,178 +11,192 @@
 	<Window.Resources>
 		<vc:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
 		<vc:BooleanAndConverter x:Key="BooleanAndConverter" />
+		<vc:IntNegatingConverter x:Key="IntNegatingConverter" />
+		<vc:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 	</Window.Resources>
-	<DockPanel LastChildFill="True">
-		<Menu DockPanel.Dock="Top" Background="Transparent">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<Menu Grid.Row="0" Background="Transparent">
 			<MenuItem Header="Help">
 				<MenuItem Header="About" Click="HelpMenu_Click"/>
 			</MenuItem>
 		</Menu>
-		<Separator DockPanel.Dock="Top"/>
-		<DockPanel DockPanel.Dock="Top" Background="Transparent">
-			<Viewbox DockPanel.Dock="Right" Height="30" Margin="23" VerticalAlignment="Top">
-				<ContentPresenter ContentTemplate="{StaticResource WordmarkLogo}"/>
-			</Viewbox>
+		<Grid Grid.Row="1">
 			<DockPanel>
-				<GroupBox Header="Information:" DockPanel.Dock="Top" Margin="5">
-					<Grid Margin="10,0,0,0">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto"/>
-							<ColumnDefinition Width="Auto"/>
-						</Grid.ColumnDefinitions>
-						<Grid.RowDefinitions>
-							<RowDefinition Height="Auto"/>
-							<RowDefinition Height="Auto"/>
-							<RowDefinition Height="Auto"/>
-							<RowDefinition Height="Auto"/>
-							<RowDefinition Height="Auto"/>
-						</Grid.RowDefinitions>
-						<TextBlock Text="Serial number:" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right"/>
-						<TextBlock Text="Firmware:" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right"/>
-						<TextBlock Text="Temperature:" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right"/>
-						<TextBlock Text="State:" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right"/>
-						<TextBlock Text="Spectral Range:" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Right"/>
-						<TextBlock Text="{Binding SelectedLCTF.SerialNumber, FallbackValue=N/A}" Grid.Column="1" Grid.Row="0" Margin="5,0,0,0"/>
-						<TextBlock Text="{Binding SelectedLCTF.FirmwareVersion, FallbackValue=N/A}"  Grid.Column="1" Grid.Row="1" Margin="5,0,0,0"/>
-						<TextBlock Text="{Binding SelectedLCTF.Temperature, StringFormat={}{0:0.00} °C, FallbackValue=N/A}" Grid.Column="1" Grid.Row="2" Margin="5,0,0,0"/>
-						<TextBlock Text="{Binding SelectedLCTF.CurrentState, FallbackValue=N/A}" Grid.Column="1" Grid.Row="3" Margin="5,0,0,0"/>
-						<TextBlock Grid.Column="1" Grid.Row="4" Margin="5,0,0,0">
-							<TextBlock.Text>
-								<MultiBinding StringFormat="{}{0}nm to {1}nm, {2}nm steps" FallbackValue="N/A">
-									<Binding Path="SelectedLCTF.MinWavelength" />
-									<Binding Path="SelectedLCTF.MaxWavelength" />
-									<Binding Path="SelectedLCTF.StepWavelength" />
-								</MultiBinding>
-							</TextBlock.Text>
-						</TextBlock>
-					</Grid>
-				</GroupBox>
+				<Separator DockPanel.Dock="Top"/>
+				<DockPanel DockPanel.Dock="Top" Background="Transparent">
+					<Viewbox DockPanel.Dock="Right" Height="60" Margin="20" VerticalAlignment="Center">
+						<ContentPresenter ContentTemplate="{StaticResource FullLogo}"/>
+					</Viewbox>
+					<DockPanel>
+						<GroupBox Header="Information:" DockPanel.Dock="Top" Margin="5">
+							<Grid Margin="10,0,0,0">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto"/>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+								</Grid.RowDefinitions>
+								<TextBlock Text="Serial number:" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right"/>
+								<TextBlock Text="Firmware:" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right"/>
+								<TextBlock Text="Temperature:" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right"/>
+								<TextBlock Text="State:" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right"/>
+								<TextBlock Text="Spectral Range:" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Right"/>
+								<TextBlock Text="{Binding SelectedLCTF.SerialNumber, FallbackValue=N/A}" Grid.Column="1" Grid.Row="0" Margin="5,0,0,0"/>
+								<TextBlock Text="{Binding SelectedLCTF.FirmwareVersion, FallbackValue=N/A}"  Grid.Column="1" Grid.Row="1" Margin="5,0,0,0"/>
+								<TextBlock Text="{Binding SelectedLCTF.Temperature, StringFormat={}{0:0.00} °C, FallbackValue=N/A}" Grid.Column="1" Grid.Row="2" Margin="5,0,0,0"/>
+								<TextBlock Text="{Binding SelectedLCTF.CurrentState, FallbackValue=N/A}" Grid.Column="1" Grid.Row="3" Margin="5,0,0,0"/>
+								<TextBlock Grid.Column="1" Grid.Row="4" Margin="5,0,0,0">
+									<TextBlock.Text>
+										<MultiBinding StringFormat="{}{0}nm to {1}nm, {2}nm steps" FallbackValue="N/A">
+											<Binding Path="SelectedLCTF.MinWavelength" />
+											<Binding Path="SelectedLCTF.MaxWavelength" />
+											<Binding Path="SelectedLCTF.StepWavelength" />
+										</MultiBinding>
+									</TextBlock.Text>
+								</TextBlock>
+							</Grid>
+						</GroupBox>
 
-				
 
 
-			</DockPanel>
-		</DockPanel>
-		<GroupBox Header="Wavelength (nm):" DockPanel.Dock="Top" VerticalAlignment="Center" Margin="5">
-			<DockPanel DockPanel.Dock="Top" LastChildFill="True" Margin="5">
 
-				<tk:IntegerUpDown DockPanel.Dock="Left" Width="75" VerticalAlignment="Center"
+					</DockPanel>
+				</DockPanel>
+				<GroupBox Header="Wavelength (nm):" DockPanel.Dock="Top" VerticalAlignment="Center" Margin="5">
+					<DockPanel DockPanel.Dock="Top" LastChildFill="True" Margin="5">
+
+						<tk:IntegerUpDown DockPanel.Dock="Left" Width="75" VerticalAlignment="Center"
 				Value="{Binding Path=CurrentWavelength}"
 				Increment="{Binding Path=WavelengthStep}"
 				Minimum="{Binding WavelengthMin}"
 				Maximum="{Binding WavelengthMax}">
-					<tk:IntegerUpDown.IsEnabled>
-						<MultiBinding Converter="{StaticResource BooleanAndConverter}">
-							<Binding Path="CanOperate"/>
-							<Binding Path="IsNotSequencing"/>
-						</MultiBinding>
-					</tk:IntegerUpDown.IsEnabled>
-				</tk:IntegerUpDown>
-				<Slider Name="WavelengthSlider" VerticalAlignment="Center" Margin="5"
+							<tk:IntegerUpDown.IsEnabled>
+								<MultiBinding Converter="{StaticResource BooleanAndConverter}">
+									<Binding Path="CanOperate"/>
+									<Binding Path="IsNotSequencing"/>
+								</MultiBinding>
+							</tk:IntegerUpDown.IsEnabled>
+						</tk:IntegerUpDown>
+						<Slider Name="WavelengthSlider" VerticalAlignment="Center" Margin="5"
 				Minimum="{Binding WavelengthMin}"
 				Maximum="{Binding WavelengthMax}"
 				Value="{Binding Path=CurrentWavelength, Mode=TwoWay, Delay=100}"
 				TickFrequency="50" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" AutoToolTipPrecision="0"
 				SmallChange="{Binding WavelengthStep}">
-					<Slider.IsEnabled>
-						<MultiBinding Converter="{StaticResource BooleanAndConverter}">
-							<Binding Path="CanOperate"/>
-							<Binding Path="IsNotSequencing"/>
-						</MultiBinding>
-					</Slider.IsEnabled>
-				</Slider>
-			</DockPanel>
-		</GroupBox>
-		
-		<DockPanel DockPanel.Dock="Top">
-			
-		</DockPanel>
-		<GroupBox Header="Sequencing:" DockPanel.Dock="Top" Margin="5">
-			<DockPanel LastChildFill="True">
-				<Grid DockPanel.Dock="Bottom" HorizontalAlignment="Center">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition SharedSizeGroup="A"/>
-						<ColumnDefinition SharedSizeGroup="A"/>
-						<ColumnDefinition/>
-					</Grid.ColumnDefinitions>
-					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto"/>
-					</Grid.RowDefinitions>
-					<!--Tab Index override because dockpanel requires the controls to be placed out of order-->
-					<Button Grid.Column="0" Content="Start Sequencing" Margin="5" Padding="3" Click="SequenceBtn_Click" TabIndex="1000">
-						<Button.IsEnabled>
-							<MultiBinding Converter="{StaticResource BooleanAndConverter}">
-								<Binding Path="CanOperate"/>
-								<Binding Path="IsNotSequencing"/>
-							</MultiBinding>
-						</Button.IsEnabled>
-					</Button>
-					<!--Tab Index override because dockpanel requires the controls to be placed out of order-->
-					<Button Grid.Column="1" Content="Stop Sequencing" Margin="5" Padding="3" TabIndex="1001" Click="SequenceBtn_Click" IsEnabled="{Binding IsSequencing}"/>
-					<CheckBox Grid.Column="2" IsChecked="{Binding SequenceContinuous}" Margin="5" Padding="3" Content="Continuous" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" TabIndex="1002">
-						<CheckBox.IsEnabled>
-							<MultiBinding Converter="{StaticResource BooleanAndConverter}">
-								<Binding Path="CanOperate"/>
-								<Binding Path="IsNotSequencing"/>
-							</MultiBinding>
-						</CheckBox.IsEnabled>
-					</CheckBox>
-				</Grid>
-				<DockPanel DockPanel.Dock="Top">
-					<DockPanel.IsEnabled>
-						<MultiBinding Converter="{StaticResource BooleanAndConverter}">
-							<Binding Path="CanOperate"/>
-							<Binding Path="IsNotSequencing"/>
-						</MultiBinding>
-					</DockPanel.IsEnabled>
-					<DockPanel DockPanel.Dock="Left" Margin="5">
-						<RadioButton Content="Ordered" DockPanel.Dock="Top" Margin="5" GroupName="SequencingMode" IsChecked="{Binding SequenceOrdered}"/>
-						<Grid DockPanel.Dock="Top" HorizontalAlignment="Left">
+							<Slider.IsEnabled>
+								<MultiBinding Converter="{StaticResource BooleanAndConverter}">
+									<Binding Path="CanOperate"/>
+									<Binding Path="IsNotSequencing"/>
+								</MultiBinding>
+							</Slider.IsEnabled>
+						</Slider>
+					</DockPanel>
+				</GroupBox>
+
+				<GroupBox Header="Sequencing:" DockPanel.Dock="Top" Margin="5">
+					<DockPanel LastChildFill="True">
+						<Grid DockPanel.Dock="Bottom" HorizontalAlignment="Center">
 							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto"/>
-								<ColumnDefinition Width="Auto"/>
+								<ColumnDefinition SharedSizeGroup="A"/>
+								<ColumnDefinition SharedSizeGroup="A"/>
+								<ColumnDefinition/>
 							</Grid.ColumnDefinitions>
 							<Grid.RowDefinitions>
-								<RowDefinition Height="Auto" SharedSizeGroup="A"/>
-								<RowDefinition Height="Auto" SharedSizeGroup="A"/>
-								<RowDefinition Height="Auto" SharedSizeGroup="A"/>
-								<RowDefinition Height="Auto" SharedSizeGroup="A"/>
+								<RowDefinition Height="Auto"/>
 							</Grid.RowDefinitions>
-							<TextBlock Text="Start (nm):" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Margin="2"/>
-							<TextBlock Text="Stop (nm):" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Margin="2"/>
-							<TextBlock Text="Step Size (nm):" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Margin="2"/>
-							<TextBlock Text="Dwell Time (ms):" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Margin="2"/>
-							<tk:IntegerUpDown Grid.Row="0" Grid.Column="1" Width="75" VerticalAlignment="Center"
-							Increment="{Binding ElementName=WavelengthSlider, Path=SmallChange}"
-							Minimum="{Binding WavelengthMin}"
-							Maximum="{Binding WavelengthMax}"
-							Value="{Binding OrderedSequenceStart}"/>
-							<tk:IntegerUpDown Grid.Row="1" Grid.Column="1" Width="75" VerticalAlignment="Center"
-							Increment="{Binding ElementName=WavelengthSlider, Path=SmallChange}"
-							Minimum="{Binding WavelengthMin}"
-							Maximum="{Binding WavelengthMax}"
-							Value="{Binding OrderedSequenceStop, UpdateSourceTrigger=LostFocus}" />
-							<tk:IntegerUpDown Grid.Row="2" Grid.Column="1" Width="75" VerticalAlignment="Center"
-							Increment="{Binding ElementName=WavelengthSlider, Path=SmallChange}"
-							Value="{Binding OrderedSequenceStep}"/>
-							<tk:IntegerUpDown Grid.Row="3" Grid.Column="1" Width="75" VerticalAlignment="Center"
-							Increment="1" Minimum="0" Maximum="10000" Value="{Binding OrderedSequenceDwell}"
-							ClipValueToMinMax="True"/>
+							<!--Tab Index override because dockpanel requires the controls to be placed out of order-->
+							<Button Grid.Column="0" Content="Start Sequencing" Margin="5" Padding="3" Click="SequenceBtn_Click" TabIndex="1000">
+								<Button.IsEnabled>
+									<MultiBinding Converter="{StaticResource BooleanAndConverter}">
+										<Binding Path="CanOperate"/>
+										<Binding Path="IsNotSequencing"/>
+									</MultiBinding>
+								</Button.IsEnabled>
+							</Button>
+							<!--Tab Index override because dockpanel requires the controls to be placed out of order-->
+							<Button Grid.Column="1" Content="Stop Sequencing" Margin="5" Padding="3" TabIndex="1001" Click="SequenceBtn_Click" IsEnabled="{Binding IsSequencing}"/>
+							<CheckBox Grid.Column="2" IsChecked="{Binding SequenceContinuous}" Margin="5" Padding="3" Content="Continuous" VerticalAlignment="Center" HorizontalAlignment="Center" VerticalContentAlignment="Center" TabIndex="1002">
+								<CheckBox.IsEnabled>
+									<MultiBinding Converter="{StaticResource BooleanAndConverter}">
+										<Binding Path="CanOperate"/>
+										<Binding Path="IsNotSequencing"/>
+									</MultiBinding>
+								</CheckBox.IsEnabled>
+							</CheckBox>
 						</Grid>
+						<DockPanel DockPanel.Dock="Top">
+							<DockPanel.IsEnabled>
+								<MultiBinding Converter="{StaticResource BooleanAndConverter}">
+									<Binding Path="CanOperate"/>
+									<Binding Path="IsNotSequencing"/>
+								</MultiBinding>
+							</DockPanel.IsEnabled>
+							<DockPanel DockPanel.Dock="Left" Margin="5">
+								<RadioButton Content="Ordered" DockPanel.Dock="Top" Margin="5" GroupName="SequencingMode" IsChecked="{Binding SequenceOrdered}"/>
+								<Grid DockPanel.Dock="Top" HorizontalAlignment="Left">
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="Auto"/>
+									</Grid.ColumnDefinitions>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="Auto" SharedSizeGroup="A"/>
+										<RowDefinition Height="Auto" SharedSizeGroup="A"/>
+										<RowDefinition Height="Auto" SharedSizeGroup="A"/>
+										<RowDefinition Height="Auto" SharedSizeGroup="A"/>
+									</Grid.RowDefinitions>
+									<TextBlock Text="Start (nm):" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Margin="2"/>
+									<TextBlock Text="Stop (nm):" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Margin="2"/>
+									<TextBlock Text="Step Size (nm):" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Margin="2"/>
+									<TextBlock Text="Dwell Time (ms):" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Margin="2"/>
+									<tk:IntegerUpDown Grid.Row="0" Grid.Column="1" Width="75" VerticalAlignment="Center"
+										Increment="{Binding ElementName=WavelengthSlider, Path=SmallChange}"
+										Minimum="{Binding WavelengthMin}"
+										Maximum="{Binding WavelengthMax}"
+										Value="{Binding OrderedSequenceStart}"/>
+									<tk:IntegerUpDown Grid.Row="1" Grid.Column="1" Width="75" VerticalAlignment="Center"
+										Increment="{Binding ElementName=WavelengthSlider, Path=SmallChange}"
+										Minimum="{Binding WavelengthMin}"
+										Maximum="{Binding WavelengthMax}"
+										Value="{Binding OrderedSequenceStop, UpdateSourceTrigger=LostFocus}" />
+									<tk:IntegerUpDown Grid.Row="2" Grid.Column="1" Width="75" VerticalAlignment="Center"
+										Increment="{Binding ElementName=WavelengthSlider, Path=SmallChange}"
+										Minimum="{Binding WavelengthRange, Converter={StaticResource IntNegatingConverter}}"
+										Maximum="{Binding WavelengthRange}"
+										Value="{Binding OrderedSequenceStep}"/>
+									<tk:IntegerUpDown Grid.Row="3" Grid.Column="1" Width="75" VerticalAlignment="Center"
+										Increment="1" Minimum="0" Maximum="10000" Value="{Binding OrderedSequenceDwell}"
+										ClipValueToMinMax="True"/>
+								</Grid>
+							</DockPanel>
+							<Separator DockPanel.Dock="Left" Width="2" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+							<DockPanel Margin="5">
+								<RadioButton Content="Arbitrary" DockPanel.Dock="Top" Margin="5" GroupName="SequencingMode" IsChecked="{Binding SequenceArbitrary}">
+								</RadioButton>
+								<DataGrid Name="ArbitraryDataGrid" DockPanel.Dock="Top" CanUserDeleteRows="True" CanUserAddRows="True" ItemsSource="{Binding ArbitrarySequenceItems}" AutoGenerateColumns="False">
+									<DataGrid.Columns>
+										<DataGridTextColumn Header="Wavelength" Binding="{Binding Wavelength, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}"/>
+										<DataGridTextColumn Header="Dwell Time (ms)" Binding="{Binding DwellTime, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}" Width="*"/>
+									</DataGrid.Columns>
+								</DataGrid>
+							</DockPanel>
+						</DockPanel>
 					</DockPanel>
-					<Separator DockPanel.Dock="Left" Width="2" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
-					<DockPanel Margin="5">
-						<RadioButton Content="Arbitrary" DockPanel.Dock="Top" Margin="5" GroupName="SequencingMode" IsChecked="{Binding SequenceArbitrary}">
-						</RadioButton>
-						<DataGrid Name="ArbitraryDataGrid" DockPanel.Dock="Top" CanUserDeleteRows="True" CanUserAddRows="True" ItemsSource="{Binding ArbitrarySequenceItems}" AutoGenerateColumns="False">
-							<DataGrid.Columns>
-								<DataGridTextColumn Header="Wavelength" Binding="{Binding Wavelength, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}"/>
-								<DataGridTextColumn Header="Dwell Time (ms)" Binding="{Binding DwellTime, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}" Width="*"/>
-							</DataGrid.Columns>
-						</DataGrid>
-					</DockPanel>
-				</DockPanel>
+				</GroupBox>
 			</DockPanel>
-		</GroupBox>
-	</DockPanel>
+			<Grid Visibility="{Binding IsCalibrating, FallbackValue=Collapsed, Converter={StaticResource BoolToVisibilityConverter}}">
+				<Rectangle Opacity="0.85" Fill="White"/>
+				<TextBlock Text="Calibrating, please wait..." HorizontalAlignment="Center" VerticalAlignment="Center"/>
+			</Grid>
+		</Grid>
+	</Grid>
 </Window>
