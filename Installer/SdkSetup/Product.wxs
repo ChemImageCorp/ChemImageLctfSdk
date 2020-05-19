@@ -4,8 +4,6 @@
 <?define Description = "SDK for controlling ChemImage LCTFs." ?>
 <!-- The manufacturer, for setup package publisher and folder info -->
 <?define Manufacturer = "ChemImage" ?>
-<!-- The version number of this setup package-->
-<?define Version = "0.1.0" ?>
 <!-- UpgradeCode must be unique and not changed once the first version of the program is installed. -->
 <?define UpgradeCode = "{2EFC9324-BF16-41FF-848F-903503DF5502}" ?>
 <!-- The name of the Cabinet -->
@@ -16,10 +14,11 @@
 
 	<?define Commander_TargetDir=$(var.LCTFCommander.TargetDir)?>
 
-	<Product Id="*" Name="$(var.Name)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)" Version="$(var.Version)" Language="1033">
+	<Product Id="*" Name="$(var.Name)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)" Version="!(bind.FileVersion.LCTFCommander.exe)" Language="1033">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Manufacturer="$(var.Manufacturer)" />
 
-		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<Upgrade Id="$(var.UpgradeCode)"/>
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." AllowDowngrades="no" />
 		<MediaTemplate />
 
 		<Icon Id="icon.ico" SourceFile="$(var.Commander_TargetDir)LCTFCommander.exe"/>

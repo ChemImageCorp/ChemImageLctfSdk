@@ -19,6 +19,7 @@
 	        IconSourceFile="$(var.Commander_ProjectDir)icon.ico" >
 		<BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense">
 			<bal:WixStandardBootstrapperApplication
+			SuppressOptionsUI="yes"
             LicenseFile="MITLicense.rtf"
             LogoFile="install-logo.png"
             />

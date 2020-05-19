@@ -12,6 +12,7 @@
     <RepositoryUrl>https://github.com/aklein53/LCTFCommander</RepositoryUrl>
     <PackageProjectUrl>https://github.com/aklein53/LCTFCommander</PackageProjectUrl>
     <ApplicationIcon>icon.ico</ApplicationIcon>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
