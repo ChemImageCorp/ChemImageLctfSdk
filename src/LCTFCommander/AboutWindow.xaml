@@ -13,7 +13,7 @@
 			</Viewbox>
 			<DockPanel>
 				<TextBlock DockPanel.Dock="Top" HorizontalAlignment="Left" FontSize="22" Text="{Binding ProductName, FallbackValue=LCTF Commander}" Margin="5,0,0,0"/>
-				<TextBlock DockPanel.Dock="Top" HorizontalAlignment="Left" Text="{Binding ProductVersion, FallbackValue=v1.0, StringFormat=v{}{0}}" Margin="5,0,0,0"/>
+				<TextBlock DockPanel.Dock="Top" HorizontalAlignment="Left" Text="{Binding ProductVersion, FallbackValue=v1.0, StringFormat=v{0}}" Margin="5,0,0,0"/>
 				<TextBlock DockPanel.Dock="Top" HorizontalAlignment="Left" Text="{Binding Copyright, FallbackValue=Copyright © 2020}" Margin="5,0,0,0"/>
 				<TextBlock DockPanel.Dock="Top" HorizontalAlignment="Left" Text="{Binding CompanyName, FallbackValue=ChemImage Corporation}" Margin="5,0,0,0"/>
 				
