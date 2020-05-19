@@ -33,7 +33,7 @@ jobs:
         msbuild Installer/SdkBootstrapper/SdkBootstrapper.wixproj -property:configuration=Release
 
     - name: Upload installer
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
-        name: "LCTF SDK Installer.exe"
+        name: "LCTF SDK Installer"
         path: "Installer/SdkBootstrapper/bin/Release/LCTF SDK Installer.exe"
