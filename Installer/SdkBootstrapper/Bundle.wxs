@@ -16,7 +16,7 @@
 	        Version="!(bind.packageVersion.SetupPackage)"
 	        Manufacturer="!(bind.packageManufacturer.SetupPackage)"
 	        UpgradeCode="$(var.UpgradeCode)"
-	        IconSourceFile="$(var.Commander_ProjectDir)icon.ico" >
+	        IconSourceFile="$(var.Commander_ProjectDir)greyIcon.ico" >
 		<BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense">
 			<bal:WixStandardBootstrapperApplication
 			SuppressOptionsUI="yes"
