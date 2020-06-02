@@ -9,5 +9,7 @@ This project is an SDK for controlling ChemImage LCTFs. The installer built from
 The example source code can also be acquired by downloading or cloning this repository.
 ## Licensing 
 This project is licensed under the [MIT License](LICENSE). Copyright (c) 2020 ChemImage Corporation.
+
 [LibUsbDotNet](https://github.com/LibUsbDotNet/LibUsbDotNet/) is licensed under the [LGPL v3.0](https://github.com/LibUsbDotNet/LibUsbDotNet/blob/master/LICENSE). Copyright (c) 2006-2010 Travis Robinson.
+
 [WPF Toolkit](https://github.com/xceedsoftware/wpftoolkit/tree/3.6.0) from Xceed Software is licensed under the [MS-PL](https://github.com/xceedsoftware/wpftoolkit/blob/3.6.0/license.md). Copyright (c) 2007-2018 Xceed Software Inc.

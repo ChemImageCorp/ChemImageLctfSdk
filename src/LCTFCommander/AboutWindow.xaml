@@ -8,7 +8,7 @@
         Title="About" Height="270" Width="500" ResizeMode="NoResize">
     <DockPanel Margin="10">
 		<DockPanel DockPanel.Dock="Top">
-			<Viewbox DockPanel.Dock="right" Height="80" Margin="16" HorizontalAlignment="Left">
+			<Viewbox DockPanel.Dock="right" Height="80" Margin="16" VerticalAlignment="Top" HorizontalAlignment="Left">
 				<ContentPresenter ContentTemplate="{StaticResource FullLogo}"/>
 			</Viewbox>
 			<DockPanel>
@@ -16,7 +16,6 @@
 				<TextBlock DockPanel.Dock="Top" HorizontalAlignment="Left" Text="{Binding ProductVersion, FallbackValue=v1.0, StringFormat=v{0}}" Margin="5,0,0,0"/>
 				<TextBlock DockPanel.Dock="Top" HorizontalAlignment="Left" Text="{Binding Copyright, FallbackValue=Copyright © 2020}" Margin="5,0,0,0"/>
 				<TextBlock DockPanel.Dock="Top" HorizontalAlignment="Left" Text="{Binding CompanyName, FallbackValue=ChemImage Corporation}" Margin="5,0,0,0"/>
-				
 			</DockPanel>
 		</DockPanel>
 		<DockPanel DockPanel.Dock="Bottom">
