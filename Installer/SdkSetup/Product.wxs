@@ -4,6 +4,8 @@
 <?define Description = "SDK for controlling ChemImage LCTFs." ?>
 <!-- The manufacturer, for setup package publisher and folder info -->
 <?define Manufacturer = "ChemImage" ?>
+<!-- The version number of this setup package-->
+<?define Version = "0.1.0" ?>
 <!-- UpgradeCode must be unique and not changed once the first version of the program is installed. -->
 <?define UpgradeCode = "{2EFC9324-BF16-41FF-848F-903503DF5502}" ?>
 <!-- The name of the Cabinet -->
@@ -14,7 +16,7 @@
 
 	<?define Commander_TargetDir=$(var.LCTFCommander.TargetDir)?>
 
-	<Product Id="*" Name="$(var.Name)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)" Version="!(bind.FileVersion.LCTFCommander.exe)" Language="1033">
+	<Product Id="*" Name="$(var.Name)" Manufacturer="$(var.Manufacturer)" UpgradeCode="$(var.UpgradeCode)" Version="$(var.Version)" Language="1033">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Manufacturer="$(var.Manufacturer)" />
 
 		<Upgrade Id="$(var.UpgradeCode)"/>
@@ -50,6 +52,24 @@
 					<Directory Id="ApplicationProgramsFolder" Name="$(var.Name)" />
 				</Directory>
 			</Directory>
+			<!--Desktop shortcut-->
+			<!--Directory Id="DesktopFolder" Name="Desktop">
+				<Component Id="ApplicationShortcutDesktop" Guid="*">
+					<Shortcut Id="ApplicationDesktopShortcut"
+						Name="LCTF Commander"
+						Description="$(var.Description)"
+						Target="[#LCTFCommander.exe]"
+						WorkingDirectory="INSTALLFOLDER"/>
+					<RemoveFolder Id="DesktopFolder" On="uninstall"/>
+					<RegistryValue
+						Root="HKCU"
+						Key="Software/$(var.Name)"
+						Name="installed"
+						Type="integer"
+						Value="1"
+						KeyPath="yes"/>
+				</Component>
+			</Directory-->
 		</Directory>
 	</Fragment>
 
@@ -73,6 +93,9 @@
 			<Component Id="LCTFCommander.exe" Guid="*">
 				<File Id="LCTFCommander.exe" Name="LCTFCommander.exe" Source="$(var.Commander_TargetDir)LCTFCommander.exe" />
 				<RemoveFile Id="ALLFILES" Name="*.*" On="uninstall" />
+			</Component>
+			<Component Id="LCTFCommander.visualelementsmanifest.xml" Guid="*">
+				<File Id="LCTFCommander.visualelementsmanifest.xml" Name="LCTFCommander.visualelementsmanifest.xml" Source="$(var.Commander_TargetDir)LCTFCommander.visualelementsmanifest.xml" />
 			</Component>
 			<Component Id="ChemImageLCTF.dll" Guid="*">
 				<File Id="ChemImageLCTF.dll" Name="ChemImageLCTF.dll" Source="$(var.Commander_TargetDir)ChemImageLCTF.dll" />

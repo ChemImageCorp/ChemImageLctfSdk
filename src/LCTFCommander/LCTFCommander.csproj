@@ -36,4 +36,10 @@
     <Resource Include="Resources\logo-transparent.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="LCTFCommander.visualelementsmanifest.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
