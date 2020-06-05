@@ -27,13 +27,14 @@
 		<Property Id="ARPPRODUCTICON" Value="icon.ico" />
 
 		<Feature Id="ProductFeature" Title="$(var.Name)" Level="1">
-			<ComponentGroupRef Id="SrcDirComponentGroup" />
 			<ComponentGroupRef Id="ProductComponents" />
-			<ComponentRef Id="ApplicationShortcut" />
+			<ComponentRef Id="ApplicationShortcuts" />
+			<ComponentGroupRef Id="SrcDirComponentGroup" />
 		</Feature>
 	</Product>
 
 	<Fragment>
+		<!-- Installation Directory -->
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="ProgramFilesFolder">
 				<!-- Create a folder inside program files with Company Name-->
@@ -46,45 +47,36 @@
 					</Directory>
 				</Directory>
 			</Directory>
-			<!--Create application folder in Program Menu-->
+
+			<!--Start Menu Directory-->
 			<Directory Id="ProgramMenuFolder">
 				<Directory Id="ManufacturerProgramsFolder" Name="$(var.Manufacturer)">
 					<Directory Id="ApplicationProgramsFolder" Name="$(var.Name)" />
 				</Directory>
 			</Directory>
-			<!--Desktop shortcut-->
-			<!--Directory Id="DesktopFolder" Name="Desktop">
-				<Component Id="ApplicationShortcutDesktop" Guid="*">
-					<Shortcut Id="ApplicationDesktopShortcut"
-						Name="LCTF Commander"
-						Description="$(var.Description)"
-						Target="[#LCTFCommander.exe]"
-						WorkingDirectory="INSTALLFOLDER"/>
-					<RemoveFolder Id="DesktopFolder" On="uninstall"/>
-					<RegistryValue
-						Root="HKCU"
-						Key="Software/$(var.Name)"
-						Name="installed"
-						Type="integer"
-						Value="1"
-						KeyPath="yes"/>
-				</Component>
-			</Directory-->
+
+			<!--Desktop Directory-->
+			<Directory Id="DesktopFolder" Name="Desktop"/>
 		</Directory>
 	</Fragment>
 
 	<Fragment>
 		<!--Create application shortcut in Program Menu-->
-		<Component Id="ApplicationShortcut" Guid="*" Directory="ApplicationProgramsFolder">
-			<Shortcut Id="userManualStartMenuShortcut" Name="LCTF Commander" Description="$(var.Description)" Target="[#LCTFCommander.exe]" WorkingDirectory="INSTALLFOLDER" Icon="icon.ico" />
-			<Shortcut Id="ApplicationStartMenuShortcut" Name="LCTF Commander User Manual" Description="$(var.Description)" Target="[#UserManual.pdf]" WorkingDirectory="INSTALLFOLDER"/>
+		<Component Id="ApplicationShortcuts" Guid="*" Directory="ApplicationProgramsFolder">
+			<!-- Short cuts to application, manual, etc. -->
+			<Shortcut Id="ApplicationStartMenuShortcut" Name="LCTF Commander" Description="$(var.Description)" Target="[#LCTFCommander.exe]" WorkingDirectory="INSTALLFOLDER" Icon="icon.ico" />
+			<Shortcut Id="UserManualStartMenuShortcut" Name="LCTF Commander User Manual" Description="$(var.Description)" Target="[#UserManual.pdf]" WorkingDirectory="INSTALLFOLDER"/>
+			<Shortcut Id="ApplicationDesktopShortcut" Directory="DesktopFolder" Name="LCTF Commander" Description="$(var.Description)" Target="[#LCTFCommander.exe]" WorkingDirectory="INSTALLFOLDER"/>
+			<Shortcut Id="ExampleCodeShortcut" Directory="ApplicationProgramsFolder" Name="Example Code" Description="Link to example code directory" Target="[SRC_DIR_REF]" Advertise="no" />
+			<util:InternetShortcut Id="GithubShortcut" Directory="ApplicationProgramsFolder" Name="Open GitHub Repository" Target="http://github.com/ChemImageFT/ChemImageLctfSdk"/>
+
+			<!--Create application registry entry-->
+			<RegistryValue Root="HKCU" Key="Software\Microsoft\$(var.Manufacturer)\$(var.Name)" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+
 			<!--Remove application shortcut from Program Menu on uninstall-->
 			<RemoveFolder Id="ManufacturerProgramsFolder" Directory="ManufacturerProgramsFolder" On="uninstall" />
 			<RemoveFolder Id="ApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
-			<!--Create application registry entry-->
-			<RegistryValue Root="HKCU" Key="Software\Microsoft\$(var.Manufacturer)\$(var.Name)" Name="installed" Type="integer" Value="1" KeyPath="yes" />
-			<Shortcut Id="ExampleCodeShortcut" Directory="ApplicationProgramsFolder" Name="Example Code" Description="Link to example code directory" Target="[SRC_DIR_REF]" Advertise="no" />
-			<util:InternetShortcut Id="GithubShortcut" Directory="ApplicationProgramsFolder" Name="Open GitHub Repository" Target="http://github.com/ChemImageFT/ChemImageLctfSdk"/>
+			<RemoveFolder Id="DesktopFolder" On="uninstall"/>
 		</Component>
 	</Fragment>
 	<Fragment>
