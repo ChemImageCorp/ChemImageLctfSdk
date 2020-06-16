@@ -9,7 +9,10 @@ using System.Windows.Threading;
 
 namespace LCTFCommander
 {
-	public class LCTFDeviceModel : INotifyPropertyChanged, IDisposable
+	/// <summary>
+	/// A viewmodel to wrap LCTFDevice for display
+	/// </summary>
+	public class LCTFDeviceViewModel : INotifyPropertyChanged, IDisposable
 	{
 		private DispatcherTimer temperatureTimer;
 
@@ -55,7 +58,7 @@ namespace LCTFCommander
 
 		public LCTFState CurrentState { get; set; } = LCTFState.None;
 
-		public LCTFDeviceModel(LCTFDevice mcfDevice)
+		public LCTFDeviceViewModel(LCTFDevice mcfDevice)
 		{
 			LCTFDevice = mcfDevice;
 			LCTFDevice.OnStateChanged += LCTFDevice_OnStateChanged;
@@ -115,7 +118,7 @@ namespace LCTFCommander
 		/// <summary>
 		/// Finalizes an instance of the <see cref="LCTFDevice"/> class.
 		/// </summary>
-		~LCTFDeviceModel()
+		~LCTFDeviceViewModel()
 		{
 			this.Dispose(false);
 		}
@@ -130,7 +133,7 @@ namespace LCTFCommander
 		}
 
 		/// <summary>
-		/// Disposes the <see cref="LCTFDeviceModel"/>.
+		/// Disposes the <see cref="LCTFDeviceViewModel"/>.
 		/// </summary>
 		/// <param name="disposeManagedResources">Indicates if managed resources should be disposed in addition to unmanaged.</param>
 		protected virtual void Dispose(bool disposeManagedResources)

@@ -26,8 +26,8 @@ namespace LCTFCommander
 	/// </summary>
 	public partial class MainWindow : Window, INotifyPropertyChanged
 	{
-		private LCTFDeviceModel selectedLCTF = null;
-		public LCTFDeviceModel SelectedLCTF
+		private LCTFDeviceViewModel selectedLCTF = null;
+		public LCTFDeviceViewModel SelectedLCTF
 		{
 			get => selectedLCTF;
 			set
@@ -47,7 +47,7 @@ namespace LCTFCommander
 
 		private void SelectedLCTF_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (e.PropertyName == nameof(LCTFDeviceModel.CurrentState))
+			if (e.PropertyName == nameof(LCTFDeviceViewModel.CurrentState))
 			{
 				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CanOperate)));
 				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsCalibrating)));
@@ -167,7 +167,7 @@ namespace LCTFCommander
 			{
 				if (SelectedLCTF == null)
 				{
-					SelectedLCTF = new LCTFDeviceModel(lctf);
+					SelectedLCTF = new LCTFDeviceViewModel(lctf);
 
 					OrderedSequenceStart = WavelengthMin;
 					OrderedSequenceStop = WavelengthMax;
