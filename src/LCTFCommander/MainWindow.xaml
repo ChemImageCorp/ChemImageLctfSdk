@@ -178,7 +178,7 @@
 							<DockPanel Margin="5">
 								<RadioButton Content="Arbitrary" DockPanel.Dock="Top" Margin="5" GroupName="SequencingMode" IsChecked="{Binding SequenceArbitrary}">
 								</RadioButton>
-								<DataGrid Name="ArbitraryDataGrid" DockPanel.Dock="Top" CanUserDeleteRows="True" CanUserAddRows="True" CanUserResizeRows="False" CanUserSortColumns="False" ItemsSource="{Binding ArbitrarySequenceItems}" AutoGenerateColumns="False" RowEditEnding="dataGrid_RowEditEnding">
+								<DataGrid Name="ArbitraryDataGrid" DockPanel.Dock="Top" CanUserDeleteRows="True" CanUserAddRows="True" CanUserResizeRows="False" CanUserSortColumns="False" ItemsSource="{Binding ArbitrarySequenceItems}" AutoGenerateColumns="False" PreviewKeyDown="dataGrid_PreviewKeyDown">
 									<DataGrid.Columns>
 										<DataGridTextColumn Header="Wavelength" Binding="{Binding Wavelength, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}"/>
 										<DataGridTextColumn Header="Dwell Time (ms)" Binding="{Binding DwellTime, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}" Width="*"/>

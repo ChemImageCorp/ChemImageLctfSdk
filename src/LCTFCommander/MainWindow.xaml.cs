@@ -288,6 +288,23 @@ namespace LCTFCommander
 			IsSequencing = false;
 		}
 
+		private void dataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Key != Key.Enter)
+				return;
+
+			DataGridRow row = ArbitraryDataGrid.ItemContainerGenerator.ContainerFromItem(CollectionView.NewItemPlaceholder) as DataGridRow;
+
+			if (row != null)
+			{
+				ArbitraryDataGrid.SelectedItem = row.DataContext;
+				DataGridCell cell = GetCell(ArbitraryDataGrid, row, 0);
+
+				if (cell != null)
+					ArbitraryDataGrid.CurrentCell = new DataGridCellInfo(cell);
+			}
+		}
+
 		private void dataGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
 		{
 			DataGridRow row = ArbitraryDataGrid.ItemContainerGenerator.ContainerFromItem(CollectionView.NewItemPlaceholder) as DataGridRow;
