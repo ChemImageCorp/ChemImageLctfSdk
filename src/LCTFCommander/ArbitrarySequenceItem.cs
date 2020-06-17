@@ -23,10 +23,18 @@ namespace LCTFCommander
 			get => wavelength;
 			set
 			{
-				if (value > MaxWavelength || value < MinWavelength)
-					throw new ArgumentOutOfRangeException(nameof(Wavelength));
-
-				wavelength = value; 
+				if (value > MaxWavelength)
+				{
+					wavelength = MaxWavelength;
+				}
+				else if (value < MinWavelength)
+				{
+					wavelength = MinWavelength;
+				}
+				else
+				{
+					wavelength = value;
+				}
 			}
 		}
 		public uint DwellTime
@@ -34,10 +42,18 @@ namespace LCTFCommander
 			get => dwellTime;
 			set
 			{
-				if (value > MaxDwellTime || value < MinDwellTime)
-					throw new ArgumentOutOfRangeException(nameof(DwellTime));
-
-				dwellTime = value;
+				if (value > MaxDwellTime)
+				{
+					dwellTime = MaxDwellTime;
+				}
+				else if (value < MinDwellTime)
+				{
+					dwellTime = MinDwellTime;
+				}
+				else
+				{
+					dwellTime = value;
+				}
 			}
 		}
 

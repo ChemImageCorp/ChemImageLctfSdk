@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -287,8 +288,54 @@ namespace LCTFCommander
 			IsSequencing = false;
 		}
 
+		private void dataGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+		{
+			DataGridRow row = ArbitraryDataGrid.ItemContainerGenerator.ContainerFromItem(CollectionView.NewItemPlaceholder) as DataGridRow;
+
+			if (row != null)
+			{
+				ArbitraryDataGrid.SelectedItem = row.DataContext;
+				DataGridCell cell = GetCell(ArbitraryDataGrid, row, 0);
+
+				if (cell != null)
+					ArbitraryDataGrid.CurrentCell = new DataGridCellInfo(cell);
+			}
+		}
+
+		private static DataGridCell GetCell(DataGrid dataGrid, DataGridRow row, int colIndex)
+		{
+			if (row != null)
+			{
+				DataGridCellsPresenter presenter = FindVisualChild<DataGridCellsPresenter>(row);
+
+				if (presenter != null)
+					return presenter.ItemContainerGenerator.ContainerFromIndex(colIndex) as DataGridCell;
+			}
+			return null;
+		}
+
+		private static T FindVisualChild<T>(DependencyObject obj) where T : DependencyObject
+		{
+			for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+			{
+				DependencyObject child = VisualTreeHelper.GetChild(obj, i);
+				if (child != null && child is T t)
+				{
+					return t;
+				}
+				else
+				{
+					T childOfChild = FindVisualChild<T>(child);
+					if (childOfChild != null)
+						return childOfChild;
+				}
+			}
+			return null;
+		}
+
 #pragma warning disable CS0067 // Used by generated code
 		public event PropertyChangedEventHandler PropertyChanged;
+
 #pragma warning restore CS0067
 	}
 }

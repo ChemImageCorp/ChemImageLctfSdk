@@ -10,8 +10,9 @@
         Title="LCTF Commander" Height="450" Width="450" Loaded="Window_Loaded" Closing="Window_Closing">
 	<Window.Resources>
 		<vc:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
-		<vc:BooleanAndConverter x:Key="BooleanAndConverter" />
-		<vc:IntNegatingConverter x:Key="IntNegatingConverter" />
+		<vc:BooleanAndConverter x:Key="BooleanAndConverter"/>
+		<vc:IntNegatingConverter x:Key="IntNegatingConverter"/>
+		<vc:IntToDoubleMultiplyingConverter x:Key="IntMultiplyingConverter"/>
 		<vc:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 	</Window.Resources>
 	<Grid>
@@ -66,20 +67,15 @@
 								</TextBlock>
 							</Grid>
 						</GroupBox>
-
-
-
-
 					</DockPanel>
 				</DockPanel>
 				<GroupBox Header="Wavelength (nm):" DockPanel.Dock="Top" VerticalAlignment="Center" Margin="5">
 					<DockPanel DockPanel.Dock="Top" LastChildFill="True" Margin="5">
-
 						<tk:IntegerUpDown DockPanel.Dock="Left" Width="75" VerticalAlignment="Center"
-				Value="{Binding Path=CurrentWavelength}"
-				Increment="{Binding Path=WavelengthStep}"
-				Minimum="{Binding WavelengthMin}"
-				Maximum="{Binding WavelengthMax}">
+							Value="{Binding Path=CurrentWavelength}"
+							Increment="{Binding Path=WavelengthStep}"
+							Minimum="{Binding WavelengthMin}"
+							Maximum="{Binding WavelengthMax}">
 							<tk:IntegerUpDown.IsEnabled>
 								<MultiBinding Converter="{StaticResource BooleanAndConverter}">
 									<Binding Path="CanOperate"/>
@@ -88,11 +84,11 @@
 							</tk:IntegerUpDown.IsEnabled>
 						</tk:IntegerUpDown>
 						<Slider Name="WavelengthSlider" VerticalAlignment="Center" Margin="5"
-				Minimum="{Binding WavelengthMin}"
-				Maximum="{Binding WavelengthMax}"
-				Value="{Binding Path=CurrentWavelength, Mode=TwoWay, Delay=100}"
-				TickFrequency="50" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" AutoToolTipPrecision="0"
-				SmallChange="{Binding WavelengthStep}">
+							Minimum="{Binding WavelengthMin}"
+							Maximum="{Binding WavelengthMax}"
+							Value="{Binding Path=CurrentWavelength, Mode=TwoWay, Delay=100}"
+							TickFrequency="50" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" AutoToolTipPrecision="0"
+							SmallChange="{Binding WavelengthStep}" LargeChange="{Binding WavelengthStep, Converter={StaticResource IntMultiplyingConverter}, ConverterParameter=10}">
 							<Slider.IsEnabled>
 								<MultiBinding Converter="{StaticResource BooleanAndConverter}">
 									<Binding Path="CanOperate"/>
@@ -182,7 +178,7 @@
 							<DockPanel Margin="5">
 								<RadioButton Content="Arbitrary" DockPanel.Dock="Top" Margin="5" GroupName="SequencingMode" IsChecked="{Binding SequenceArbitrary}">
 								</RadioButton>
-								<DataGrid Name="ArbitraryDataGrid" DockPanel.Dock="Top" CanUserDeleteRows="True" CanUserAddRows="True" ItemsSource="{Binding ArbitrarySequenceItems}" AutoGenerateColumns="False">
+								<DataGrid Name="ArbitraryDataGrid" DockPanel.Dock="Top" CanUserDeleteRows="True" CanUserAddRows="True" CanUserResizeRows="False" CanUserSortColumns="False" ItemsSource="{Binding ArbitrarySequenceItems}" AutoGenerateColumns="False" RowEditEnding="dataGrid_RowEditEnding">
 									<DataGrid.Columns>
 										<DataGridTextColumn Header="Wavelength" Binding="{Binding Wavelength, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}"/>
 										<DataGridTextColumn Header="Dwell Time (ms)" Binding="{Binding DwellTime, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}" Width="*"/>
@@ -195,7 +191,7 @@
 			</DockPanel>
 			<Grid Visibility="{Binding IsCalibrating, FallbackValue=Collapsed, Converter={StaticResource BoolToVisibilityConverter}}">
 				<Rectangle Opacity="0.85" Fill="White"/>
-				<TextBlock Text="Calibrating, please wait..." HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				<TextBlock Text="Filter connected. Please wait while it finishes initializing." HorizontalAlignment="Center" VerticalAlignment="Center"/>
 			</Grid>
 		</Grid>
 	</Grid>
