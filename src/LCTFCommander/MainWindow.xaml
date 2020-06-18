@@ -86,7 +86,7 @@
 						<Slider Name="WavelengthSlider" VerticalAlignment="Center" Margin="5"
 							Minimum="{Binding WavelengthMin}"
 							Maximum="{Binding WavelengthMax}"
-							Value="{Binding Path=CurrentWavelength, Mode=TwoWay, Delay=100}"
+							Value="{Binding Path=CurrentWavelength, Mode=TwoWay}"
 							TickFrequency="50" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" AutoToolTipPrecision="0"
 							SmallChange="{Binding WavelengthStep}" LargeChange="{Binding WavelengthStep, Converter={StaticResource IntMultiplyingConverter}, ConverterParameter=10}">
 							<Slider.IsEnabled>
