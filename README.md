@@ -7,7 +7,7 @@ This project is an SDK for controlling ChemImage LCTFs.
 
 ## Support
 If support for this SDK is needed, you can submit an issue
-[here](https://github.com/ChemImageFT/ChemImageLctfSdk/issues/new) or email us at: [TBD]
+[here](https://github.com/ChemImageFT/ChemImageLctfSdk/issues/new) or email us at: [LCTFSupport@chemimage.com](mailto:LCTFSupport@chemimage.com).
 
 ## Instructions
 

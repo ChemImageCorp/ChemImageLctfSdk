@@ -360,6 +360,21 @@ namespace LCTFCommander
 #pragma warning disable CS0067 // Used by generated code
 		public event PropertyChangedEventHandler PropertyChanged;
 
+		private void TextBox_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (!e.Key.Equals(Key.Enter))
+			{
+				return;
+			}
+
+			UIElement elementWithFocus = Keyboard.FocusedElement as UIElement;
+
+			if (elementWithFocus != null)
+			{
+				elementWithFocus.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+			}
+		}
+
 #pragma warning restore CS0067
 	}
 }
