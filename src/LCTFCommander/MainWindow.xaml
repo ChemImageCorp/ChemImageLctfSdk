@@ -138,8 +138,8 @@
 								</MultiBinding>
 							</DockPanel.IsEnabled>
 							<DockPanel DockPanel.Dock="Left" Margin="5">
-								<RadioButton Content="Ordered" DockPanel.Dock="Top" Margin="5" GroupName="SequencingMode" IsChecked="{Binding SequenceOrdered}"/>
-								<Grid DockPanel.Dock="Top" HorizontalAlignment="Left">
+								<RadioButton Name="OrderedSequenceRadio" Content="Ordered" DockPanel.Dock="Top" Margin="5" GroupName="SequencingMode" IsChecked="{Binding SequenceOrdered}"/>
+								<Grid DockPanel.Dock="Top" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=OrderedSequenceRadio, Path=IsChecked}">
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="Auto"/>
 										<ColumnDefinition Width="Auto"/>
@@ -176,9 +176,11 @@
 							</DockPanel>
 							<Separator DockPanel.Dock="Left" Width="2" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
 							<DockPanel Margin="5">
-								<RadioButton Content="Arbitrary" DockPanel.Dock="Top" Margin="5" GroupName="SequencingMode" IsChecked="{Binding SequenceArbitrary}">
+								<RadioButton Name="ArbitrarySequenceRadio" Content="Arbitrary" DockPanel.Dock="Top" Margin="5" GroupName="SequencingMode" IsChecked="{Binding SequenceArbitrary}">
 								</RadioButton>
-								<DataGrid Name="ArbitraryDataGrid" DockPanel.Dock="Top" CanUserDeleteRows="True" CanUserAddRows="True" CanUserResizeRows="False" CanUserSortColumns="False" ItemsSource="{Binding ArbitrarySequenceItems}" AutoGenerateColumns="False" PreviewKeyDown="dataGrid_PreviewKeyDown">
+								<DataGrid Name="ArbitraryDataGrid" DockPanel.Dock="Top" CanUserDeleteRows="True" CanUserAddRows="True"
+									CanUserResizeRows="False" CanUserSortColumns="False" ItemsSource="{Binding ArbitrarySequenceItems}"
+									AutoGenerateColumns="False" PreviewKeyDown="dataGrid_PreviewKeyDown" IsEnabled="{Binding ElementName=ArbitrarySequenceRadio, Path=IsChecked}">
 									<DataGrid.Columns>
 										<DataGridTextColumn Header="Wavelength" Binding="{Binding Wavelength, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}"/>
 										<DataGridTextColumn Header="Dwell Time (ms)" Binding="{Binding DwellTime, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}" Width="*"/>

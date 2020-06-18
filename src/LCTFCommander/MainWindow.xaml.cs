@@ -209,6 +209,13 @@ namespace LCTFCommander
 			{
 				var sequenceItems = ArbitrarySequenceItems.ToList();
 
+				if (sequenceItems.Count == 0)
+				{
+					MessageBox.Show("Please enter values for sequencing before trying to start.");
+					sequenceTokenSource.Cancel();
+					IsSequencing = false;
+					return;
+				}
 				sequenceTask = Task.Run(async () =>
 				{
 					do
