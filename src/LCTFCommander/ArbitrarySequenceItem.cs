@@ -37,6 +37,36 @@ namespace LCTFCommander
 				}
 			}
 		}
+
+		public string WavelengthString{
+			get => Wavelength.ToString();
+			set
+			{
+				decimal newValue = wavelength;
+				try
+				{
+					newValue = Convert.ToDecimal(value);
+
+					if (newValue >= int.MaxValue)
+					{
+						Wavelength = int.MaxValue;
+					}
+					else if (newValue <= int.MinValue)
+					{
+						Wavelength = int.MinValue;
+					}
+					else
+					{
+						Wavelength = (int)newValue;
+					}
+				}
+				catch
+				{
+					;
+				}
+			}
+		}
+
 		public uint DwellTime
 		{
 			get => dwellTime;
@@ -53,6 +83,35 @@ namespace LCTFCommander
 				else
 				{
 					dwellTime = value;
+				}
+			}
+		}
+
+		public string DwellTimeString {
+			get => DwellTime.ToString();
+			set
+			{
+				decimal newValue = wavelength;
+				try
+				{
+					newValue = Convert.ToDecimal(value);
+
+					if (newValue >= uint.MaxValue)
+					{
+						DwellTime = uint.MaxValue;
+					}
+					else if (newValue <= uint.MinValue)
+					{
+						DwellTime = uint.MinValue;
+					}
+					else
+					{
+						DwellTime = (uint)newValue;
+					}
+				}
+				catch
+				{
+					;
 				}
 			}
 		}

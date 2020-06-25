@@ -7,7 +7,7 @@
 		xmlns:tk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:LCTFCommander"
         mc:Ignorable="d"
-        Title="LCTF Commander" Height="450" Width="450" Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="LCTF Commander" Height="500" Width="450" Loaded="Window_Loaded" Closing="Window_Closing">
 	<Window.Resources>
 		<vc:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
 		<vc:BooleanAndConverter x:Key="BooleanAndConverter"/>
@@ -125,7 +125,6 @@
 								<CheckBox.IsEnabled>
 									<MultiBinding Converter="{StaticResource BooleanAndConverter}">
 										<Binding Path="CanOperate"/>
-										<Binding Path="IsNotSequencing"/>
 									</MultiBinding>
 								</CheckBox.IsEnabled>
 							</CheckBox>
@@ -180,11 +179,18 @@
 								</RadioButton>
 								<DataGrid Name="ArbitraryDataGrid" DockPanel.Dock="Top" CanUserDeleteRows="True" CanUserAddRows="True"
 									CanUserResizeRows="False" CanUserSortColumns="False" ItemsSource="{Binding ArbitrarySequenceItems}"
-									AutoGenerateColumns="False" PreviewKeyDown="dataGrid_PreviewKeyDown" IsEnabled="{Binding ElementName=ArbitrarySequenceRadio, Path=IsChecked}">
+									AutoGenerateColumns="False" PreviewKeyDown="DataGrid_PreviewKeyDown"
+									IsEnabled="{Binding ElementName=ArbitrarySequenceRadio, Path=IsChecked}" VerticalScrollBarVisibility="Visible">
 									<DataGrid.Columns>
-										<DataGridTextColumn Header="Wavelength" Binding="{Binding Wavelength, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}"/>
-										<DataGridTextColumn Header="Dwell Time (ms)" Binding="{Binding DwellTime, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}" Width="*"/>
+										<DataGridTextColumn Header="Wavelength" Binding="{Binding WavelengthString, UpdateSourceTrigger=LostFocus}"/>
+										<DataGridTextColumn Header="Dwell Time (ms)" Binding="{Binding DwellTimeString, ValidatesOnExceptions=True, UpdateSourceTrigger=LostFocus}" Width="*"/>
 									</DataGrid.Columns>
+									<DataGrid.ContextMenu>
+										<ContextMenu>
+											<MenuItem Header="Insert Above" Click="Context_InsertAbove"/>
+											<MenuItem Header="Insert Below" Click="Context_InsertBelow"/>
+										</ContextMenu>
+									</DataGrid.ContextMenu>
 								</DataGrid>
 							</DockPanel>
 						</DockPanel>

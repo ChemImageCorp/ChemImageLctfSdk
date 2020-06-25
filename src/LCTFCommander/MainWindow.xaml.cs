@@ -249,14 +249,14 @@ namespace LCTFCommander
 
 				if (wlStep == 0)
 				{
-					MessageBox.Show("Cannot sequence with zero step size, sequence would never terminate.");
+					MessageBox.Show("Cannot sequence with zero step size, sequence would never end.", "Sequence Definition Error");
 					IsSequencing = false;
 					return;
 				}
 
 				if ((wlStart < wlStop && wlStep < 0) || (wlStart > wlStop && wlStep > 0))
 				{
-					MessageBox.Show("Start, stop, and step must be selected so that the sequence will terminate.");
+					MessageBox.Show("The sstart, stop, and/or step must be defined such that the sequence will end.", "Sequence Definition Error");
 					IsSequencing = false;
 					return;
 				}
@@ -295,35 +295,40 @@ namespace LCTFCommander
 			IsSequencing = false;
 		}
 
-		private void dataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
+		private void DataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.Key != Key.Enter)
 				return;
 
-			DataGridRow row = ArbitraryDataGrid.ItemContainerGenerator.ContainerFromItem(CollectionView.NewItemPlaceholder) as DataGridRow;
+			DataGrid dataGrid = sender as DataGrid;
 
-			if (row != null)
+			var dataGridRowCount = dataGrid.Items.Count;
+			var currentRowIndex = dataGrid.SelectedIndex;
+
+			DataGridRow nextRow;
+			int nextCellColumnIndex = 0;
+
+			// If we're not on the last row
+			if (currentRowIndex != (dataGridRowCount - 2))
 			{
-				ArbitraryDataGrid.SelectedItem = row.DataContext;
-				DataGridCell cell = GetCell(ArbitraryDataGrid, row, 0);
+				nextRow = dataGrid.ItemContainerGenerator.ContainerFromIndex(currentRowIndex + 1) as DataGridRow;
+				nextCellColumnIndex = dataGrid.CurrentCell.Column.DisplayIndex;
+			}
+			else
+			{
+				nextRow = ArbitraryDataGrid.ItemContainerGenerator.ContainerFromItem(CollectionView.NewItemPlaceholder) as DataGridRow;
+			}
+
+			if (nextRow != null)
+			{
+				dataGrid.SelectedItem = nextRow.DataContext;
+				DataGridCell cell = GetCell(dataGrid, nextRow, nextCellColumnIndex);
 
 				if (cell != null)
-					ArbitraryDataGrid.CurrentCell = new DataGridCellInfo(cell);
+					dataGrid.CurrentCell = new DataGridCellInfo(cell);
 			}
-		}
 
-		private void dataGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
-		{
-			DataGridRow row = ArbitraryDataGrid.ItemContainerGenerator.ContainerFromItem(CollectionView.NewItemPlaceholder) as DataGridRow;
-
-			if (row != null)
-			{
-				ArbitraryDataGrid.SelectedItem = row.DataContext;
-				DataGridCell cell = GetCell(ArbitraryDataGrid, row, 0);
-
-				if (cell != null)
-					ArbitraryDataGrid.CurrentCell = new DataGridCellInfo(cell);
-			}
+			e.Handled = true;
 		}
 
 		private static DataGridCell GetCell(DataGrid dataGrid, DataGridRow row, int colIndex)
@@ -375,6 +380,46 @@ namespace LCTFCommander
 			}
 		}
 
+		private void Context_InsertAbove(object sender, RoutedEventArgs e)
+		{
+			var menuItem = (MenuItem)sender;
+
+			var contextMenu = (ContextMenu)menuItem.Parent;
+
+			var item = (DataGrid)contextMenu.PlacementTarget;
+
+			if (item.SelectedCells[0].Item is ArbitrarySequenceItem selectedSequenceItem)
+			{
+				//Remove the toDeleteFromBindedList object from your ObservableCollection
+				ArbitrarySequenceItems.Insert(ArbitrarySequenceItems.IndexOf(selectedSequenceItem), new ArbitrarySequenceItem());
+			}
+			else
+			{
+				ArbitrarySequenceItems.Add(new ArbitrarySequenceItem());
+			}
+		}
+
+		private void Context_InsertBelow(object sender, RoutedEventArgs e)
+		{
+			//Get the clicked MenuItem
+			var menuItem = (MenuItem)sender;
+
+			//Get the ContextMenu to which the menuItem belongs
+			var contextMenu = (ContextMenu)menuItem.Parent;
+
+			//Find the placementTarget
+			var item = (DataGrid)contextMenu.PlacementTarget;
+
+			if (item.SelectedCells[0].Item is ArbitrarySequenceItem selectedSequenceItem)
+			{
+				//Remove the toDeleteFromBindedList object from your ObservableCollection
+				ArbitrarySequenceItems.Insert(ArbitrarySequenceItems.IndexOf(selectedSequenceItem) + 1, new ArbitrarySequenceItem());
+			}
+			else
+			{
+				ArbitrarySequenceItems.Add(new ArbitrarySequenceItem());
+			}
+		}
 #pragma warning restore CS0067
 	}
 }
