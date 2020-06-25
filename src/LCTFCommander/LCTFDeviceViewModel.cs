@@ -1,9 +1,6 @@
 ﻿using ChemImage.LCTF;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 
@@ -49,7 +46,7 @@ namespace LCTFCommander
 					}
 					else
 					{
-
+						;
 					}
 				}
 				
@@ -154,8 +151,16 @@ namespace LCTFCommander
 
 		private void LCTFDevice_OnTuningDone(int lambda)
 		{
-			currentWavelength = lambda;
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentWavelength)));
+			lock (this)
+			{
+				// Sync will take care of this otherwise
+				if (!isSyncing)
+				{
+					currentWavelength = lambda;
+					PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentWavelength)));
+				}
+			}
+			
 		}
 
 		private void LCTFDevice_OnStateChanged(LCTFState status, int tunedWavelength)
