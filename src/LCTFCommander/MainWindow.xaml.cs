@@ -19,6 +19,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ChemImage.LCTF;
 using PropertyChanged;
+using Xceed.Wpf.Toolkit;
+using MessageBox = System.Windows.MessageBox;
 
 namespace LCTFCommander
 {
@@ -211,7 +213,7 @@ namespace LCTFCommander
 
 				if (sequenceItems.Count == 0)
 				{
-					MessageBox.Show("Please enter values for sequencing before trying to start.");
+					MessageBox.Show("Please enter values for sequencing before starting.", "LCTF Commander");
 					sequenceTokenSource.Cancel();
 					IsSequencing = false;
 					return;
@@ -226,7 +228,7 @@ namespace LCTFCommander
 
 							if (item.Wavelength < SelectedLCTF.LCTFDevice.WavelengthMin || item.Wavelength > SelectedLCTF.LCTFDevice.WavelengthMax)
 							{
-								MessageBox.Show($"Wavelength {item.Wavelength} is outside the min and max of the LCTF.");
+								MessageBox.Show($"Wavelength {item.Wavelength} is outside the min and max of the LCTF.", "LCTF Commander");
 								IsSequencing = false;
 								return;
 							}
@@ -249,14 +251,14 @@ namespace LCTFCommander
 
 				if (wlStep == 0)
 				{
-					MessageBox.Show("Cannot sequence with zero step size, sequence would never end.", "Sequence Definition Error");
+					MessageBox.Show("Cannot sequence with zero step size, sequence would never end.", "LCTF Commander");
 					IsSequencing = false;
 					return;
 				}
 
 				if ((wlStart < wlStop && wlStep < 0) || (wlStart > wlStop && wlStep > 0))
 				{
-					MessageBox.Show("The sstart, stop, and/or step must be defined such that the sequence will end.", "Sequence Definition Error");
+					MessageBox.Show("The start, stop, and/or step size must be defined such that the sequence will end.", "LCTF Commander");
 					IsSequencing = false;
 					return;
 				}
@@ -297,7 +299,7 @@ namespace LCTFCommander
 
 		private void DataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key != Key.Enter)
+			if (e.Key != Key.Enter && e.Key != Key.Tab)
 				return;
 
 			DataGrid dataGrid = sender as DataGrid;
@@ -311,14 +313,47 @@ namespace LCTFCommander
 			// If we're not on the last row
 			if (currentRowIndex != (dataGridRowCount - 2))
 			{
+				// We only want to override tab for the last row
+				if (e.Key == Key.Tab)
+					return;
+
 				nextRow = dataGrid.ItemContainerGenerator.ContainerFromIndex(currentRowIndex + 1) as DataGridRow;
 				nextCellColumnIndex = dataGrid.CurrentCell.Column.DisplayIndex;
 			}
 			else
 			{
+				// If we're on the last row, but not the last column, we only need to change the column
+				if (e.Key == Key.Tab)
+				{
+					nextCellColumnIndex = dataGrid.CurrentCell.Column.DisplayIndex + 1;
+
+					// Does the next column exist?
+					if (nextCellColumnIndex < dataGrid.Columns.Count)
+					{
+						// select the next cell
+						var currentRow = dataGrid.ItemContainerGenerator.ContainerFromIndex(currentRowIndex) as DataGridRow;
+						dataGrid.SelectedItem = currentRow.DataContext;
+						DataGridCell cell = GetCell(dataGrid, currentRow, nextCellColumnIndex);
+
+						// set the next cell
+						if (cell != null)
+							dataGrid.CurrentCell = new DataGridCellInfo(cell);
+
+						e.Handled = true;
+						return;
+					}
+					else
+					{
+						// loop back to the first column
+						nextCellColumnIndex = 0;
+					}
+				}
+					
+				// generate a new row
 				nextRow = ArbitraryDataGrid.ItemContainerGenerator.ContainerFromItem(CollectionView.NewItemPlaceholder) as DataGridRow;
 			}
 
+			// Set the next row and cell
 			if (nextRow != null)
 			{
 				dataGrid.SelectedItem = nextRow.DataContext;
@@ -419,6 +454,39 @@ namespace LCTFCommander
 			{
 				ArbitrarySequenceItems.Add(new ArbitrarySequenceItem());
 			}
+		}
+
+		private void IntegerUpDown_PreviewKeyDown(object sender, KeyEventArgs e)
+		{
+			if (!(sender is IntegerUpDown integerUpDown))
+				return;
+
+			int change = integerUpDown.Increment ?? 0;
+			switch (e.Key)
+			{
+				case Key.PageUp:
+					change *= 10;
+					break;
+				case Key.PageDown:
+					change *= -10;
+					break;
+				default:
+					return;
+			}
+
+			var newValue = (integerUpDown.Value ?? 0) + change;
+
+			if (integerUpDown.Minimum.HasValue)
+			{
+				newValue = Math.Max(integerUpDown.Minimum.Value, newValue);
+			}
+			
+			if (integerUpDown.Maximum.HasValue)
+			{
+				newValue = Math.Min(integerUpDown.Maximum.Value, newValue);
+			}
+
+			integerUpDown.Value = newValue;
 		}
 #pragma warning restore CS0067
 	}

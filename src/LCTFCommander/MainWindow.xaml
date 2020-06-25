@@ -75,7 +75,7 @@
 							Value="{Binding Path=CurrentWavelength}"
 							Increment="{Binding Path=WavelengthStep}"
 							Minimum="{Binding WavelengthMin}"
-							Maximum="{Binding WavelengthMax}">
+							Maximum="{Binding WavelengthMax}" PreviewKeyDown="IntegerUpDown_PreviewKeyDown">
 							<tk:IntegerUpDown.IsEnabled>
 								<MultiBinding Converter="{StaticResource BooleanAndConverter}">
 									<Binding Path="CanOperate"/>
@@ -157,20 +157,20 @@
 										Increment="{Binding ElementName=WavelengthSlider, Path=SmallChange}"
 										Minimum="{Binding WavelengthMin}"
 										Maximum="{Binding WavelengthMax}"
-										Value="{Binding OrderedSequenceStart}" KeyDown="TextBox_KeyDown"/>
+										Value="{Binding OrderedSequenceStart}" KeyDown="TextBox_KeyDown" PreviewKeyDown="IntegerUpDown_PreviewKeyDown"/>
 									<tk:IntegerUpDown Grid.Row="1" Grid.Column="1" Width="75" VerticalAlignment="Center"
 										Increment="{Binding ElementName=WavelengthSlider, Path=SmallChange}"
 										Minimum="{Binding WavelengthMin}"
 										Maximum="{Binding WavelengthMax}"
-										Value="{Binding OrderedSequenceStop, UpdateSourceTrigger=LostFocus}" KeyDown="TextBox_KeyDown"/>
+										Value="{Binding OrderedSequenceStop, UpdateSourceTrigger=LostFocus}" KeyDown="TextBox_KeyDown" PreviewKeyDown="IntegerUpDown_PreviewKeyDown"/>
 									<tk:IntegerUpDown Grid.Row="2" Grid.Column="1" Width="75" VerticalAlignment="Center"
 										Increment="{Binding ElementName=WavelengthSlider, Path=SmallChange}"
 										Minimum="{Binding WavelengthRange, Converter={StaticResource IntNegatingConverter}}"
 										Maximum="{Binding WavelengthRange}"
-										Value="{Binding OrderedSequenceStep}" KeyDown="TextBox_KeyDown"/>
+										Value="{Binding OrderedSequenceStep}" KeyDown="TextBox_KeyDown" PreviewKeyDown="IntegerUpDown_PreviewKeyDown"/>
 									<tk:IntegerUpDown Grid.Row="3" Grid.Column="1" Width="75" VerticalAlignment="Center"
 										Increment="1" Minimum="0" Maximum="10000" Value="{Binding OrderedSequenceDwell}"
-										ClipValueToMinMax="True" KeyDown="TextBox_KeyDown"/>
+										ClipValueToMinMax="True" KeyDown="TextBox_KeyDown" PreviewKeyDown="IntegerUpDown_PreviewKeyDown"/>
 								</Grid>
 							</DockPanel>
 							<Separator DockPanel.Dock="Left" Width="2" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
