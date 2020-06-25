@@ -9,8 +9,8 @@
     <Authors>ChemImage Corporation</Authors>
     <Product>LCTF Commander</Product>
     <Description>A tool for controlling ChemImage LCTFs.</Description>
-    <RepositoryUrl>https://github.com/aklein53/LCTFCommander</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/aklein53/LCTFCommander</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ChemImageFT/LCTFCommander</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/ChemImageFT/LCTFCommander</PackageProjectUrl>
     <ApplicationIcon>greyIcon.ico</ApplicationIcon>
     <Version>0.3.0</Version>
   </PropertyGroup>
