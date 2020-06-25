@@ -76,7 +76,6 @@
 			<!--Remove application shortcut from Program Menu on uninstall-->
 			<RemoveFolder Id="ManufacturerProgramsFolder" Directory="ManufacturerProgramsFolder" On="uninstall" />
 			<RemoveFolder Id="ApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
-			<RemoveFolder Id="DesktopFolder" On="uninstall"/>
 		</Component>
 	</Fragment>
 	<Fragment>
