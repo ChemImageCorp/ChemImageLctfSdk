@@ -55,9 +55,9 @@ namespace LCTFCommander
 
 		public LCTFState CurrentState { get; set; } = LCTFState.None;
 
-		public LCTFDeviceViewModel(LCTFDevice mcfDevice)
+		public LCTFDeviceViewModel(LCTFDevice lctfDevice)
 		{
-			LCTFDevice = mcfDevice;
+			LCTFDevice = lctfDevice;
 			LCTFDevice.OnStateChanged += LCTFDevice_OnStateChanged;
 			LCTFDevice.OnTuningDone += LCTFDevice_OnTuningDone;
 			SerialNumber = LCTFDevice.DeviceInfo.SerialNumber;
