@@ -5,7 +5,7 @@ src="https://github.com/ChemImageFT/ChemImageLctfSdk/workflows/Build/badge.svg">
 
 ## Overview
 
-ChemImage LCTF SDK is an installable software development kit for ChemImage LCTFs devices. Alternatively, you can get started with development by referencing the nuget package as described here: [ChemImageLCTF Library](https://github.com/ChemImageFT/ChemImageLCTF#Installation).
+ChemImage LCTF SDK is an installable .NET software development kit for ChemImage LCTFs devices. Alternatively, you can get started with development by referencing the nuget package as described here: [ChemImageLCTF Library](https://github.com/ChemImageFT/ChemImageLCTF#Installation).
 
 ### SDK Contents
 
