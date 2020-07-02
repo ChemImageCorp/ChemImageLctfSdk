@@ -15,7 +15,7 @@ The installer built from this repository includes:
 |--|--|
 |LCTF Commander| A program that can be used to control an LCTF device. |
 |[ChemImageLCTF Library](https://github.com/ChemImageFT/ChemImageLCTF#Overview)| The DLL that is used to control LCTF devices. |
-|Example code| C# projects showing how an LCTF device can be integrated into your own .NET application. |
+|[Example code](https://github.com/ChemImageFT/ChemImageLctfSdk/tree/master/src)| C# projects showing how an LCTF device can be integrated into your own .NET application. |
 
 The example source code can also be acquired by downloading or cloning this repository.
 
