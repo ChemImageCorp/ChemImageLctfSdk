@@ -45,9 +45,13 @@ namespace LCTFCommander
 
 				ArbitrarySequenceItem.MinWavelength = Convert.ToInt32(SelectedLCTF?.MinWavelength ?? 0);
 				ArbitrarySequenceItem.MaxWavelength = Convert.ToInt32(SelectedLCTF?.MaxWavelength ?? 0);
+				ArbitrarySequenceItem.DefaultWavelength = SelectedLCTF?.CurrentWavelength ?? ArbitrarySequenceItem.MinWavelength;
 			}
 		}
 
+		/// <summary>
+		/// Have to listen for property changes on the LCTF to get updates on State.
+		/// </summary>
 		private void SelectedLCTF_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if (e.PropertyName == nameof(LCTFDeviceViewModel.CurrentState))
@@ -66,6 +70,8 @@ namespace LCTFCommander
 			}
 			set
 			{
+				ArbitrarySequenceItem.DefaultWavelength = value;
+
 				if (SelectedLCTF != null)
 				{
 					SelectedLCTF.CurrentWavelength = value;
@@ -415,6 +421,20 @@ namespace LCTFCommander
 			}
 		}
 
+		private void Context_Delete(object sender, RoutedEventArgs e)
+		{
+			var menuItem = (MenuItem)sender;
+
+			var contextMenu = (ContextMenu)menuItem.Parent;
+
+			var item = (DataGrid)contextMenu.PlacementTarget;
+
+			if (item.SelectedCells[0].Item is ArbitrarySequenceItem selectedSequenceItem)
+			{
+				ArbitrarySequenceItems.Remove(selectedSequenceItem);
+			}
+		}
+
 		private void Context_InsertAbove(object sender, RoutedEventArgs e)
 		{
 			var menuItem = (MenuItem)sender;
@@ -425,7 +445,6 @@ namespace LCTFCommander
 
 			if (item.SelectedCells[0].Item is ArbitrarySequenceItem selectedSequenceItem)
 			{
-				//Remove the toDeleteFromBindedList object from your ObservableCollection
 				ArbitrarySequenceItems.Insert(ArbitrarySequenceItems.IndexOf(selectedSequenceItem), new ArbitrarySequenceItem());
 			}
 			else

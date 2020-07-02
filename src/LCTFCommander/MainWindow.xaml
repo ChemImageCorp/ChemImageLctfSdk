@@ -187,6 +187,7 @@
 									</DataGrid.Columns>
 									<DataGrid.ContextMenu>
 										<ContextMenu>
+											<MenuItem Header="Delete" Click="Context_Delete"/>
 											<MenuItem Header="Insert Above" Click="Context_InsertAbove"/>
 											<MenuItem Header="Insert Below" Click="Context_InsertBelow"/>
 										</ContextMenu>

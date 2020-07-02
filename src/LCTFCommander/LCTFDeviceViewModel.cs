@@ -23,6 +23,10 @@ namespace LCTFCommander
 
 		private bool isSyncing = false;
 		private int currentWavelength = 0;
+
+		/// <summary>
+		/// The wavelength the LCTF is currently tuned to.
+		/// </summary>
 		public int CurrentWavelength
 		{
 			get

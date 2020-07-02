@@ -10,8 +10,11 @@ namespace LCTFCommander
 {
 	public class ArbitrarySequenceItem : INotifyPropertyChanged
 	{
-		private int wavelength = MinWavelength;
-		private uint dwellTime = MinDwellTime;
+		private int wavelength = DefaultWavelength;
+		private uint dwellTime = DefaultDwellTime;
+
+		public static int DefaultWavelength { get; set; } = MinWavelength;
+		public static uint DefaultDwellTime { get; set; } = 0;
 
 		public static int MinWavelength { get; set; }
 		public static int MaxWavelength { get; set; }
@@ -84,6 +87,9 @@ namespace LCTFCommander
 				{
 					dwellTime = value;
 				}
+
+				// Sets the default to the last used
+				DefaultDwellTime = DwellTime;
 			}
 		}
 
