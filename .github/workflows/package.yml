@@ -26,9 +26,6 @@ jobs:
     - name: Setup msbuild
       uses: microsoft/setup-msbuild@v1.0.0
 
-    - name: Add nuget source
-      run: |
-        nuget sources Add -Name "GPR" -Source "https://nuget.pkg.github.com/ChemImageFT/index.json" -Username ChemImageFT -Password ${{ secrets.ORGNUGETTOKEN }}
         
     - name: Build wix projects
       run: |
