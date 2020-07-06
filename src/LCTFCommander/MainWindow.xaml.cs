@@ -25,39 +25,41 @@ using MessageBox = System.Windows.MessageBox;
 namespace LCTFCommander
 {
 	/// <summary>
-	/// Interaction logic for MainWindow.xaml
+	/// Interaction logic for MainWindow.xaml.
 	/// </summary>
 	public partial class MainWindow : Window, INotifyPropertyChanged
 	{
 		private LCTFDeviceViewModel selectedLCTF = null;
-		public LCTFDeviceViewModel SelectedLCTF
+		private CancellationTokenSource sequenceTokenSource;
+
+		public MainWindow()
 		{
-			get => selectedLCTF;
-			set
-			{
-				if(selectedLCTF != null)
-					selectedLCTF.PropertyChanged -= SelectedLCTF_PropertyChanged;
-
-				selectedLCTF = value;
-
-				if (selectedLCTF != null)
-					selectedLCTF.PropertyChanged += SelectedLCTF_PropertyChanged;
-
-				ArbitrarySequenceItem.MinWavelength = Convert.ToInt32(SelectedLCTF?.MinWavelength ?? 0);
-				ArbitrarySequenceItem.MaxWavelength = Convert.ToInt32(SelectedLCTF?.MaxWavelength ?? 0);
-				ArbitrarySequenceItem.DefaultWavelength = SelectedLCTF?.CurrentWavelength ?? ArbitrarySequenceItem.MinWavelength;
-			}
+			this.InitializeComponent();
 		}
 
-		/// <summary>
-		/// Have to listen for property changes on the LCTF to get updates on State.
-		/// </summary>
-		private void SelectedLCTF_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		/// <inheritdoc/>
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		public LCTFDeviceViewModel SelectedLCTF
 		{
-			if (e.PropertyName == nameof(LCTFDeviceViewModel.CurrentState))
+			get => this.selectedLCTF;
+			set
 			{
-				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CanOperate)));
-				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IsCalibrating)));
+				if (this.selectedLCTF != null)
+				{
+					this.selectedLCTF.PropertyChanged -= this.SelectedLCTF_PropertyChanged;
+				}
+
+				this.selectedLCTF = value;
+
+				if (this.selectedLCTF != null)
+				{
+					this.selectedLCTF.PropertyChanged += this.SelectedLCTF_PropertyChanged;
+				}
+
+				ArbitrarySequenceItem.MinWavelength = Convert.ToInt32(this.SelectedLCTF?.MinWavelength ?? 0);
+				ArbitrarySequenceItem.MaxWavelength = Convert.ToInt32(this.SelectedLCTF?.MaxWavelength ?? 0);
+				ArbitrarySequenceItem.DefaultWavelength = this.SelectedLCTF?.CurrentWavelength ?? ArbitrarySequenceItem.MinWavelength;
 			}
 		}
 
@@ -66,15 +68,16 @@ namespace LCTFCommander
 		{
 			get
 			{
-				return SelectedLCTF == null ? 0 : SelectedLCTF.CurrentWavelength;
+				return this.SelectedLCTF == null ? 0 : this.SelectedLCTF.CurrentWavelength;
 			}
+
 			set
 			{
 				ArbitrarySequenceItem.DefaultWavelength = value;
 
-				if (SelectedLCTF != null)
+				if (this.SelectedLCTF != null)
 				{
-					SelectedLCTF.CurrentWavelength = value;
+					this.SelectedLCTF.CurrentWavelength = value;
 				}
 			}
 		}
@@ -84,7 +87,7 @@ namespace LCTFCommander
 		{
 			get
 			{
-				return SelectedLCTF == null ? 0 : SelectedLCTF.LCTFDevice.WavelengthMin;
+				return this.SelectedLCTF == null ? 0 : this.SelectedLCTF.LCTFDevice.WavelengthMin;
 			}
 		}
 
@@ -93,14 +96,14 @@ namespace LCTFCommander
 		{
 			get
 			{
-				return SelectedLCTF == null ? 0 : SelectedLCTF.LCTFDevice.WavelengthMax;
+				return this.SelectedLCTF == null ? 0 : this.SelectedLCTF.LCTFDevice.WavelengthMax;
 			}
 		}
 
 		[DependsOn(nameof(WavelengthMax), nameof(WavelengthMin))]
 		public int WavelengthRange
 		{
-			get => Math.Abs(WavelengthMax - WavelengthMin);
+			get => Math.Abs(this.WavelengthMax - this.WavelengthMin);
 		}
 
 		[DependsOn(nameof(SelectedLCTF))]
@@ -108,7 +111,7 @@ namespace LCTFCommander
 		{
 			get
 			{
-				return SelectedLCTF == null ? 0 : SelectedLCTF.LCTFDevice.WavelengthStep;
+				return this.SelectedLCTF == null ? 0 : this.SelectedLCTF.LCTFDevice.WavelengthStep;
 			}
 		}
 
@@ -117,7 +120,9 @@ namespace LCTFCommander
 		{
 			get
 			{
-				return SelectedLCTF == null ? false : SelectedLCTF.CurrentState == LCTFState.Ready || SelectedLCTF.CurrentState == LCTFState.Tuning;
+				return this.SelectedLCTF == null ?
+					false :
+					this.SelectedLCTF.CurrentState == LCTFState.Ready || this.SelectedLCTF.CurrentState == LCTFState.Tuning;
 			}
 		}
 
@@ -126,11 +131,12 @@ namespace LCTFCommander
 		{
 			get
 			{
-				return SelectedLCTF == null ? false : SelectedLCTF.CurrentState == LCTFState.Calibrating;
+				return this.SelectedLCTF == null ? false : this.SelectedLCTF.CurrentState == LCTFState.Calibrating;
 			}
 		}
 
 		public bool SequenceOrdered { get; set; } = true;
+
 		public bool SequenceArbitrary { get; set; } = false;
 
 		public bool SequenceContinuous { get; set; } = false;
@@ -138,49 +144,95 @@ namespace LCTFCommander
 		public bool IsSequencing { get; set; } = false;
 
 		[DependsOn(nameof(IsSequencing))]
-		public bool IsNotSequencing => !IsSequencing;
+		public bool IsNotSequencing => !this.IsSequencing;
 
-		private CancellationTokenSource sequenceTokenSource;
-		
 		public ObservableCollection<ArbitrarySequenceItem> ArbitrarySequenceItems { get; } = new ObservableCollection<ArbitrarySequenceItem>();
 
 		public int OrderedSequenceStart { get; set; } = 0;
+
 		public int OrderedSequenceStop { get; set; } = 0;
+
 		public int OrderedSequenceStep { get; set; } = 1;
+
 		public int OrderedSequenceDwell { get; set; } = 30;
 
-		public MainWindow()
+		private static DataGridCell GetCell(DataGrid dataGrid, DataGridRow row, int colIndex)
 		{
-			InitializeComponent();
+			if (row != null)
+			{
+				DataGridCellsPresenter presenter = FindVisualChild<DataGridCellsPresenter>(row);
+
+				if (presenter != null)
+				{
+					return presenter.ItemContainerGenerator.ContainerFromIndex(colIndex) as DataGridCell;
+				}
+			}
+
+			return null;
+		}
+
+		private static T FindVisualChild<T>(DependencyObject obj)
+		where T : DependencyObject
+		{
+			for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+			{
+				DependencyObject child = VisualTreeHelper.GetChild(obj, i);
+				if (child != null && child is T t)
+				{
+					return t;
+				}
+				else
+				{
+					T childOfChild = FindVisualChild<T>(child);
+					if (childOfChild != null)
+					{
+						return childOfChild;
+					}
+				}
+			}
+
+			return null;
+		}
+
+		/// <summary>
+		/// Have to listen for property changes on the LCTF to get updates on State.
+		/// </summary>
+		private void SelectedLCTF_PropertyChanged(object sender, PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == nameof(LCTFDeviceViewModel.CurrentState))
+			{
+				this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CanOperate)));
+				this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.IsCalibrating)));
+			}
 		}
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			DataContext = this;
+			this.DataContext = this;
 
-			LCTFController.OnLctfAttached += Controller_OnLctfAttachedOrDetached;
-			LCTFController.OnLctfDetached += Controller_OnLctfAttachedOrDetached;
+			LCTFController.OnLctfAttached += this.Controller_OnLctfAttachedOrDetached;
+			LCTFController.OnLctfDetached += this.Controller_OnLctfAttachedOrDetached;
 
 			this.Controller_OnLctfAttachedOrDetached();
 		}
 
 		private void Controller_OnLctfAttachedOrDetached()
 		{
-			if (SelectedLCTF != null && !LCTFController.AttachedLCTFs.Select(x => x.InstanceId).Contains(SelectedLCTF.LCTFDevice.InstanceId))
+			if (this.SelectedLCTF != null && !LCTFController.AttachedLCTFs.Select(x => x.InstanceId).Contains(this.SelectedLCTF.LCTFDevice.InstanceId))
 			{
-				SelectedLCTF.Dispose();
-				SelectedLCTF = null;
+				this.SelectedLCTF.Dispose();
+				this.SelectedLCTF = null;
 			}
 
 			foreach (LCTFDevice lctf in LCTFController.AttachedLCTFs)
 			{
-				if (SelectedLCTF == null)
+				if (this.SelectedLCTF == null)
 				{
-					SelectedLCTF = new LCTFDeviceViewModel(lctf);
+					this.SelectedLCTF = new LCTFDeviceViewModel(lctf);
 
-					OrderedSequenceStart = WavelengthMin;
-					OrderedSequenceStop = WavelengthMax;
-					OrderedSequenceStep = WavelengthStep;
+					this.OrderedSequenceStart = this.WavelengthMin;
+					this.OrderedSequenceStop = this.WavelengthMax;
+					this.OrderedSequenceStep = this.WavelengthStep;
 				}
 			}
 		}
@@ -194,37 +246,39 @@ namespace LCTFCommander
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			SelectedLCTF?.Dispose();
+			this.SelectedLCTF?.Dispose();
 		}
 
 		private async void SequenceBtn_Click(object sender, RoutedEventArgs e)
 		{
-			if (!IsSequencing)
+			if (!this.IsSequencing)
 			{
-				IsSequencing = true;
-				sequenceTokenSource = new CancellationTokenSource();
+				this.IsSequencing = true;
+				this.sequenceTokenSource = new CancellationTokenSource();
 			}
 			else
 			{
-				sequenceTokenSource?.Cancel();
+				this.sequenceTokenSource?.Cancel();
 				return;
 			}
 
-			var cancellationToken = sequenceTokenSource.Token;
+			var cancellationToken = this.sequenceTokenSource.Token;
 			Task sequenceTask = null;
 
-			if (SequenceArbitrary)
+			if (this.SequenceArbitrary)
 			{
-				var sequenceItems = ArbitrarySequenceItems.ToList();
+				var sequenceItems = this.ArbitrarySequenceItems.ToList();
 
 				if (sequenceItems.Count == 0)
 				{
 					MessageBox.Show("Please enter values for sequencing before starting.", "LCTF Commander");
-					sequenceTokenSource.Cancel();
-					IsSequencing = false;
+					this.sequenceTokenSource.Cancel();
+					this.IsSequencing = false;
 					return;
 				}
-				sequenceTask = Task.Run(async () =>
+
+				sequenceTask = Task.Run(
+				async () =>
 				{
 					do
 					{
@@ -232,44 +286,45 @@ namespace LCTFCommander
 						{
 							cancellationToken.ThrowIfCancellationRequested();
 
-							if (item.Wavelength < SelectedLCTF.LCTFDevice.WavelengthMin || item.Wavelength > SelectedLCTF.LCTFDevice.WavelengthMax)
+							if (item.Wavelength < this.SelectedLCTF.LCTFDevice.WavelengthMin || item.Wavelength > this.SelectedLCTF.LCTFDevice.WavelengthMax)
 							{
 								MessageBox.Show($"Wavelength {item.Wavelength} is outside the min and max of the LCTF.", "LCTF Commander");
-								IsSequencing = false;
+								this.IsSequencing = false;
 								return;
 							}
 
-							await SelectedLCTF.LCTFDevice.SetWavelengthAsync(item.Wavelength);
-							PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentWavelength)));
+							await this.SelectedLCTF.LCTFDevice.SetWavelengthAsync(item.Wavelength);
+							this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentWavelength)));
 
 							await Task.Delay(Convert.ToInt32(item.DwellTime), cancellationToken);
 						}
 					}
-					while (SequenceContinuous && !cancellationToken.IsCancellationRequested);
+					while (this.SequenceContinuous && !cancellationToken.IsCancellationRequested);
 				}, cancellationToken);
 			}
-			else if (SequenceOrdered)
+			else if (this.SequenceOrdered)
 			{
-				var wlStart = OrderedSequenceStart;
-				var wlStop = OrderedSequenceStop;
-				var wlStep = OrderedSequenceStep;
-				var wlDwell = OrderedSequenceDwell;
+				var wlStart = this.OrderedSequenceStart;
+				var wlStop = this.OrderedSequenceStop;
+				var wlStep = this.OrderedSequenceStep;
+				var wlDwell = this.OrderedSequenceDwell;
 
 				if (wlStep == 0)
 				{
 					MessageBox.Show("Cannot sequence with zero step size, sequence would never end.", "LCTF Commander");
-					IsSequencing = false;
+					this.IsSequencing = false;
 					return;
 				}
 
 				if ((wlStart < wlStop && wlStep < 0) || (wlStart > wlStop && wlStep > 0))
 				{
 					MessageBox.Show("The start, stop, and/or step size must be defined such that the sequence will end.", "LCTF Commander");
-					IsSequencing = false;
+					this.IsSequencing = false;
 					return;
 				}
 
-				sequenceTask = Task.Run(async () =>
+				sequenceTask = Task.Run(
+				async () =>
 				{
 					do
 					{
@@ -277,13 +332,13 @@ namespace LCTFCommander
 						{
 							cancellationToken.ThrowIfCancellationRequested();
 
-							await SelectedLCTF.LCTFDevice.SetWavelengthAsync(wlCurrent);
-							PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentWavelength)));
+							await this.SelectedLCTF.LCTFDevice.SetWavelengthAsync(wlCurrent);
+							this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentWavelength)));
 
 							await Task.Delay(wlDwell, cancellationToken);
 						}
-					} 
-					while (SequenceContinuous && !cancellationToken.IsCancellationRequested);
+					}
+					while (this.SequenceContinuous && !cancellationToken.IsCancellationRequested);
 				}, cancellationToken);
 			}
 
@@ -293,20 +348,21 @@ namespace LCTFCommander
 			}
 			catch (OperationCanceledException)
 			{
-				;
 			}
 			finally
 			{
-				sequenceTokenSource.Dispose();
+				this.sequenceTokenSource.Dispose();
 			}
 
-			IsSequencing = false;
+			this.IsSequencing = false;
 		}
 
 		private void DataGrid_PreviewKeyDown(object sender, KeyEventArgs e)
 		{
 			if (e.Key != Key.Enter && e.Key != Key.Tab)
+			{
 				return;
+			}
 
 			DataGrid dataGrid = sender as DataGrid;
 
@@ -321,7 +377,9 @@ namespace LCTFCommander
 			{
 				// We only want to override tab for the last row
 				if (e.Key == Key.Tab)
+				{
 					return;
+				}
 
 				nextRow = dataGrid.ItemContainerGenerator.ContainerFromIndex(currentRowIndex + 1) as DataGridRow;
 				nextCellColumnIndex = dataGrid.CurrentCell.Column.DisplayIndex;
@@ -343,7 +401,9 @@ namespace LCTFCommander
 
 						// set the next cell
 						if (cell != null)
+						{
 							dataGrid.CurrentCell = new DataGridCellInfo(cell);
+						}
 
 						e.Handled = true;
 						return;
@@ -354,9 +414,9 @@ namespace LCTFCommander
 						nextCellColumnIndex = 0;
 					}
 				}
-					
+
 				// generate a new row
-				nextRow = ArbitraryDataGrid.ItemContainerGenerator.ContainerFromItem(CollectionView.NewItemPlaceholder) as DataGridRow;
+				nextRow = this.ArbitraryDataGrid.ItemContainerGenerator.ContainerFromItem(CollectionView.NewItemPlaceholder) as DataGridRow;
 			}
 
 			// Set the next row and cell
@@ -366,45 +426,13 @@ namespace LCTFCommander
 				DataGridCell cell = GetCell(dataGrid, nextRow, nextCellColumnIndex);
 
 				if (cell != null)
+				{
 					dataGrid.CurrentCell = new DataGridCellInfo(cell);
+				}
 			}
 
 			e.Handled = true;
 		}
-
-		private static DataGridCell GetCell(DataGrid dataGrid, DataGridRow row, int colIndex)
-		{
-			if (row != null)
-			{
-				DataGridCellsPresenter presenter = FindVisualChild<DataGridCellsPresenter>(row);
-
-				if (presenter != null)
-					return presenter.ItemContainerGenerator.ContainerFromIndex(colIndex) as DataGridCell;
-			}
-			return null;
-		}
-
-		private static T FindVisualChild<T>(DependencyObject obj) where T : DependencyObject
-		{
-			for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
-			{
-				DependencyObject child = VisualTreeHelper.GetChild(obj, i);
-				if (child != null && child is T t)
-				{
-					return t;
-				}
-				else
-				{
-					T childOfChild = FindVisualChild<T>(child);
-					if (childOfChild != null)
-						return childOfChild;
-				}
-			}
-			return null;
-		}
-
-#pragma warning disable CS0067 // Used by generated code
-		public event PropertyChangedEventHandler PropertyChanged;
 
 		private void TextBox_KeyDown(object sender, KeyEventArgs e)
 		{
@@ -431,7 +459,7 @@ namespace LCTFCommander
 
 			if (item.SelectedCells[0].Item is ArbitrarySequenceItem selectedSequenceItem)
 			{
-				ArbitrarySequenceItems.Remove(selectedSequenceItem);
+				this.ArbitrarySequenceItems.Remove(selectedSequenceItem);
 			}
 		}
 
@@ -445,40 +473,42 @@ namespace LCTFCommander
 
 			if (item.SelectedCells[0].Item is ArbitrarySequenceItem selectedSequenceItem)
 			{
-				ArbitrarySequenceItems.Insert(ArbitrarySequenceItems.IndexOf(selectedSequenceItem), new ArbitrarySequenceItem());
+				this.ArbitrarySequenceItems.Insert(this.ArbitrarySequenceItems.IndexOf(selectedSequenceItem), new ArbitrarySequenceItem());
 			}
 			else
 			{
-				ArbitrarySequenceItems.Add(new ArbitrarySequenceItem());
+				this.ArbitrarySequenceItems.Add(new ArbitrarySequenceItem());
 			}
 		}
 
 		private void Context_InsertBelow(object sender, RoutedEventArgs e)
 		{
-			//Get the clicked MenuItem
+			// Get the clicked MenuItem
 			var menuItem = (MenuItem)sender;
 
-			//Get the ContextMenu to which the menuItem belongs
+			// Get the ContextMenu to which the menuItem belongs
 			var contextMenu = (ContextMenu)menuItem.Parent;
 
-			//Find the placementTarget
+			// Find the placementTarget
 			var item = (DataGrid)contextMenu.PlacementTarget;
 
 			if (item.SelectedCells[0].Item is ArbitrarySequenceItem selectedSequenceItem)
 			{
-				//Remove the toDeleteFromBindedList object from your ObservableCollection
-				ArbitrarySequenceItems.Insert(ArbitrarySequenceItems.IndexOf(selectedSequenceItem) + 1, new ArbitrarySequenceItem());
+				// Remove the toDeleteFromBindedList object from your ObservableCollection
+				this.ArbitrarySequenceItems.Insert(this.ArbitrarySequenceItems.IndexOf(selectedSequenceItem) + 1, new ArbitrarySequenceItem());
 			}
 			else
 			{
-				ArbitrarySequenceItems.Add(new ArbitrarySequenceItem());
+				this.ArbitrarySequenceItems.Add(new ArbitrarySequenceItem());
 			}
 		}
 
 		private void IntegerUpDown_PreviewKeyDown(object sender, KeyEventArgs e)
 		{
 			if (!(sender is IntegerUpDown integerUpDown))
+			{
 				return;
+			}
 
 			int change = integerUpDown.Increment ?? 0;
 			switch (e.Key)
@@ -499,7 +529,7 @@ namespace LCTFCommander
 			{
 				newValue = Math.Max(integerUpDown.Minimum.Value, newValue);
 			}
-			
+
 			if (integerUpDown.Maximum.HasValue)
 			{
 				newValue = Math.Min(integerUpDown.Maximum.Value, newValue);
@@ -507,6 +537,5 @@ namespace LCTFCommander
 
 			integerUpDown.Value = newValue;
 		}
-#pragma warning restore CS0067
 	}
 }

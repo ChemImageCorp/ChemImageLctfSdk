@@ -1,78 +1,39 @@
-﻿using ChemImage.LCTF;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using ChemImage.LCTF;
 
 namespace LCTFCommander
 {
 	/// <summary>
-	/// A viewmodel to wrap LCTFDevice for display
+	/// A viewmodel to wrap LCTFDevice for display. Handles disposing the LCTFDevice as well.
 	/// </summary>
 	public class LCTFDeviceViewModel : INotifyPropertyChanged, IDisposable
 	{
-		private DispatcherTimer temperatureTimer;
-
-		public LCTFDevice LCTFDevice { get; private set; }
-		public string SerialNumber { get; set; }
-		public string FirmwareVersion { get; set; }
-		public double Temperature { get; set; } = 0;
-		public double MinWavelength { get; set; } = 0;
-		public double MaxWavelength { get; set; } = 0;
-		public double StepWavelength { get; set; } = 0;
+		private bool mDisposed = false;
 
 		private bool isSyncing = false;
+
 		private int currentWavelength = 0;
 
-		/// <summary>
-		/// The wavelength the LCTF is currently tuned to.
-		/// </summary>
-		public int CurrentWavelength
-		{
-			get
-			{
-				return currentWavelength;
-			} 
-			set
-			{
-				lock (this)
-				{
-					currentWavelength = value;
-
-					if (!isSyncing)
-					{
-						isSyncing = true;
-
-						Task.Factory.StartNew(() =>
-						{
-							SyncWavelength();
-						});
-					}
-					else
-					{
-						;
-					}
-				}
-				
-			}
-		}
-
-		public LCTFState CurrentState { get; set; } = LCTFState.None;
+		private DispatcherTimer temperatureTimer;
 
 		public LCTFDeviceViewModel(LCTFDevice lctfDevice)
 		{
-			LCTFDevice = lctfDevice;
-			LCTFDevice.OnStateChanged += LCTFDevice_OnStateChanged;
-			LCTFDevice.OnTuningDone += LCTFDevice_OnTuningDone;
-			SerialNumber = LCTFDevice.DeviceInfo.SerialNumber;
-			FirmwareVersion = $@"{(float)(LCTFDevice.DeviceInfo.FirmwareVersion) / 100f:0.00}";
-			CurrentState = LCTFDevice.GetState();
-			MinWavelength = LCTFDevice.WavelengthMin;
-			MaxWavelength = LCTFDevice.WavelengthMax;
-			StepWavelength = LCTFDevice.WavelengthStep;
+			this.LCTFDevice = lctfDevice;
+			this.LCTFDevice.OnStateChanged += this.LCTFDevice_OnStateChanged;
+			this.LCTFDevice.OnTuningDone += this.LCTFDevice_OnTuningDone;
+			this.SerialNumber = this.LCTFDevice.DeviceInfo.SerialNumber;
+			this.FirmwareVersion = $@"{(float)this.LCTFDevice.DeviceInfo.FirmwareVersion / 100f:0.00}";
+			this.CurrentState = this.LCTFDevice.GetState();
+			this.MinWavelength = this.LCTFDevice.WavelengthMin;
+			this.MaxWavelength = this.LCTFDevice.WavelengthMax;
+			this.StepWavelength = this.LCTFDevice.WavelengthStep;
+
 			// Don't set the property because we don't want it to try to re-sync unnecessarily.
-			currentWavelength = LCTFDevice.GetCurrentWavelength();
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentWavelength)));
+			this.currentWavelength = this.LCTFDevice.GetCurrentWavelength();
+			this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentWavelength)));
 
 			this.temperatureTimer = new DispatcherTimer();
 			this.temperatureTimer.Interval = new TimeSpan(0, 0, 2);
@@ -83,46 +44,69 @@ namespace LCTFCommander
 					this.Temperature = this.LCTFDevice.GetTemperature();
 				}
 				catch
-				{ }
+				{
+				}
 			});
 
 			this.temperatureTimer.Start();
 		}
 
-		private async void SyncWavelength()
-		{
-			int lastWavelength = 0;
-
-			while (true)
-			{ 
-				var setWavelengthTask = this.LCTFDevice.SetWavelengthAsync(currentWavelength);
-
-				lastWavelength = await setWavelengthTask;
-
-				lock(this)
-				{
-					if (currentWavelength == lastWavelength)
-					{
-						isSyncing = false;
-						return;
-					}
-					else
-					{
-
-					}
-				}
-			}
-		}
-
-		private bool mDisposed = false;
-
 		/// <summary>
-		/// Finalizes an instance of the <see cref="LCTFDevice"/> class.
+		/// Finalizes an instance of the <see cref="LCTFDeviceViewModel"/> class.
 		/// </summary>
 		~LCTFDeviceViewModel()
 		{
 			this.Dispose(false);
 		}
+
+		/// <inheritdoc/>
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		public LCTFDevice LCTFDevice { get; private set; }
+
+		public string SerialNumber { get; set; }
+
+		public string FirmwareVersion { get; set; }
+
+		public double Temperature { get; set; } = 0;
+
+		public double MinWavelength { get; set; } = 0;
+
+		public double MaxWavelength { get; set; } = 0;
+
+		public double StepWavelength { get; set; } = 0;
+
+		/// <summary>
+		/// Gets or sets the wavelength the LCTF is currently tuned to.
+		/// </summary>
+		public int CurrentWavelength
+		{
+			get
+			{
+				return this.currentWavelength;
+			}
+
+			set
+			{
+				lock (this)
+				{
+					this.currentWavelength = value;
+
+					// Start syncing the wavelength if not already doing so
+					if (!this.isSyncing)
+					{
+						this.isSyncing = true;
+
+						Task.Factory.StartNew(() =>
+						{
+							this.SyncWavelength();
+						});
+					}
+				}
+			}
+		}
+
+		public LCTFState CurrentState { get; set; } = LCTFState.None;
 
 		/// <summary>
 		/// Cleans up USB connections and disposes the object.
@@ -153,25 +137,53 @@ namespace LCTFCommander
 			}
 		}
 
+		/// <summary>
+		/// Used to tune the LCTF to a desired wavelength. The desired wavelength can be changed while tuning, which then will cause another tune to the new desired wavelength.
+		/// </summary>
+		private async void SyncWavelength()
+		{
+			// The last wavelength that the LCTF tuned to
+			int lastWavelength = 0;
+
+			while (true)
+			{
+				// Start tuning to the current desired wavelength and await
+				lastWavelength = await this.LCTFDevice.SetWavelengthAsync(this.currentWavelength);
+
+				// Lock to prevent CurrentWavelength setter from setting currentWavelength after we think we're done here
+				lock (this)
+				{
+					// If the desired (currentWavelength) is the same as what we just tuned to, we're done syncing.
+					if (this.currentWavelength == lastWavelength)
+					{
+						// done syncing, and return to end the task
+						this.isSyncing = false;
+						return;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Handler for the TuningDone event.
+		/// </summary>
+		/// <param name="lambda">The wavelength that was just tuned to.</param>
 		private void LCTFDevice_OnTuningDone(int lambda)
 		{
 			lock (this)
 			{
-				// Sync will take care of this otherwise
-				if (!isSyncing)
+				// Sync also handles currentWavelength, so we don't want to update here too.
+				if (!this.isSyncing)
 				{
-					currentWavelength = lambda;
-					PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentWavelength)));
+					this.currentWavelength = lambda;
+					this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.CurrentWavelength)));
 				}
 			}
-			
 		}
 
 		private void LCTFDevice_OnStateChanged(LCTFState status, int tunedWavelength)
 		{
-			CurrentState = status;
+			this.CurrentState = status;
 		}
-
-		public event PropertyChangedEventHandler PropertyChanged;
 	}
 }
