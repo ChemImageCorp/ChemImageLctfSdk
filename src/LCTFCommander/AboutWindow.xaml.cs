@@ -17,78 +17,88 @@ using System.Windows.Shapes;
 namespace LCTFCommander
 {
 	/// <summary>
-	/// Interaction logic for AboutWindow.xaml
+	/// Interaction logic for AboutWindow.xaml.
 	/// </summary>
 	public partial class AboutWindow : Window, INotifyPropertyChanged
 	{
-		public string ProductName { get; set; }
-		public string ProductVersion { get; set; }
-		public string Copyright { get; set; }
-		public string CompanyName { get; set; }
-		public string ProductDescription { get; set; }
-
+		/// <summary>
+		/// Initializes a new instance of the <see cref="AboutWindow"/> class.
+		/// </summary>
+		/// <param name="parent">The parent window.</param>
+		/// <param name="current">The assembly to use for populating the window.</param>
 		public AboutWindow(Window parent, Assembly current)
 		{
-			InitializeComponent();
+			this.InitializeComponent();
 
-			LoadValuesFromAssembly(current);
+			this.LoadValuesFromAssembly(current);
 
-			DataContext = this;
+			this.DataContext = this;
 		}
+
+#pragma warning disable CS0067 // Used by generated code
+		/// <inheritdoc/>
+		public event PropertyChangedEventHandler PropertyChanged;
+#pragma warning restore CS0067
+
+		public string ProductName { get; set; }
+
+		public string ProductVersion { get; set; }
+
+		public string Copyright { get; set; }
+
+		public string CompanyName { get; set; }
+
+		public string ProductDescription { get; set; }
 
 		private void LoadValuesFromAssembly(Assembly assembly)
 		{
 			object[] attributes;
-			
+
 			attributes = assembly.GetCustomAttributes(typeof(AssemblyProductAttribute), false);
 
 			if (attributes.Length == 0)
 			{
-				ProductName = string.Empty;
+				this.ProductName = string.Empty;
 			}
 			else
 			{
-				ProductName = ((AssemblyProductAttribute)attributes[0]).Product;
+				this.ProductName = ((AssemblyProductAttribute)attributes[0]).Product;
 			}
 
-			ProductVersion = assembly.GetName().Version.ToString();
+			this.ProductVersion = assembly.GetName().Version.ToString();
 
 			attributes = assembly.GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
 
 			if (attributes.Length == 0)
 			{
-				Copyright = string.Empty;
+				this.Copyright = string.Empty;
 			}
 			else
 			{
-				Copyright = ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
+				this.Copyright = ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
 			}
 
 			attributes = assembly.GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
 
 			if (attributes.Length == 0)
 			{
-				CompanyName = string.Empty;
+				this.CompanyName = string.Empty;
 			}
 			else
 			{
-				CompanyName = ((AssemblyCompanyAttribute)attributes[0]).Company;
+				this.CompanyName = ((AssemblyCompanyAttribute)attributes[0]).Company;
 			}
 
 			attributes = assembly.GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
 
 			if (attributes.Length == 0)
 			{
-				ProductDescription = string.Empty;
+				this.ProductDescription = string.Empty;
 			}
 			else
 			{
-				ProductDescription = ((AssemblyDescriptionAttribute)attributes[0]).Description;
+				this.ProductDescription = ((AssemblyDescriptionAttribute)attributes[0]).Description;
 			}
 		}
-
-#pragma warning disable CS0067 // Used by generated code
-		public event PropertyChangedEventHandler PropertyChanged;
-#pragma warning restore CS0067
 	}
 }

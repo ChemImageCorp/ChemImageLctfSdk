@@ -23,7 +23,8 @@ namespace LCTFCommander.Converters
 				bool? nullable = (bool?)value;
 				flag = nullable.HasValue ? nullable.Value : false;
 			}
-			return (flag ? Visibility.Visible : Visibility.Collapsed);
+
+			return flag ? Visibility.Visible : Visibility.Collapsed;
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
