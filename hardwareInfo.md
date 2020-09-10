@@ -17,7 +17,7 @@ There is no trigger input at this time.
 |5 | N/A | Not used. |
 |6 | N/A | Not used. |
 |7 | N/A | Not used. |
-|8 | 3.3V | 3.3V reference voltage.
+|8 | 3.3V | 3.3V reference voltage. |
 
 ## Trigger Behavior
 
