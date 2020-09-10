@@ -48,6 +48,9 @@ The example code is copied to the same directory that the rest of the SDK is ins
 
 The example code can also be obtained by cloning this repository through Git. The installed example code directory is just a copy of this repository's src directory.
 
+#### Hardware Triggering
+For information on hardware triggering from the LCTF, see [here](https://github.com/ChemImageFT/ChemImageLctfSdk/blob/master/hardwareInfo.md).
+
 ## Support
 If support for this SDK is needed, you can submit an issue
 [here](https://github.com/ChemImageFT/ChemImageLctfSdk/issues/new) or email us at: [LCTFSupport@chemimage.com](mailto:LCTFSupport@chemimage.com).
