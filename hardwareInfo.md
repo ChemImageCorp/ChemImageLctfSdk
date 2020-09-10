@@ -21,6 +21,8 @@ There is no trigger input at this time.
 
 ## Trigger Behavior
 
+The two trigger signals, T1 and T2, are pulled to 0V when low and 3.3V when high.
+
 T1 and T2 have opposite outputs, so either can be selected depending on if your application prefers triggering on a rising or falling edge. T1 (yellow) and T2 (blue) are shown in the oscilloscope trace below for a tuning event starting at the 0ms mark.
 
 ![Oscilloscope Image](TriggerExample.png)
