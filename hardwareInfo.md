@@ -9,7 +9,7 @@ There is no trigger input at this time.
 ## Connector Pinout
 
 | Pin | Name | Behavior |
-|--|--|
+|--|--|--|
 |1 (Closest to USB)| GND | LCTF ground. |
 |2 | T1 | High during tuning, low when not. |
 |3 | T2 | Low during tuning, high when not. |
