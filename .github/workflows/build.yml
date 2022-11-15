@@ -16,11 +16,11 @@ jobs:
         version: '3.1.100'
 
     - name: Setup Nuget.exe
-      uses: NuGet/setup-nuget@v1.0.2
+      uses: NuGet/setup-nuget@v1.0.5
       with:
         nuget-version: 'latest'
 
     - name: Build with dotnet
       run: |
-        nuget sources Add -Name "GPR" -Source "https://nuget.pkg.github.com/ChemImageFT/index.json" -Username ChemImageFT -Password ${{ secrets.nugetToken }}
+        nuget sources Add -Name "GPR" -Source "https://nuget.pkg.github.com/ChemImageCorp/index.json" -Username ChemImageCorp -Password ${{ secrets.nugetToken }}
         dotnet build "src/LCTF SDK.sln" --configuration Release
