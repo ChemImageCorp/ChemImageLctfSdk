@@ -1,11 +1,15 @@
 # ChemImage LCTF SDK
-CI Status: <a href="https://github.com/ChemImageFT/ChemImageLctfSdk/actions?query=workflow%3ABuild">
+CI Status: <a href="https://github.com/ChemImageCorp/ChemImageLctfSdk/actions?query=workflow%3ABuild">
 <img alt="GitHub Actions Build Status"
-src="https://github.com/ChemImageFT/ChemImageLctfSdk/workflows/Build/badge.svg"></a>
+src="https://github.com/ChemImageCorp/ChemImageLctfSdk/workflows/Build/badge.svg"></a>
+
+## Installation
+The SDK can be downloaded and installed from the releases page. Download and run the latest .exe file from here:
+[Latest](https://github.com/ChemImageCorp/ChemImageLctfSdk/releases/latest).
 
 ## Overview
 
-ChemImage LCTF SDK is an installable .NET software development kit for ChemImage LCTFs devices. Alternatively, you can get started with development by referencing the nuget package as described here: [ChemImageLCTF Library](https://github.com/ChemImageFT/ChemImageLCTF#Installation).
+ChemImage LCTF SDK is an installable .NET software development kit for ChemImage LCTFs devices. Alternatively, you can get started with development by referencing the nuget package as described here: [ChemImageLCTF Library](https://github.com/ChemImageCorp/ChemImageLCTF#Installation).
 
 ### SDK Contents
 
@@ -14,8 +18,8 @@ The installer built from this repository includes:
 | Item | Description |
 |--|--|
 |LCTF Commander| A program that can be used to control an LCTF device. |
-|[ChemImageLCTF Library](https://github.com/ChemImageFT/ChemImageLCTF#Overview)| The DLL that is used to control LCTF devices. |
-|[Example code](https://github.com/ChemImageFT/ChemImageLctfSdk/tree/master/src)| C# projects showing how an LCTF device can be integrated into your own .NET application. |
+|[ChemImageLCTF Library](https://github.com/ChemImageCorp/ChemImageLCTF#Overview)| The DLL that is used to control LCTF devices. |
+|[Example code](https://github.com/ChemImageCorp/ChemImageLctfSdk/tree/master/src)| C# projects showing how an LCTF device can be integrated into your own .NET application. |
 
 The example source code can also be acquired by downloading or cloning this repository.
 
@@ -23,7 +27,7 @@ The example source code can also be acquired by downloading or cloning this repo
 
 #### SDK Installation
 The SDK can be downloaded and installed from the releases page:
-[Latest](https://github.com/ChemImageFT/ChemImageLctfSdk/releases/latest).
+[Latest](https://github.com/ChemImageCorp/ChemImageLctfSdk/releases/latest).
 
 #### Driver Installation
 When an LCTF is connected to a Windows computer by the USB cable, drivers should automatically be installed by
@@ -36,10 +40,10 @@ should appear in Device Manager under "Universal Serial Bus devices" as:
 
 #### LCTF Commander
 A user manual for LCTF Commander is included in the SDK installer, and can also be found
-[here](https://github.com/ChemImageFT/ChemImageLctfSdk/blob/master/Installer/SdkSetup/LCTFCommanderUserManual.pdf).
+[here](https://github.com/ChemImageCorp/ChemImageLctfSdk/blob/master/Installer/SdkSetup/LCTFCommanderUserManual.pdf).
 
 #### ChemImageLCTF Library
-Basic usage of the library is described [here](https://github.com/ChemImageFT/ChemImageLCTF#Basic-Usage).
+Basic usage of the library is described [here](https://github.com/ChemImageCorp/ChemImageLCTF#Basic-Usage).
 
 #### Example Code
 The example code is copied to the same directory that the rest of the SDK is installed to. A shortcut to this directory is also installed to the start menu.
@@ -49,11 +53,11 @@ The example code is copied to the same directory that the rest of the SDK is ins
 The example code can also be obtained by cloning this repository through Git. The installed example code directory is just a copy of this repository's src directory.
 
 #### Hardware Triggering
-For information on hardware triggering from the LCTF, see [here](https://github.com/ChemImageFT/ChemImageLctfSdk/blob/master/hardwareInfo.md).
+For information on hardware triggering from the LCTF, see [here](https://github.com/ChemImageCorp/ChemImageLctfSdk/blob/master/hardwareInfo.md).
 
 ## Support
 If support for this SDK is needed, you can submit an issue
-[here](https://github.com/ChemImageFT/ChemImageLctfSdk/issues/new) or email us at: [LCTFSupport@chemimage.com](mailto:LCTFSupport@chemimage.com).
+[here](https://github.com/ChemImageCorp/ChemImageLctfSdk/issues/new) or email us at: [LCTFSupport@chemimage.com](mailto:LCTFSupport@chemimage.com).
 
 ## Licensing 
 This project is licensed under the [MIT License](LICENSE). Copyright (c) 2020 ChemImage Corporation.
