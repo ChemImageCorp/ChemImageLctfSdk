@@ -1,0 +1,8 @@
+theme = 'relearn'
+
+[outputs]
+home = [ "HTML", "RSS", "JSON"]
+
+[params]
+  themeVariant = "blue"
+  externalLinkTarget = ""
