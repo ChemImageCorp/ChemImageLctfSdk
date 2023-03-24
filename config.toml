@@ -1,6 +1,7 @@
 theme = 'relearn'
 canonifyURLs = true
 relativeURLs = true
+title = "ChemImage LCTF"
 
 [outputs]
 home = [ "HTML", "RSS", "JSON"]
@@ -8,3 +9,4 @@ home = [ "HTML", "RSS", "JSON"]
 [params]
   themeVariant = "blue"
   externalLinkTarget = ""
+  titleSeparator = ""
