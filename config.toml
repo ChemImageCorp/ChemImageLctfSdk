@@ -1,4 +1,6 @@
 theme = 'relearn'
+canonifyURLs = true
+relativeURLs = true
 
 [outputs]
 home = [ "HTML", "RSS", "JSON"]
