@@ -26,7 +26,7 @@
 		</BootstrapperApplicationRef>
 
 		<Chain>
-			<PackageGroupRef Id="NetFx462Web"/>
+			<PackageGroupRef Id="NetFx48Web"/>
 			<!-- TODO: Define the list of chained packages. -->
 			<MsiPackage Id="SetupPackage" SourceFile="$(var.SdkSetup_TargetDir)SdkSetup.msi" />
 		</Chain>
